@@ -29,6 +29,19 @@ const rows: [string, string[]][] = [
         <tfoot><tr><td></td>{nf.map((p) => <td><a class="btn btn-sm" href={p.path}>View details</a></td>)}</tr></tfoot>
       </table>
     </div>
+    <div class="cmp-m">
+      {nf.map((p) => (
+        <a class="card pm reveal" href={p.path}>
+          {p.images[0] && <img src={p.images[0].src} srcset={p.images[0].srcset} sizes="40vw" alt={p.images[0].alt} loading="lazy" width="400" height="400">}
+          <div class="stack gap-8">
+            <span class="h-3">{p.shortName.replace(' 3D Printer', '')}</span>
+            <strong>{inr(p.price)}</strong>
+            <dl>{rows.map(([k, v]) => <div><dt>{k}</dt><dd>{v[nf.indexOf(p)]}</dd></div>)}</dl>
+            <span class="link">View details →</span>
+          </div>
+        </a>
+      ))}
+    </div>
     <p class="muted small" style="margin-top:12px">Build volume, speed and full specifications are on each printer's page.</p>
   </section>
 
@@ -54,4 +67,17 @@ const rows: [string, string[]][] = [
   .pcol { display: flex; flex-direction: column; gap: 8px; text-decoration: none; }
   .pcol img { aspect-ratio: 1; object-fit: contain; background: #fff; border-radius: 16px; max-width: 220px; }
   .small { font-size: .88rem; }
+  .cmp-m { display: none; }
+  @media (max-width: 760px) {
+    .cmp { display: none; }
+    .cmp-m { display: grid; gap: 14px; }
+    .pm { display: grid; grid-template-columns: 38% 1fr; gap: 14px; padding: 14px; text-decoration: none; align-items: start; }
+    .pm img { width: 100%; aspect-ratio: 1; object-fit: contain; background: #fff; border-radius: 14px; }
+    .pm dl { margin: 4px 0 0; display: grid; gap: 4px; font-size: .84rem; }
+    .pm dl div { display: flex; gap: 6px; }
+    .pm dt { color: var(--muted); white-space: nowrap; }
+    .pm dt::after { content: ':'; }
+    .pm dd { margin: 0; }
+    .pm .link { font-size: .88rem; font-weight: 600; margin-top: 4px; }
+  }
 </style>

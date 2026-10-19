@@ -382,9 +382,24 @@ const printerNotes: Record<string, string> = { 'Mini-N': 'Compact. For desks, ho
   .house { width: 30%; right: 6%; bottom: 0; z-index: 3; }
   .s4-pen { width: 76%; right: 0; top: 14%; z-index: 4; rotate: -34deg; transform-origin: 30% 50%; }
 
+  @media (max-width: 900px) {
+    .slide { align-items: flex-start; }
+    .s-stage { margin-top: 20px; }
+    .s3-stage, .s4-stage { aspect-ratio: 1 / 1; max-width: 520px; width: 100%; justify-self: center; }
+  }
   @media (max-width: 760px) {
     .s-title { font-size: clamp(2.2rem, 10vw, 3rem); }
-    .s2-stage { aspect-ratio: 4 / 3; margin-top: 8px; }
+    .s-split .stack { gap: 16px; }
+    .sun { width: 70%; right: 0; top: 2%; }
+    .s4-pen { width: 66%; right: 2%; top: 10%; }
+    .butterfly { width: 40%; left: 2%; bottom: 10%; }
+    .house { width: 32%; right: 4%; bottom: 2%; }
+    .disc { width: 44%; left: 0; }
+    .panel { width: 66%; bottom: 10%; }
+    .s3-0 { width: 32%; top: 24%; } .s3-1 { width: 44%; left: 22%; top: 30%; } .s3-2 { width: 32%; right: 8%; top: 4%; } .s3-3 { width: 28%; top: 50%; }
+    .gem { width: 15%; left: 60%; }
+    .slider-ui { margin-top: 18px; }
+    .s2-stage { aspect-ratio: 1 / 1; margin-top: 8px; }
     .arc { left: 0; right: 0; }
     .s-printer { width: 50%; left: 25%; }
     .sp-a { width: 26%; left: 0; } .sp-b { width: 24%; left: 6%; bottom: 40%; } .sp-c { width: 26%; right: 0; bottom: 30%; }
@@ -403,7 +418,7 @@ const printerNotes: Record<string, string> = { 'Mini-N': 'Compact. For desks, ho
   .ic-pause { width: 10px; height: 10px; border-left: 3px solid currentColor; border-right: 3px solid currentColor; }
   .pause[aria-pressed="true"] .ic-pause { border: 0; width: 0; height: 0; border-left: 9px solid currentColor; border-top: 6px solid transparent; border-bottom: 6px solid transparent; margin-left: 3px; }
   .hero-visual { position: relative; aspect-ratio: 5 / 4; border-radius: var(--radius-lg); background: radial-gradient(70% 60% at 50% 45%, var(--surface) 0%, transparent 100%); }
-  @media (max-width: 760px) { .hero-visual { aspect-ratio: 1 / 1; margin-top: 8px; } }
+  @media (max-width: 760px) { .hero-visual { aspect-ratio: 6 / 5; margin-top: 8px; } }
   .spool { position: absolute; display: block; border-radius: 28px; background: #fff; border: 1px solid var(--line); box-shadow: 0 30px 60px -30px rgba(17,17,16,.35), 0 8px 20px -12px rgba(17,17,16,.2); overflow: hidden; text-decoration: none; color: #111110; transition: box-shadow .4s var(--ease); }
   .spool img { display: block; width: 100%; aspect-ratio: 1; object-fit: contain; }
   .spool-c { width: 46%; left: 27%; top: 10%; z-index: 3; }

@@ -38,6 +38,7 @@ const mats = [['all', 'All'], ['pla', 'PLA+'], ['petg', 'PETG'], ['abs', 'ABS, A
     {items.map((p, i) => <ProductCard p={p} eager={i < 4} />)}
   </div>
   <p class="empty muted" data-empty hidden>No products match. Try another colour or material.</p>
+  <div class="more-wrap"><button type="button" class="btn btn-ghost" data-more hidden>Show more</button></div>
 </div>
 <style>
   .tools { display: flex; flex-direction: column; gap: 16px; margin-bottom: 28px; }
@@ -47,8 +48,13 @@ const mats = [['all', 'All'], ['pla', 'PLA+'], ['petg', 'PETG'], ['abs', 'ABS, A
   .meta { justify-content: space-between; font-size: .9rem; }
   .sort { min-height: 40px; padding: 6px 12px; width: auto; border-radius: 999px; }
   .empty { padding: 48px 0; text-align: center; }
+  .more-wrap { display: flex; justify-content: center; margin-top: 32px; }
+  .more-wrap .btn[hidden] { display: none; }
 </style>
 <script>
+  import { gsap } from 'gsap';
+  import { ScrollTrigger } from 'gsap/ScrollTrigger';
+  gsap.registerPlugin(ScrollTrigger);
   document.querySelectorAll<HTMLElement>('[data-cat]').forEach((root) => {
     const grid = root.querySelector<HTMLElement>('[data-grid]')!;
     const cards = Array.from(grid.querySelectorAll<HTMLElement>('[data-product]'));
@@ -57,29 +63,44 @@ const mats = [['all', 'All'], ['pla', 'PLA+'], ['petg', 'PETG'], ['abs', 'ABS, A
     const sort = root.querySelector<HTMLSelectElement>('[data-sort]')!;
     const count = root.querySelector('[data-count]')!;
     const empty = root.querySelector<HTMLElement>('[data-empty]')!;
+    const more = root.querySelector<HTMLButtonElement>('[data-more]')!;
+    const PAGE = matchMedia('(max-width: 760px)').matches ? 12 : 24;
+    let limit = PAGE;
     let m = 'all';
     const params = new URLSearchParams(location.search);
     if (q && params.get('q')) q.value = params.get('q')!;
-    const apply = () => {
+    const apply = (reset = true) => {
+      if (reset) limit = PAGE;
       const term = (q?.value || '').trim().toLowerCase();
-      let shown = 0;
-      cards.forEach((c) => {
-        const ok = (m === 'all' || c.dataset.mat === m) && (!term || c.dataset.name!.includes(term) || c.dataset.colour!.includes(term));
-        c.hidden = !ok; if (ok) { shown++; c.classList.add('in'); }
-      });
       const order = sort.value === 'low' ? [...cards].sort((a, b) => +a.dataset.price! - +b.dataset.price!)
         : sort.value === 'high' ? [...cards].sort((a, b) => +b.dataset.price! - +a.dataset.price!)
         : sort.value === 'name' ? [...cards].sort((a, b) => a.dataset.name!.localeCompare(b.dataset.name!)) : original;
-      order.forEach((c) => grid.appendChild(c));
-      count.textContent = `${shown} product${shown === 1 ? '' : 's'}`;
-      empty.hidden = shown > 0;
+      let matched = 0;
+      const fresh: HTMLElement[] = [];
+      order.forEach((c) => {
+        grid.appendChild(c);
+        const ok = (m === 'all' || c.dataset.mat === m) && (!term || c.dataset.name!.includes(term) || c.dataset.colour!.includes(term));
+        const show = ok && matched < limit;
+        if (ok) matched++;
+        if (show && c.hidden) fresh.push(c);
+        c.hidden = !show;
+        if (show) c.classList.add('in');
+      });
+      count.textContent = `${matched} product${matched === 1 ? '' : 's'}`;
+      empty.hidden = matched > 0;
+      const left = matched - limit;
+      more.hidden = left <= 0;
+      more.textContent = `Show more (${left} left)`;
+      if (fresh.length) gsap.fromTo(fresh, { autoAlpha: 0, y: 24 }, { autoAlpha: 1, y: 0, duration: 0.7, ease: 'expo.out', stagger: 0.03, overwrite: true });
+      ScrollTrigger.refresh();
     };
     root.querySelectorAll<HTMLButtonElement>('[data-m]').forEach((b, _, all) => b.addEventListener('click', () => {
       all.forEach((x) => x.setAttribute('aria-pressed', String(x === b))); m = b.dataset.m!; apply();
     }));
-    q?.addEventListener('input', apply);
-    sort.addEventListener('change', apply);
-    if (q?.value) apply();
+    q?.addEventListener('input', () => apply());
+    sort.addEventListener('change', () => apply());
+    more.addEventListener('click', () => { limit += PAGE; apply(false); });
+    apply();
     if (location.hash === '#search') q?.focus();
   });
 </script>

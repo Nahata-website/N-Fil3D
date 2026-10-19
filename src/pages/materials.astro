@@ -41,6 +41,13 @@ const dots = (n: number) => Array.from({ length: 5 }, (_, i) => i < n);
 <style>
   .tbl { overflow-x: auto; }
   table { width: 100%; border-collapse: collapse; min-width: 760px; }
+  @media (max-width: 760px) {
+    table { min-width: 0; }
+    th:nth-child(2), td:nth-child(2), th:nth-child(6), td:nth-child(6) { display: none; }
+    th, td { padding: 12px 8px !important; }
+    .dots { gap: 3px !important; }
+    .dots i { width: 7px !important; height: 7px !important; }
+  }
   th, td { padding: 16px 18px; text-align: left; border-bottom: 1px solid var(--line); }
   thead th { font-family: var(--mono); font-size: .72rem; text-transform: uppercase; letter-spacing: .06em; color: var(--muted); font-weight: 500; }
   tbody tr:last-child > * { border-bottom: 0; }
