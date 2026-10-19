@@ -1,35 +1,119 @@
 ---
 import Base from '../../layouts/Base.astro';
-import PageHead from '../../components/PageHead.astro';
-import { posts } from '../../lib/data';
-const fmt = (d: string) => new Date(d).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' });
-const [first, ...rest] = posts;
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
+import { posts, plainText } from '../../lib/data';
+
+const topicOf = (t: string) => {
+  const s = t.toLowerCase();
+  if (/student|school|classroom|engineering/.test(s)) return 'Education';
+  if (/beginner|start/.test(s)) return 'Getting started';
+  if (/pla|abs|petg|filament/.test(s)) return 'Filaments';
+  return '3D printers';
+};
+const items = posts.map((p) => {
+  const words = plainText(p.content || p.excerpt || '').split(/\s+/).length;
+  return { ...p, topic: topicOf(p.title), mins: Math.max(3, Math.round(words / 220)), blurb: plainText(p.excerpt || '').replace(/\s*\[…\]|\s*…$/, '').slice(0, 150) };
+});
+const featured = items.find((p) => p.topic === 'Education') || items[0];
+const rest = items.filter((p) => p !== featured);
+const topics = ['All articles', 'Getting started', '3D printers', 'Filaments', 'Education'].filter((t, i) => i === 0 || items.some((p) => p.topic === t));
+const ld = { '@context': 'https://schema.org', '@type': 'Blog', name: 'The NFIL3D Journal', url: 'https://nfil3d.com/blog/',
+  blogPost: items.map((p) => ({ '@type': 'BlogPosting', headline: p.title, url: new URL(p.path, 'https://nfil3d.com').href, datePublished: p.date })) };
 ---
-<Base title="NFIL3D Blog: 3D Printing Guides & Buying Tips" description="Guides to choosing a 3D printer and filament in India: printers for beginners and students, budget picks under Rs 25,000, and PLA vs ABS vs PETG.">
-  <PageHead crumb="Blog" eyebrow="Blog" title='NFIL3D Blog: guides <span class="serif">and tips.</span>' lead="Practical advice for choosing, setting up and getting the most from your 3D printer and filament." />
-  <section class="wrap section-sm">
-    {first && (
-      <a href={first.path} class="feat reveal">
-        {first.image && <img src={first.image} alt="" width="1200" height="700" loading="eager">}
-        <div class="stack gap-12"><span class="mono muted">{fmt(first.date)}</span><h2 class="h-2">{first.title}</h2><p class="muted">{first.excerpt.slice(0, 180)}…</p><span class="link">Read guide <span aria-hidden="true">→</span></span></div>
+<Base title="The NFIL3D Journal: 3D Printing Guides, Ideas & Tips" description="Practical 3D printing guides from NFIL3D: choosing a printer, picking PLA, ABS or PETG, getting started and classroom projects." jsonld={ld}>
+  <div class="wrap" style="padding-top:20px"><Breadcrumbs items={[{ name: 'Journal' }]} /></div>
+
+  <section class="wrap jhead">
+    <span class="eyebrow">The NFIL3D Journal</span>
+    <h1 class="h-display">Ideas, guides &amp; <span class="serif">better prints.</span></h1>
+    <p class="lead">Practical knowledge for your next creation.</p>
+  </section>
+
+  <section class="wrap" data-journal>
+    <div class="jtools">
+      <div class="row gap-8 chips" role="group" aria-label="Filter articles">
+        {topics.map((t, i) => <button type="button" class="chip" aria-pressed={i === 0 ? 'true' : 'false'} data-topic={i === 0 ? 'all' : t}>{t}</button>)}
+      </div>
+      <label class="jsearch">
+        <span class="sr-only">Search articles</span>
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
+        <input type="search" placeholder="Search articles" data-q autocomplete="off">
+      </label>
+    </div>
+
+    {featured && (
+      <a href={featured.path} class="feat reveal" data-post data-topic={featured.topic} data-text={featured.title.toLowerCase()}>
+        <div class="feat-img">{featured.image && <img src={featured.image} alt="" width="1200" height="760" loading="eager">}</div>
+        <div class="feat-body">
+          <span class="topic">{featured.topic}</span>
+          <h2 class="h-1">{featured.title}</h2>
+          <p class="muted">{featured.blurb}…</p>
+          <span class="read">Read article <span aria-hidden="true">→</span></span>
+        </div>
       </a>
     )}
-    <div class="grid cols-3" style="margin-top:32px">
+
+    <h2 class="h-2 latest">Latest articles</h2>
+    <div class="grid cols-3 posts">
       {rest.map((p, i) => (
-        <a href={p.path} class="item reveal" style={`--d:${i * 0.05}s`}>
-          {p.image && <img src={p.image} alt="" width="640" height="400" loading="lazy">}
-          <span class="mono muted">{fmt(p.date)}</span>
-          <h2 class="h-3">{p.title}</h2>
+        <a href={p.path} class="post reveal" style={`--d:${i * 0.05}s`} data-post data-topic={p.topic} data-text={p.title.toLowerCase()}>
+          <div class="post-img">{p.image && <img src={p.image} alt="" width="640" height="440" loading="lazy">}</div>
+          <span class="topic">{p.topic}</span>
+          <h3 class="h-3">{p.title}</h3>
+          <span class="muted small">{p.mins} min read</span>
         </a>
       ))}
     </div>
+    <p class="empty muted" data-empty hidden>No articles match. Try another topic or search.</p>
   </section>
 </Base>
 <style>
-  .feat { display: grid; grid-template-columns: 1.3fr 1fr; gap: 40px; align-items: center; text-decoration: none; }
-  @media (max-width: 860px) { .feat { grid-template-columns: 1fr; gap: 20px; } }
-  .feat img, .item img { width: 100%; object-fit: cover; border-radius: var(--radius-lg); aspect-ratio: 16/10; transition: transform .6s var(--ease); }
-  .feat:hover img, .item:hover img { transform: scale(1.015); }
-  .item { display: flex; flex-direction: column; gap: 12px; text-decoration: none; }
-  .item:hover h2, .feat:hover h2 { color: var(--accent); }
+  .jhead { padding-block: clamp(28px, 5vw, 64px) 28px; display: flex; flex-direction: column; gap: 14px; }
+  .jhead h1 { font-size: clamp(2.6rem, 5.6vw, 5rem); }
+  .jhead .lead { margin: 0; }
+  .jtools { display: flex; flex-wrap: wrap; gap: 16px; justify-content: space-between; align-items: center; margin-bottom: 28px; }
+  .chip { background: var(--surface-2); border-color: transparent; }
+  .chip[aria-pressed="true"] { background: var(--ink); color: var(--bg); }
+  .jsearch { display: flex; align-items: center; gap: 10px; padding: 0 18px; min-width: min(320px, 100%); border: 1px solid var(--line); border-radius: 999px; background: var(--surface); }
+  .jsearch:focus-within { border-color: var(--ink); }
+  .jsearch input { flex: 1; border: 0; background: transparent; min-height: 48px; outline: none; font-size: .95rem; }
+  .feat { display: grid; grid-template-columns: 1.25fr 1fr; border-radius: var(--radius-lg); overflow: hidden; background: var(--surface-2); text-decoration: none; }
+  .feat-img { overflow: hidden; min-height: 320px; }
+  .feat-img img, .post-img img { width: 100%; height: 100%; object-fit: cover; transition: transform .8s var(--ease); }
+  .feat:hover img, .post:hover img { transform: scale(1.04); }
+  .feat-body { display: flex; flex-direction: column; justify-content: center; gap: 16px; padding: clamp(28px, 4vw, 56px); }
+  .feat-body .h-1 { font-size: clamp(1.8rem, 3vw, 2.8rem); }
+  .feat-body p { margin: 0; }
+  .topic { font-family: var(--mono); font-size: .72rem; letter-spacing: .14em; text-transform: uppercase; color: var(--muted); }
+  .feat .topic { color: #B88A00; }
+  .read { font-weight: 600; display: inline-flex; gap: 8px; }
+  .feat:hover .read span { transform: translateX(4px); }
+  .read span { transition: transform .3s var(--ease); }
+  .latest { margin: clamp(48px, 6vw, 80px) 0 24px; }
+  .posts { row-gap: 40px; }
+  .post { display: flex; flex-direction: column; gap: 10px; text-decoration: none; }
+  .post-img { aspect-ratio: 3 / 2; border-radius: var(--radius); overflow: hidden; background: var(--surface-2); margin-bottom: 6px; }
+  .post h3 { margin: 0; }
+  .post:hover h3 { color: var(--accent); }
+  .small { font-size: .86rem; }
+  .empty { padding: 40px 0; text-align: center; }
+  @media (max-width: 860px) { .feat { grid-template-columns: 1fr; } .feat-img { min-height: 0; aspect-ratio: 16 / 10; } .jsearch { min-width: 100%; } }
 </style>
+<script>
+  document.querySelectorAll<HTMLElement>('[data-journal]').forEach((root) => {
+    const posts = Array.from(root.querySelectorAll<HTMLElement>('[data-post]'));
+    const q = root.querySelector<HTMLInputElement>('[data-q]')!;
+    const empty = root.querySelector<HTMLElement>('[data-empty]')!;
+    let topic = 'all';
+    const apply = () => {
+      const term = q.value.trim().toLowerCase(); let n = 0;
+      posts.forEach((p) => { const ok = (topic === 'all' || p.dataset.topic === topic) && (!term || p.dataset.text!.includes(term)); p.hidden = !ok; if (ok) { n++; p.style.opacity = '1'; p.style.transform = 'none'; p.style.visibility = 'visible'; } });
+      empty.hidden = n > 0;
+    };
+    root.querySelectorAll<HTMLButtonElement>('[data-topic]').forEach((b, _, all) => {
+      if (b.tagName !== 'BUTTON') return;
+      b.addEventListener('click', () => { all.forEach((x) => x.tagName === 'BUTTON' && x.setAttribute('aria-pressed', String(x === b))); topic = b.dataset.topic!; apply(); });
+    });
+    q.addEventListener('input', apply);
+  });
+</script>

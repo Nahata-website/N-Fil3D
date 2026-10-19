@@ -6,7 +6,7 @@ import { categories, productsIn, childrenOf, ancestors, DUPLICATE_CATS, type Cat
 import { SITE } from '../../config/site';
 
 export function getStaticPaths() {
-  return categories.filter((c) => c.count > 0).map((c) => ({
+  return categories.filter((c) => c.count > 0 && c.slug !== '3d-models').map((c) => ({
     params: { path: c.path.replace(/^\/product-category\//, '').replace(/\/$/, '') },
     props: { c },
   }));

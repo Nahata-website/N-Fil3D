@@ -224,7 +224,7 @@ const printerNotes: Record<string, string> = { 'Mini-N': 'Compact. For desks, ho
           </svg>
           <div class="bubble" aria-hidden="true">What will<br>you create?</div>
           <svg class="tstar s-shape" viewBox="0 0 100 100" aria-hidden="true"><polygon points="50,4 62,36 96,38 69,59 79,93 50,73 21,93 31,59 4,38 38,36" fill="#2EC4C0" stroke="#1FA8A4" stroke-width="4" stroke-linejoin="round" /></svg>
-          <img class="s-obj coil-img coil-b-img u-coil-b" src="/images/fest/coil-b.webp" width="307" height="89" alt="" loading="lazy" decoding="async"><img class="s-obj coil-img coil-a-img u-coil-a" src="/images/fest/coil-a.webp" width="383" height="185" alt="Coils of 3D pen filament" loading="lazy" decoding="async">
+          <img class="s-obj coil-img u-coil-b" src="/images/fest/coil-b.webp" width="700" height="368" alt="" loading="lazy" decoding="async"><img class="s-obj coil-img u-coil-a" src="/images/fest/coil-a.webp" width="700" height="344" alt="Coils of 3D pen filament" loading="lazy" decoding="async">
           <a href="/product-category/3d-pen/" aria-label="3D pens"><img class="s-obj u-ravan" src="/images/fest/u-ravan.webp" width="471" height="500" alt="Ravan figure made with a 3D pen" loading="lazy" decoding="async"></a>
           <a href="/product-category/3d-pens-filaments/" aria-label="3D pen filaments"><img class="s-obj u-pouch s-spool" src="/images/fest/u-pouch.webp" width="409" height="568" alt="NFIL3D 3D pen filaments pouch" loading="lazy" decoding="async"></a>
           <img class="s-obj u-bow float" src="/images/fest/u-bow.webp" width="313" height="407" alt="Bow and arrow made with a 3D pen" loading="lazy" decoding="async">
@@ -248,7 +248,7 @@ const printerNotes: Record<string, string> = { 'Mini-N': 'Compact. For desks, ho
         <div class="s7-stage s-stage">
           <svg class="blob s-shape" viewBox="0 0 400 360" aria-hidden="true"><path d="M60 70 C 120 -10, 290 0, 350 80 C 410 160, 380 300, 280 330 C 180 360, 70 330, 30 250 C -5 180, 10 120, 60 70 Z" fill="#CFE6FB" /></svg>
           <svg class="ribbon draw" viewBox="0 0 500 200" aria-hidden="true"><path d="M10 190 C 60 120, 160 150, 230 110 C 300 70, 330 30, 420 20" fill="none" stroke="#FFD84D" stroke-width="34" stroke-linecap="round" opacity=".85" /></svg>
-          <img class="s-obj coil-img coil-b-img k-coil-b" src="/images/fest/coil-b.webp" width="307" height="89" alt="" loading="lazy" decoding="async"><img class="s-obj coil-img coil-a-img k-coil-a" src="/images/fest/coil-a.webp" width="383" height="185" alt="Coils of 3D pen filament" loading="lazy" decoding="async">
+          <img class="s-obj coil-img k-coil-b" src="/images/fest/coil-b.webp" width="700" height="368" alt="" loading="lazy" decoding="async"><img class="s-obj coil-img k-coil-a" src="/images/fest/coil-c.webp" width="700" height="344" alt="Coils of 3D pen filament" loading="lazy" decoding="async">
           <a href="/product-category/3d-pens-filaments/" aria-label="3D pen filaments"><img class="s-obj k-pouch s-spool" src="/images/fest/k-pouch.webp" width="392" height="553" alt="NFIL3D 3D pen filaments pouch" loading="lazy" decoding="async"></a>
           <img class="s-obj k-rocket float" src="/images/fest/k-rocket.webp" width="199" height="220" alt="Rocket made with a 3D pen" loading="lazy" decoding="async">
           <img class="s-obj k-dino float" src="/images/fest/k-dino.webp" width="245" height="243" alt="Dinosaur made with a 3D pen" loading="lazy" decoding="async">
@@ -497,16 +497,16 @@ const printerNotes: Record<string, string> = { 'Mini-N': 'Compact. For desks, ho
   .bunting { position: absolute; right: -6%; top: -4%; width: 70%; height: auto; overflow: visible; z-index: 1; }
   .bubble { position: absolute; right: 2%; top: 22%; padding: 12px 18px; border: 2.5px solid var(--navy); border-radius: 50%; background: #fff; color: #14234B; font-weight: 700; font-size: clamp(.8rem, 1.1vw, 1rem); line-height: 1.15; text-align: center; transform: rotate(-6deg); z-index: 6; }
   .tstar { position: absolute; width: 9%; right: -2%; top: 44%; z-index: 6; }
-  .coil-img { filter: drop-shadow(0 14px 14px rgba(17,17,16,.18)); }
-  .u-coil-a { width: 44%; left: 18%; bottom: -2%; z-index: 3; }
-  .u-coil-b { width: 34%; right: 6%; bottom: 8%; z-index: 2; }
+  .coil-img { filter: none; }
+  .u-coil-a { width: 46%; left: 20%; bottom: -3%; z-index: 3; }
+  .u-coil-b { width: 36%; right: 2%; bottom: 4%; z-index: 2; }
   .u-ravan { width: 36%; left: 0; bottom: 4%; z-index: 4; }
   .u-pouch { width: 30%; left: 40%; bottom: 10%; z-index: 4; }
   .u-bow { width: 26%; right: 2%; bottom: 8%; z-index: 5; }
   .blob { position: absolute; width: 82%; right: 0; top: 2%; }
   .ribbon { position: absolute; width: 70%; left: -6%; bottom: -6%; overflow: visible; }
-  .k-coil-a { width: 46%; left: 8%; bottom: -2%; z-index: 3; }
-  .k-coil-b { width: 38%; right: 4%; bottom: 8%; z-index: 2; }
+  .k-coil-a { width: 48%; left: 8%; bottom: -3%; z-index: 3; }
+  .k-coil-b { width: 38%; right: 2%; bottom: 4%; z-index: 2; }
   .k-pouch { width: 34%; left: 34%; bottom: 10%; z-index: 4; }
   .k-rocket { width: 19%; left: 12%; bottom: 26%; z-index: 5; }
   .k-dino { width: 24%; right: 4%; bottom: 20%; z-index: 5; }

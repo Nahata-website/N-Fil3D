@@ -1,0 +1,167 @@
+---
+import Base from '../../../layouts/Base.astro';
+import Breadcrumbs from '../../../components/Breadcrumbs.astro';
+import { catBySlug, productsIn } from '../../../lib/data';
+
+const cat = catBySlug.get('3d-models')!;
+const meta: [RegExp, string, string][] = [
+  [/tank/, 'Tank models', 'Vehicles & RC'],
+  [/construction/, 'Construction machines', 'Vehicles & RC'],
+  [/labubu/, 'Labubu collection', 'Characters'],
+  [/gundam/, 'Gundam-inspired models', 'Characters'],
+  [/deadpool/, 'Deadpool-inspired models', 'Characters'],
+  [/sonic/, 'Sonic-inspired models', 'Characters'],
+  [/low-poly/, 'Low-poly models', 'Art & decor'],
+  [/urban/, 'Urban vibe collection', 'Art & decor'],
+  [/benchy/, 'Benchy variations', 'Calibration'],
+  [/thanksgiving/, 'Thanksgiving prints', 'Seasonal'],
+  [/origami|papercraft/, 'Origami & papercraft', 'Paper craft'],
+];
+const models = productsIn(cat.id).map((p, i) => {
+  const m = meta.find(([re]) => re.test(p.slug));
+  return { p, i, title: m?.[1] || p.shortName.replace(/^\W+\s*/, ''), group: m?.[2] || 'Art & decor', free: !p.price };
+});
+const groups = [...new Set(models.map((m) => m.group))];
+const freeCount = models.filter((m) => m.free).length;
+const ld = { '@context': 'https://schema.org', '@type': 'CollectionPage', name: '3D Models', url: 'https://nfil3d.com/product-category/3d-models/',
+  mainEntity: { '@type': 'ItemList', numberOfItems: models.length, itemListElement: models.map((m, k) => ({ '@type': 'ListItem', position: k + 1, name: m.title, url: new URL(m.p.path, 'https://nfil3d.com').href })) } };
+---
+<Base title="3D Models: Free 3D Printable Collections | NFIL3D" description="Browse free 3D printable model collections from NFIL3D: vehicles and RC, characters, low-poly art, Benchy variations, seasonal prints and papercraft." jsonld={ld}>
+  <div class="wrap" style="padding-top:20px"><Breadcrumbs items={[{ name: '3D Models' }]} /></div>
+
+  <section class="wrap mhead">
+    <h1 class="h-display">3D models. <span class="serif">Made to inspire.</span></h1>
+    <p class="lead">Discover your next print.</p>
+  </section>
+
+  <section class="wrap" data-models>
+    <label class="msearch">
+      <span class="sr-only">Search 3D models</span>
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
+      <input type="search" placeholder="Search 3D models" data-q autocomplete="off">
+    </label>
+    <div class="row gap-8 chips" role="group" aria-label="Quick filter">
+      <button type="button" class="chip" aria-pressed="true" data-chip="all">All models</button>
+      {groups.map((g) => <button type="button" class="chip" aria-pressed="false" data-chip={g}>{g}</button>)}
+    </div>
+
+    <div class="mlayout">
+      <aside class="side" aria-label="Filters">
+        <details open>
+          <summary>Category</summary>
+          {groups.map((g) => <label class="opt"><input type="checkbox" value={g} data-cat> {g} <span class="muted">{models.filter((m) => m.group === g).length}</span></label>)}
+        </details>
+        <details open>
+          <summary>Availability</summary>
+          <label class="opt"><input type="radio" name="avail" value="all" checked data-avail> All models <span class="muted">{models.length}</span></label>
+          <label class="opt"><input type="radio" name="avail" value="free" data-avail> Free models <span class="muted">{freeCount}</span></label>
+        </details>
+        <details open>
+          <summary>Sort by</summary>
+          <label class="opt"><input type="radio" name="sort" value="featured" checked data-sort> Featured</label>
+          <label class="opt"><input type="radio" name="sort" value="az" data-sort> A–Z</label>
+        </details>
+      </aside>
+
+      <div>
+        <div class="mbar"><h2 class="h-2">Explore models</h2><span class="muted small" data-count aria-live="polite">{models.length} models</span></div>
+        <div class="mgrid" data-grid>
+          {models.map((m) => (
+            <a class="model reveal" href={m.p.path} data-model data-group={m.group} data-free={m.free ? '1' : '0'} data-title={m.title.toLowerCase()} data-i={m.i}>
+              <div class="mimg">{m.p.images[0] && <img src={m.p.images[0].src} srcset={m.p.images[0].srcset} sizes="(max-width: 760px) 90vw, 300px" alt={m.p.images[0].alt || m.title} width="600" height="600" loading="lazy">}{m.free && <span class="free">Free</span>}</div>
+              <h3>{m.title}</h3>
+              <span class="muted small">{m.group}</span>
+              <span class="view">View model <span aria-hidden="true">→</span></span>
+            </a>
+          ))}
+        </div>
+        <p class="empty muted" data-empty hidden>No models match. Try another search or filter.</p>
+        <nav class="pager" aria-label="Pages" data-pager></nav>
+      </div>
+    </div>
+  </section>
+</Base>
+<style>
+  .mhead { padding-block: clamp(28px, 5vw, 64px) 28px; display: flex; flex-direction: column; gap: 10px; }
+  .mhead h1 { font-size: clamp(2.6rem, 5.6vw, 5rem); }
+  .mhead .lead { margin: 0; }
+  .msearch { display: flex; align-items: center; gap: 12px; padding: 0 22px; border: 1px solid var(--line); border-radius: 999px; background: var(--surface); }
+  .msearch:focus-within { border-color: var(--ink); }
+  .msearch input { flex: 1; border: 0; background: transparent; min-height: 56px; outline: none; font-size: 1rem; }
+  .chips { margin: 20px 0 36px; flex-wrap: wrap; }
+  .chip { background: var(--surface-2); border-color: transparent; }
+  .chip[aria-pressed="true"] { background: var(--ink); color: var(--bg); }
+  .mlayout { display: grid; grid-template-columns: 220px 1fr; gap: 40px; align-items: start; }
+  .side { position: sticky; top: 96px; border-right: 1px solid var(--line); padding-right: 24px; }
+  .side details { padding: 0 0 20px; margin-bottom: 20px; border-bottom: 1px solid var(--line); }
+  .side details:last-child { border-bottom: 0; }
+  .side summary { cursor: pointer; font-weight: 650; list-style: none; display: flex; justify-content: space-between; margin-bottom: 12px; }
+  .side summary::-webkit-details-marker { display: none; }
+  .side summary::after { content: '⌄'; transition: transform .3s var(--ease); }
+  .side details[open] summary::after { transform: rotate(180deg); }
+  .opt { display: flex; align-items: center; gap: 10px; padding: 6px 0; font-size: .93rem; color: var(--ink-2); cursor: pointer; }
+  .opt .muted { margin-left: auto; font-size: .8rem; }
+  .opt input { width: 17px; height: 17px; accent-color: var(--ink); }
+  .mbar { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 18px; }
+  .mbar .h-2 { font-size: clamp(1.5rem, 2.2vw, 2rem); margin: 0; }
+  .mgrid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 32px 20px; }
+  .model { display: flex; flex-direction: column; gap: 4px; text-decoration: none; }
+  .mimg { position: relative; aspect-ratio: 1 / 1.05; border-radius: var(--radius); overflow: hidden; background: var(--surface-2); margin-bottom: 10px; }
+  .mimg img { width: 100%; height: 100%; object-fit: cover; transition: transform .8s var(--ease); }
+  .model:hover img { transform: scale(1.05); }
+  .free { position: absolute; left: 12px; top: 12px; padding: 4px 10px; border-radius: 999px; background: var(--sun); color: #111110; font-size: .72rem; font-weight: 650; }
+  .model h3 { margin: 0; font-size: 1.05rem; font-weight: 600; letter-spacing: -0.01em; }
+  .view { margin-top: 8px; font-weight: 550; font-size: .92rem; display: inline-flex; gap: 8px; }
+  .view span { transition: transform .3s var(--ease); }
+  .model:hover .view span { transform: translateX(4px); }
+  .small { font-size: .86rem; }
+  .empty { padding: 40px 0; text-align: center; }
+  .pager { display: flex; justify-content: center; gap: 8px; margin-top: 40px; }
+  .pager :global(button) { width: 40px; height: 40px; border-radius: 50%; border: 0; background: transparent; font-weight: 600; cursor: pointer; color: var(--ink); }
+  .pager :global(button[aria-current="page"]) { background: var(--sun); color: #111110; }
+  .pager :global(button:hover:not([aria-current])) { background: var(--surface-2); }
+  @media (max-width: 960px) { .mlayout { grid-template-columns: 1fr; } .side { position: static; border-right: 0; padding-right: 0; display: none; } .mgrid { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 520px) { .mgrid { gap: 24px 12px; } }
+</style>
+<script>
+  document.querySelectorAll<HTMLElement>('[data-models]').forEach((root) => {
+    const grid = root.querySelector<HTMLElement>('[data-grid]')!;
+    const cards = Array.from(grid.querySelectorAll<HTMLElement>('[data-model]'));
+    const q = root.querySelector<HTMLInputElement>('[data-q]')!;
+    const count = root.querySelector('[data-count]')!;
+    const empty = root.querySelector<HTMLElement>('[data-empty]')!;
+    const pager = root.querySelector<HTMLElement>('[data-pager]')!;
+    const chips = Array.from(root.querySelectorAll<HTMLButtonElement>('[data-chip]'));
+    const boxes = Array.from(root.querySelectorAll<HTMLInputElement>('[data-cat]'));
+    const PER = 9;
+    let page = 1;
+    const apply = (resetPage = true) => {
+      if (resetPage) page = 1;
+      const term = q.value.trim().toLowerCase();
+      const cats = boxes.filter((b) => b.checked).map((b) => b.value);
+      const avail = root.querySelector<HTMLInputElement>('[data-avail]:checked')!.value;
+      const sort = root.querySelector<HTMLInputElement>('[data-sort]:checked')!.value;
+      const order = [...cards].sort((a, b) => sort === 'az' ? a.dataset.title!.localeCompare(b.dataset.title!) : +a.dataset.i! - +b.dataset.i!);
+      const match = order.filter((c) => (!cats.length || cats.includes(c.dataset.group!)) && (avail === 'all' || c.dataset.free === '1') && (!term || c.dataset.title!.includes(term) || c.dataset.group!.toLowerCase().includes(term)));
+      const pages = Math.max(1, Math.ceil(match.length / PER));
+      page = Math.min(page, pages);
+      order.forEach((c) => { grid.appendChild(c); c.hidden = true; });
+      match.slice((page - 1) * PER, page * PER).forEach((c) => { c.hidden = false; c.style.opacity = '1'; c.style.visibility = 'visible'; c.style.transform = 'none'; });
+      count.textContent = `${match.length} model${match.length === 1 ? '' : 's'}`;
+      empty.hidden = match.length > 0;
+      pager.innerHTML = '';
+      if (pages > 1) for (let i = 1; i <= pages; i++) {
+        const b = document.createElement('button'); b.type = 'button'; b.textContent = String(i); b.setAttribute('aria-label', `Page ${i}`);
+        if (i === page) b.setAttribute('aria-current', 'page');
+        b.addEventListener('click', () => { page = i; apply(false); grid.scrollIntoView({ behavior: 'smooth', block: 'start' }); });
+        pager.appendChild(b);
+      }
+      chips.forEach((ch) => ch.setAttribute('aria-pressed', String(ch.dataset.chip === 'all' ? cats.length === 0 : cats.length === 1 && cats[0] === ch.dataset.chip)));
+    };
+    chips.forEach((ch) => ch.addEventListener('click', () => { boxes.forEach((b) => { b.checked = ch.dataset.chip !== 'all' && b.value === ch.dataset.chip; }); apply(); }));
+    boxes.forEach((b) => b.addEventListener('change', () => apply()));
+    root.querySelectorAll<HTMLInputElement>('[data-avail], [data-sort]').forEach((r) => r.addEventListener('change', () => apply()));
+    q.addEventListener('input', () => apply());
+    apply();
+  });
+</script>
