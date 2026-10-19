@@ -118,7 +118,7 @@ p { margin: 0; text-wrap: pretty; }
 .btn-ghost { background: transparent; color: var(--ink); border-color: var(--line); }
 .btn-ghost::after { background: var(--ink); }
 .btn-ghost:hover { color: var(--bg); border-color: var(--ink); }
-.btn-lg { min-height: 56px; padding: 0 32px; font-size: 1.02rem; }
+.btn-lg { translate: var(--mx, 0px) var(--my, 0px); min-height: 56px; padding: 0 32px; font-size: 1.02rem; }
 .btn-sm { min-height: 40px; padding: 0 16px; font-size: .9rem; }
 .btn .arrow { transition: transform .35s var(--ease); }
 .btn:hover .arrow { transform: translateX(4px); }
@@ -188,6 +188,7 @@ details.faq .a { padding: 0 52px 24px 0; color: var(--ink-2); max-width: 70ch; }
 /* Reveal on scroll (no library) */
 .js .reveal { opacity: 0; transform: translateY(18px); transition: opacity .9s var(--ease), transform .9s var(--ease); transition-delay: var(--d, 0s); }
 .js .reveal.in { opacity: 1; transform: none; }
+.sl { padding-bottom: .08em; margin-bottom: -.08em; }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation-duration: .01ms !important; transition-duration: .01ms !important; scroll-behavior: auto !important; }
   .js .reveal { opacity: 1; transform: none; }

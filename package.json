@@ -14,6 +14,7 @@
     "@fontsource-variable/instrument-sans": "5.2.6",
     "@fontsource/ibm-plex-mono": "5.2.6",
     "@fontsource/instrument-serif": "5.2.6",
-    "astro": "5.18.2"
+    "astro": "5.18.2",
+    "gsap": "^3.13.0"
   }
 }

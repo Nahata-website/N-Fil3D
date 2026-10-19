@@ -7,7 +7,8 @@ The new nfil3d.com: a fast static site built with [Astro](https://astro.build). 
 - Structured data: Organization, WebSite and SearchAction, Product (with brand, offer and free shipping), BreadcrumbList, FAQPage, HowTo, BlogPosting, CollectionPage
 - `sitemap-index.xml`, `robots.txt` (AI crawlers allowed) and `llms.txt`
 - Light/dark theme: follows the system setting, has a toggle, and doesn't flash on load
-- Interactions in plain CSS and a little JavaScript, with no animation library: scroll reveals, filament finder, bestseller tabs, colour wall, image zoom, live product search, filters and sort
+- Motion with GSAP (`src/scripts/motion.ts`): split-text headings, hero intro with diameter count-up, scroll reveals, colour wall, parallax, magnetic buttons. Turns off for "reduce motion" users.
+- Interactions: filament finder, bestseller tabs, image zoom, live product search, filters and sort
 
 ## Run it locally
 
