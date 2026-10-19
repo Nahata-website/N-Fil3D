@@ -540,14 +540,14 @@ const printerNotes: Record<string, string> = { 'Mini-N': 'Compact. For desks, ho
   .s2-trust li { display: flex; align-items: center; gap: 12px; padding: 0 28px; }
   .s2-trust li + li { border-left: 1px solid var(--line); }
   .s2-trust svg { color: var(--ink); flex: none; }
-  .s2-stage { width: 100%; max-width: 1240px; aspect-ratio: 1320 / 470; margin-top: 2px; }
+  .s2-stage { width: 100%; max-width: 1240px; aspect-ratio: 1320 / 480; margin-top: 2px; container-type: inline-size; }
   .arc { position: absolute; left: 4%; right: 4%; bottom: 7%; height: 86%; border-radius: 50% 50% 0 0 / 100% 100% 0 0;
     background: radial-gradient(70% 90% at 50% 100%, #FFC21F 0%, #FFCF3F 50%, #FFDF7A 85%, #FFEBB0 100%);
     box-shadow: 0 -10px 70px 24px rgba(255,214,90,.35); }
-  .podium { position: absolute; left: 6%; right: 6%; bottom: 0; height: 13%; border-radius: 0 0 50% 50% / 0 0 40% 40%;
+  .podium { position: absolute; left: 5%; right: 5%; bottom: 0; height: 7%; border-radius: 0 0 50% 50% / 0 0 40% 40%;
     background: linear-gradient(180deg, #F8E9C8 0%, #EBD3A3 100%); box-shadow: 0 30px 50px -26px rgba(120,80,0,.45); z-index: 1; }
   .podium::before { content: ''; position: absolute; left: 0; right: 0; top: -18px; height: 36px; border-radius: 50%; background: linear-gradient(180deg, #FFFFFF, #FFF6E2); box-shadow: inset 0 -2px 0 rgba(200,150,60,.18); }
-  .s-pr { position: absolute; bottom: 11%; display: block; translate: -50% 0; text-decoration: none; color: #111110; z-index: 2; }
+  .s-pr { position: absolute; bottom: 15.5%; display: block; translate: -50% 0; text-decoration: none; color: #111110; z-index: 2; }
   .s-pr img { display: block; height: 100%; width: auto; filter: drop-shadow(0 18px 14px rgba(70,45,0,.25)); transition: transform .5s var(--ease); }
   .s-pr:hover img { transform: translateY(-6px); }
   .pr-c  { height: 76%; left: 50%; z-index: 7; }
@@ -557,7 +557,12 @@ const printerNotes: Record<string, string> = { 'Mini-N': 'Compact. For desks, ho
   .pr-r2 { height: 52%; left: 77%; z-index: 4; }
   .pr-l3 { height: 46%; left: 9.5%; z-index: 3; }
   .pr-r3 { height: 44%; left: 90.5%; z-index: 3; }
-  .s-pr .spool-tag { position: absolute; left: 50%; right: auto; bottom: auto; top: calc(100% + 14px); translate: -50% 0; white-space: nowrap; background: #fff; border-color: rgba(120,80,0,.12); box-shadow: 0 6px 16px -10px rgba(70,45,0,.4); padding: 7px 18px; font-size: .82rem; }
+  .s-pr::before { content: ''; position: absolute; left: 50%; translate: -50% 0; top: calc(100% - 1.3cqw); width: 13.4cqw; height: 5.4cqw; z-index: -1; border-radius: 50% / 1.3cqw;
+    background: radial-gradient(ellipse 50% 1.3cqw at 50% 1.3cqw, #FFFEF8 0 96%, transparent 100%), linear-gradient(180deg, #FBF1DA 0%, #EED7AA 100%);
+    box-shadow: inset 0 -0.4cqw 0.8cqw rgba(160,110,30,.12), 0 1.4cqw 2.4cqw -1.2cqw rgba(110,70,0,.45); }
+  .pr-c::before { width: 16cqw; height: 6.2cqw; }
+  :global([data-theme='dark']) .s-pr::before { background: radial-gradient(ellipse 50% 1.3cqw at 50% 1.3cqw, #3A3833 0 96%, transparent 100%), linear-gradient(180deg, #2D2B27, #1E1D1A); }
+  .s-pr .spool-tag { position: absolute; left: 50%; right: auto; bottom: auto; top: calc(100% + 1.5cqw); translate: -50% 0; white-space: nowrap; background: #fff; border-color: rgba(120,80,0,.12); box-shadow: 0 6px 16px -10px rgba(70,45,0,.4); padding: 7px 18px; font-size: .82rem; }
   :global([data-theme='dark']) .podium { background: linear-gradient(180deg, #2B2A27, #1E1D1B); box-shadow: inset 0 1px 0 rgba(255,255,255,.08); }
   :global([data-theme='dark']) .podium::before { background: radial-gradient(closest-side, #34322E, #262522); }
 
@@ -602,6 +607,7 @@ const printerNotes: Record<string, string> = { 'Mini-N': 'Compact. For desks, ho
     .s2-stage { aspect-ratio: 1 / 1.05; }
     .arc { height: 100%; bottom: 0; left: 0; right: 0; }
     .podium { display: none; }
+    .s-pr::before { display: none; }
     .s-pr { bottom: 4%; }
     .s-pr .spool-tag { top: auto; bottom: -10px; }
     .s2-trust { font-size: .8rem; } .s2-trust li { padding: 0 10px; gap: 8px; } .s2-trust li + li { border-left: 0; } .s2-trust svg { width: 22px; height: 22px; }
