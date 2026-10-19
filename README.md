@@ -30,6 +30,14 @@ npm run build
 
 Run this whenever prices, stock or products change in WordPress, then deploy again. SEO titles and descriptions live in `src/data/seo.json` and survive every sync.
 
+## Forms
+
+All forms (contact, bulk quote, newsletter, Big Qube waitlist) send through Web3Forms when `formKey` in `src/config/site.ts` is set (free key at web3forms.com). Without a key they open the visitor's email app addressed to `SITE.email`.
+
+## Images
+
+Product and blog images are served from WordPress. `mediaUrl` in `src/config/site.ts` controls the host: set it to `https://shop.nfil3d.com` when WordPress moves.
+
 ## Settings to check before launch
 
 All in `src/config/site.ts`:

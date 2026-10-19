@@ -21,7 +21,8 @@ const ld = { '@context': 'https://schema.org', '@type': 'CollectionPage', name: 
   mainEntity: { '@type': 'ItemList', numberOfItems: items.length, itemListElement: items.slice(0, 30).map((p, i) => ({ '@type': 'ListItem', position: i + 1, url: new URL(p.path, SITE.url).href, name: p.name })) } };
 ---
 <Base title={title} description={description} jsonld={ld} noindex={DUPLICATE_CATS.has(c.slug)}>
-  <section class="wrap" style="padding-top:20px">
+  <section class="catband">
+   <div class="wrap" style="padding-top:20px">
     <Breadcrumbs items={crumbs} />
     <div class="head">
       <div class="stack gap-16">
@@ -35,13 +36,18 @@ const ld = { '@context': 'https://schema.org', '@type': 'CollectionPage', name: 
         {subs.map((s) => <a class="chip sub" href={s.path}>{s.name} <span class="muted">{s.count}</span></a>)}
       </nav>
     )}
+   </div>
   </section>
   <section class="wrap section-sm" style="padding-top:24px">
     <Catalogue items={items} />
   </section>
 </Base>
 <style>
-  .head { padding: 32px 0 24px; max-width: 760px; }
+  .catband { background: var(--surface-2); padding-bottom: 20px; margin-bottom: 8px; }
+  .head { padding: 28px 0 20px; max-width: 760px; }
+  .head h1 { font-size: clamp(2.4rem, 5vw, 4.4rem); line-height: .98; }
+  .head .eyebrow { color: #C99A00; }
+  .sub { background: var(--surface); }
   .subs { margin-bottom: 8px; }
   .sub { display: inline-flex; align-items: center; gap: 8px; text-decoration: none; }
 </style>

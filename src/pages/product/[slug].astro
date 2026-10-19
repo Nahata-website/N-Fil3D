@@ -48,6 +48,7 @@ const ld = {
     shippingDetails: { '@type': 'OfferShippingDetails', shippingRate: { '@type': 'MonetaryAmount', value: 0, currency: 'INR' }, shippingDestination: { '@type': 'DefinedRegion', addressCountry: 'IN' } },
   },
 };
+import CtaBand from '../../components/CtaBand.astro';
 ---
 <Base title={title} description={desc} image={p.images[0]?.src} type="product" jsonld={ld}>
   <div class="wrap" style="padding-top:20px"><Breadcrumbs items={crumbs} /></div>
@@ -153,6 +154,7 @@ const ld = {
       <a class="btn btn-accent grow" href={cartUrl(p.id)} rel="nofollow">Add to cart</a>
     </div>
   )}
+  <CtaBand title="Questions before you buy?" text="Our team replies on phone, email and WhatsApp." href="/contact/" label="Talk to our team" />
 </Base>
 
 <style>

@@ -7,6 +7,10 @@ export const SITE = {
   // Where WooCommerce (cart, checkout, account) lives. If the new site replaces
   // nfil3d.com, move WordPress to a subdomain such as https://shop.nfil3d.com and set it here.
   storeUrl: 'https://nfil3d.com',
+  // Where WordPress product/blog images are served from. Set to 'https://shop.nfil3d.com' when WordPress moves.
+  mediaUrl: 'https://nfil3d.com',
+  // Web3Forms access key (free at web3forms.com). Empty = forms open the visitor's email app instead.
+  formKey: '',
   phone: '+91-80 80 80 1204',
   phoneHref: 'tel:+918080801204',
   whatsapp: 'https://wa.me/918080801204',

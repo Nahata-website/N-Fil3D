@@ -3,9 +3,11 @@ import Base from '../layouts/Base.astro';
 import PageHead from '../components/PageHead.astro';
 import Faq from '../components/Faq.astro';
 import { SITE, storePath } from '../config/site';
+import CtaBand from '../components/CtaBand.astro';
+import { pimg } from '../lib/data';
 ---
 <Base title="NFIL3D Support: 3D Printer & Filament Help" description="Setup guides, troubleshooting and warranty help for NFIL3D 3D printers and filament. Call, email or WhatsApp us, Monday to Saturday, 9 am to 5:30 pm.">
-  <PageHead crumb="Support" eyebrow="Support" title='NFIL3D Support: help with your <span class="serif">printer and filament.</span>' lead={`Talk to a person, ${SITE.hours}.`} />
+  <PageHead image={pimg('n2-3d-printer', 2)?.src} imageAlt="NFIL3D 3D printer" crumb="Support" eyebrow="Support" title='NFIL3D Support: help with your <span class="serif">printer and filament.</span>' lead={`Talk to a person, ${SITE.hours}.`} />
   <section class="wrap section-sm grid cols-3">
     <a class="card tile reveal" href={SITE.whatsapp}><span class="eyebrow">Fastest</span><h2 class="h-3">WhatsApp</h2><p class="muted">Send photos of the issue and get help in chat.</p></a>
     <a class="card tile reveal" style="--d:.05s" href={SITE.phoneHref}><span class="eyebrow">Call</span><h2 class="h-3">{SITE.phone}</h2><p class="muted">{SITE.hours}</p></a>
@@ -27,6 +29,7 @@ import { SITE, storePath } from '../config/site';
       ['Stringing, bubbles or popping sounds', 'These usually mean the filament has absorbed moisture. Dry it, then store it sealed with the desiccant.'],
     ]} />
   </section>
+  <CtaBand title="Still stuck?" text="Our team can talk you through it on the phone or WhatsApp." href="/contact/" label="Contact our team" />
 </Base>
 <style>
   .tile { padding: 28px; display: flex; flex-direction: column; gap: 8px; text-decoration: none; transition: transform .4s var(--ease), border-color .3s; }

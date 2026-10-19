@@ -416,7 +416,7 @@ const printerNotes: Record<string, string> = { 'Mini-N': 'Compact. For desks, ho
   .hero-in { display: grid; grid-template-columns: 1fr 1.05fr; gap: clamp(28px, 4vw, 64px); align-items: center; }
   @media (max-width: 900px) { .hero-in { grid-template-columns: 1fr; } }
   .hero-copy strong { color: var(--ink); font-weight: 600; }
-  .vid { position: relative; overflow: hidden; }
+  .vid { position: relative; overflow: clip; }
   .vid-band { position: absolute; top: -10%; bottom: -10%; right: -6%; width: 34%; background: var(--sun); transform: skewX(-24deg); transform-origin: top; }
   .vid-in { position: relative; display: grid; grid-template-columns: .9fr 1.2fr; gap: clamp(28px, 5vw, 72px); align-items: center; }
   @media (max-width: 900px) { .vid-in { grid-template-columns: 1fr; } .vid-band { width: 60%; right: -30%; } }

@@ -2,9 +2,10 @@
 import Base from '../layouts/Base.astro';
 import PageHead from '../components/PageHead.astro';
 import { SITE } from '../config/site';
+import CtaBand from '../components/CtaBand.astro';
 ---
 <Base title="Contact NFIL3D: Sales & 3D Printing Support" description="Contact NFIL3D for orders, bulk filament pricing and 3D printer support. Call +91-80 80 80 1204 or email sales@nfil3d.com, Monday to Saturday.">
-  <PageHead crumb="Contact" eyebrow="Contact" title='Talk to <span class="serif">a person.</span>' lead={`Orders, bulk pricing or printer help: we reply ${SITE.hours}.`} />
+  <PageHead image="/images/story/team.webp" imageAlt="NFIL3D team" crumb="Contact" eyebrow="Contact" title='Talk to <span class="serif">a person.</span>' lead={`Orders, bulk pricing or printer help: we reply ${SITE.hours}.`} />
   <section class="wrap section-sm two">
     <div class="stack gap-12">
       <a class="card line" href={SITE.phoneHref}><span class="mono muted">Phone</span><strong>{SITE.phone}</strong></a>
@@ -23,6 +24,7 @@ import { SITE } from '../config/site';
       <button class="btn btn-accent btn-lg" type="submit">Send message</button>
     </form>
   </section>
+  <CtaBand title="Talk to our team." text="Have a question about an order or a print? We are here to help." href="/support/" label="Get printing support" />
 </Base>
 <style>
   .two { display: grid; grid-template-columns: 1fr 1.3fr; gap: 40px; align-items: start; }

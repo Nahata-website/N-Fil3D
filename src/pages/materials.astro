@@ -5,9 +5,10 @@ import Finder from '../components/Finder.astro';
 import Faq from '../components/Faq.astro';
 import { MATERIALS } from '../data/content';
 const dots = (n: number) => Array.from({ length: 5 }, (_, i) => i < n);
+import CtaBand from '../components/CtaBand.astro';
 ---
 <Base title="PLA vs PETG vs ABS: Compare 3D Printer Filaments | NFIL3D" description="Compare PLA+, PETG, HI ABS+, ASA, nylon and carbon fibre filament on ease of printing, strength and heat resistance, and pick the right one for your project.">
-  <PageHead crumb="Compare materials" eyebrow="Materials" title='PLA, PETG or ABS? <span class="serif">Compare.</span>' lead="Every NFIL3D filament on the three things that decide most prints: how easy it is, how strong it is, and how much heat it takes." />
+  <PageHead image="/images/finder/mat-pla.webp" imageAlt="Spools of colourful 3D printer filament" crumb="Compare materials" eyebrow="Materials" title='PLA, PETG or ABS? <span class="serif">Compare.</span>' lead="Every NFIL3D filament on the three things that decide most prints: how easy it is, how strong it is, and how much heat it takes." />
   <section class="wrap section-sm">
     <div class="card reveal tbl">
       <table>
@@ -37,6 +38,7 @@ const dots = (n: number) => Array.from({ length: 5 }, (_, i) => i < n);
       ['Do I need a special nozzle for carbon fibre?', 'Yes. Carbon fibre wears brass nozzles quickly, so use a hardened steel nozzle.'],
     ]} />
   </section>
+  <CtaBand title="Not sure which material?" text="Use the Filament Finder or ask our team." href="/#finder" label="Open the Filament Finder" />
 </Base>
 <style>
   .tbl { overflow-x: auto; }

@@ -1,6 +1,9 @@
 import productsRaw from '../data/products.json';
 import categoriesRaw from '../data/categories.json';
 import postsRaw from '../data/posts.json';
+import { SITE as _SITE } from '../config/site';
+/** Rewrites WordPress media URLs to SITE.mediaUrl, so images keep working when WordPress moves. */
+const media = <T,>(v: T): T => JSON.parse(JSON.stringify(v).split('https://nfil3d.com/wp-content/').join(`${_SITE.mediaUrl}/wp-content/`).split('https://www.nfil3d.com/wp-content/').join(`${_SITE.mediaUrl}/wp-content/`));
 
 export type Img = { src: string; srcset?: string; sizes?: string; alt: string };
 export type Product = {
@@ -24,9 +27,9 @@ const tidy = (h: string) => h
   .replace(/https?:\/\/(www\.)?[a-z0-9-]+\.hostingersite\.com/gi, 'https://nfil3d.com')
   .replace(/<h2>\s*(<strong>)?\s*About this item\s*(<\/strong>)?\s*<\/h2>/gi, '')
   .replace(/<p>\s*<\/p>/g, '').trim();
-export const products = (productsRaw as Product[]).map((p) => ({ ...p, slug: decodeURIComponent(p.slug), path: decodeURI(p.path), short: tidy(p.short), description: tidy(p.description) }));
+export const products = media(productsRaw as Product[]).map((p) => ({ ...p, slug: decodeURIComponent(p.slug), path: decodeURI(p.path), short: tidy(p.short), description: tidy(p.description) }));
 export const categories = categoriesRaw as Category[];
-export const posts = (postsRaw as Post[]).map((p) => ({ ...p, slug: decodeURIComponent(p.slug), path: decodeURI(p.path) })).sort((a, b) => b.date.localeCompare(a.date));
+export const posts = media(postsRaw as Post[]).map((p) => ({ ...p, slug: decodeURIComponent(p.slug), path: decodeURI(p.path) })).sort((a, b) => b.date.localeCompare(a.date));
 
 // Categories that only duplicate others; kept reachable but not promoted.
 export const DUPLICATE_CATS = new Set(['best-seller', 'best-seller-of-3d-pen', 'best-seller-of-3d-pen-filament',
