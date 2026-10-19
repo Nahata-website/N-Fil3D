@@ -137,11 +137,12 @@ const ld = { '@context': 'https://schema.org', '@type': 'CollectionPage', name: 
 <style>
   .ph { overflow: hidden; }
   .ph-in { display: grid; grid-template-columns: 1fr 1.1fr; gap: 32px; align-items: center; padding-block: clamp(20px, 3vw, 40px) clamp(24px, 4vw, 48px); }
-  .ph h1 { font-size: clamp(2.8rem, 5.6vw, 5.2rem); line-height: .96; }
+  .ph h1 { font-size: clamp(2.8rem, 5vw, 4.8rem); line-height: .96; }
+  .ph-copy { position: relative; z-index: 2; }
   .ph .lead { margin: 0; }
   .dark { --b: #111110; color: #fff; }
   .ph-art { position: relative; aspect-ratio: 6 / 5; }
-  .ph-shape { position: absolute; inset: 2% -30% 6% 8%; background: #FFE98A; clip-path: polygon(18% 0, 100% 0, 100% 100%, 0 100%); border-radius: 24px; }
+  .ph-shape { position: absolute; inset: 0 -30% 4% 0; background: #FFE98A; border-radius: 52% 0 0 48% / 60% 0 0 40%; }
   .ph-pens { position: absolute; height: 74%; width: auto; left: 34%; top: 6%; rotate: -8deg; filter: drop-shadow(0 18px 18px rgba(0,0,0,.2)); z-index: 3; }
   .ph-pens.p2 { left: 48%; top: 4%; rotate: 4deg; z-index: 2; }
   .ph-pens.p3 { left: 62%; top: 10%; rotate: 14deg; z-index: 1; }

@@ -20,7 +20,6 @@ const rows: [string, string[]][] = [
   ['Filament size', ['1.75 mm', '1.75 mm', '1.75 mm']],
   ['Parts warranty', ['1 year on parts', '1 year on parts', '1 year on parts']],
 ];
-const hero = pimg('n2-3d-printer', 0);
 ---
 <Base title="Compare 3D Printers: Mini-N, N1 & N2 | NFIL3D" description="Compare NFIL3D FDM printers (Mini-N, N1, N2), Halot resin printers and the UW-02 wash and cure station. 1-year warranty on parts, free shipping in India.">
   <section class="prh">
@@ -33,8 +32,7 @@ const hero = pimg('n2-3d-printer', 0);
         <div class="row gap-12"><a class="btn btn-lg dark" href="#fdm">Explore printers <span class="arrow" aria-hidden="true">→</span></a><a class="btn btn-lg btn-ghost" href="#fit">Compare models</a></div>
       </div>
       <div class="prh-art reveal">
-        <span class="prh-bg" aria-hidden="true"></span>
-        {hero && <img src={hero.src} srcset={hero.srcset} sizes="(max-width: 760px) 80vw, 520px" alt="NFIL3D N2 3D printer" width="800" height="800" fetchpriority="high">}
+        <img src="/images/printers-lineup.webp" width="1857" height="847" alt="NFIL3D Mini-N, N1 and N2 3D printers side by side" fetchpriority="high">
       </div>
     </div>
   </section>
@@ -79,7 +77,7 @@ const hero = pimg('n2-3d-printer', 0);
     <div class="rgrid">
       {resin.map((r, i) => (
         <a class="rcard reveal" href={r.p.path} style={`--d:${i * 0.06}s`}>
-          <span class="rimg">{r.p.images[0] && <img src={r.p.images[0].src} srcset={r.p.images[0].srcset} sizes="(max-width: 760px) 45vw, 280px" alt={r.name} width="600" height="600" loading="lazy">}{!r.p.inStock && <span class="oos">Out of stock</span>}</span>
+          <span class="rimg">{(r.p.slug === 'halot-one' ? r.p.images[1] : r.p.images[0]) && <img src={(r.p.slug === 'halot-one' ? r.p.images[1] : r.p.images[0])!.src} srcset={(r.p.slug === 'halot-one' ? r.p.images[1] : r.p.images[0])!.srcset} sizes="(max-width: 760px) 45vw, 280px" alt={r.name} width="600" height="600" loading="lazy">}{!r.p.inStock && <span class="oos">Out of stock</span>}</span>
           <span class="rname">{r.name}</span>
           <strong>{inr(r.p.price)}</strong>
           <span class="link small">View details <span aria-hidden="true">→</span></span>
@@ -90,7 +88,7 @@ const hero = pimg('n2-3d-printer', 0);
 
   <section class="wrap section-sm">
     <a class="learn reveal" href="/get-started/">
-      <img src={pimg('mini-n-3d-printer', 4)?.src} alt="NFIL3D printer printing a vase" width="800" height="800" loading="lazy">
+      <img src={pimg('n2-3d-printer', 2)?.src} alt="NFIL3D N2 3D printer in a workshop" width="800" height="800" loading="lazy">
       <div class="stack gap-12"><h2 class="h-1">New to 3D printing?</h2><p class="muted">Start with clear guides and practical support.</p><span class="link">Visit the learning hub <span aria-hidden="true">→</span></span></div>
     </a>
   </section>
@@ -112,9 +110,10 @@ const hero = pimg('n2-3d-printer', 0);
   .prh h1 { font-size: clamp(2.8rem, 5.6vw, 5.2rem); line-height: .96; }
   .prh .lead { margin: 0; }
   .dark { --b: #111110; color: #fff; }
-  .prh-art { position: relative; aspect-ratio: 1; display: grid; place-items: center; }
+  .prh-in { grid-template-columns: .9fr 1.25fr !important; }
+  .prh-art { position: relative; }
   .prh-bg { position: absolute; inset: 4% -40% 4% 6%; border-radius: 28px; background: linear-gradient(135deg, #FFF3C4, #FFD95A); }
-  .prh-art img { position: relative; width: 82%; height: auto; mix-blend-mode: multiply; filter: drop-shadow(0 30px 30px rgba(0,0,0,.18)); }
+  .prh-art img { display: block; width: 100%; height: auto; border-radius: var(--radius-lg); box-shadow: 0 30px 60px -34px rgba(0,0,0,.35); }
   .ptabs { display: flex; justify-content: center; gap: clamp(16px, 4vw, 48px); padding-block: 8px 0; border-bottom: 1px solid var(--line); }
   .ptabs a { padding: 12px 4px; text-decoration: none; font-weight: 550; color: var(--muted); border-bottom: 3px solid transparent; }
   .ptabs a:hover, .ptabs a[aria-current] { color: var(--ink); border-color: var(--sun); }
@@ -161,7 +160,7 @@ const hero = pimg('n2-3d-printer', 0);
   .learn .h-1 { margin: 0; font-size: clamp(1.8rem, 3vw, 2.6rem); }
   .learn p { margin: 0; }
   .learn > div { padding: 24px; }
-  @media (max-width: 960px) { .prh-in, .learn { grid-template-columns: 1fr; } .fgrid { grid-template-columns: 1fr; } .rgrid { grid-template-columns: repeat(2, 1fr); } .prh-bg { inset: 4% -10% 4% 0; } }
+  @media (max-width: 960px) { .prh-in, .learn { grid-template-columns: 1fr !important; } .fgrid { grid-template-columns: 1fr; } .rgrid { grid-template-columns: repeat(2, 1fr); } }
 </style>
 <script>
   const table = document.querySelector('[data-table]');

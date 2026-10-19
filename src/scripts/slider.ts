@@ -173,6 +173,9 @@ if (root && ui) {
   }
 
   dots.forEach((d, k) => d.addEventListener('click', () => go(k)));
+  const heroEl = root.closest('.hero') || document;
+  heroEl.querySelector('[data-prev]')?.addEventListener('click', () => go((current + slides.length - 1) % slides.length));
+  heroEl.querySelector('[data-next]')?.addEventListener('click', () => go((current + 1) % slides.length));
   pauseBtn?.addEventListener('click', () => {
     paused = !paused;
     pauseBtn.setAttribute('aria-pressed', String(paused));
