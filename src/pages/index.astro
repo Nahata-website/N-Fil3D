@@ -45,8 +45,9 @@ const heroSpools = ['premium-pla-tangy-orange-1-75mm', 'premium-pla-emerald-gree
 const bySlugAny = (slug: string) => products.find((p) => p.slug === slug && p.images.length > 0);
 // Slide 2: printers only (outer → inner), N2 in the centre
 const s2Printers = [
-  ['halot-one', 'pr-1', 'Halot One'], ['mini-n-3d-printer', 'pr-2', 'Mini-N'], ['n2-3d-printer', 'pr-c', 'N2'],
-  ['n1-3d-printer', 'pr-3', 'N1'], ['halot-max', 'pr-4', 'Halot Max'], ['all-in-one-washing-and-curing-station-uw-02', 'pr-5', 'UW-02'],
+  ['halot-sky', 'pr-l3', 'Halot Sky'], ['halot-one', 'pr-l2', 'Halot One'], ['mini-n-3d-printer', 'pr-l1', 'Mini-N'],
+  ['n2-3d-printer', 'pr-c', 'N2'],
+  ['n1-3d-printer', 'pr-r1', 'N1'], ['halot-max', 'pr-r2', 'Halot Max'], ['all-in-one-washing-and-curing-station-uw-02', 'pr-r3', 'UW-02'],
 ].map(([slug, cls, label]) => ({ p: bySlugAny(slug), cls, label })).filter((x) => x.p);
 const s3Spools = ['premium-pla-fluoro-green-1-75mm', 'premium-pla-daffodil-yellow-1-75mm-2', 'premium-pla-deep-blue-1-75mm', 'premium-pla-tangy-orange-1-75mm'].map(bySlugAny).filter((p): p is (typeof products)[number] => !!p);
 const flags = [0, 1, 2, 3, 4, 5, 6, 7].map((k) => { const x = 30 + k * 72; const y = 10 + Math.sin((x / 600) * Math.PI) * 30; return { pts: `${x - 22},${y} ${x + 22},${y + 2} ${x},${y + 46}`, fill: k % 2 ? '#FFC21A' : '#FF7A1A' }; });
@@ -197,18 +198,11 @@ const printerNotes: Record<string, string> = { 'Mini-N': 'Compact. For desks, ho
           <p class="lead s-sub diwali-sub">Light up your creativity. Printers, filament and 3D pens for the festive season.</p>
           <div class="row gap-12 s-cta"><a class="btn btn-accent btn-lg cta-gold" href="/shop/">Shop the sale <span class="arrow" aria-hidden="true">→</span></a></div>
         </div>
-        <div class="s5-stage s-stage">
-          <div class="arch s-shape" aria-hidden="true"></div>
-          <div class="bokeh" aria-hidden="true">{dots14.map((i) => <i style={`--i:${i}`}></i>)}</div>
-          <div class="podium p1 s-shape" aria-hidden="true"></div>
-          <div class="podium p2 s-shape" aria-hidden="true"></div>
-          <div class="podium p3 s-shape" aria-hidden="true"></div>
-          <a href="/printers/" aria-label="3D printers"><img class="s-obj d-printer" src="/images/fest/d-printer.webp" width="470" height="700" alt="NFIL3D N2 3D printer" loading="lazy" decoding="async"></a>
-          <a href="/product-category/3d-printer-filaments/" aria-label="Filament"><img class="s-obj d-spool s-spool" src="/images/fest/d-spool.webp" width="305" height="295" alt="NFIL3D filament spool" loading="lazy" decoding="async"></a>
-          <a href="/product-category/3d-pen/" aria-label="3D pens"><img class="s-obj d-pens" src="/images/fest/d-pens.webp" width="168" height="316" alt="NFIL3D 3D pens" loading="lazy" decoding="async"></a>
-          <img class="s-obj d-diya float" src="/images/fest/d-diya.webp" width="206" height="172" alt="" loading="lazy" decoding="async">
-        </div>
       </div>
+      <picture class="s5-bg">
+        <source media="(max-width: 900px)" srcset="/images/fest/diwali-bg-m.webp" width="960" height="780">
+        <img src="/images/fest/diwali-bg.webp" width="1920" height="1080" alt="NFIL3D N2 3D printer, orange filament spool and 3D pens on a festive Diwali stage with diya and marigolds" loading="lazy" decoding="async">
+      </picture>
     </div>
 
     <div class="slide s6" data-slide="5" data-until="2026-10-23" aria-roledescription="slide" aria-hidden="true" inert>
@@ -463,7 +457,19 @@ const printerNotes: Record<string, string> = { 'Mini-N': 'Compact. For desks, ho
   @media (max-width: 760px) { .vid-play { width: 64px; height: 64px; margin: -32px 0 0 -32px; } }
   .vid-fig figcaption { font-size: .78rem; letter-spacing: .14em; }
   /* Festive & kids banners */
-  .s5-stage, .s6-stage, .s7-stage { aspect-ratio: 5 / 4; }
+  .s6-stage, .s7-stage { aspect-ratio: 5 / 4; }
+  .s5 { position: relative; }
+  .s5 > .wrap { position: relative; z-index: 1; }
+  @media (min-width: 901px) { .s5 .s-split { grid-template-columns: 1fr 1.25fr; } }
+  .s5-bg { position: absolute; top: 0; bottom: 0; right: 0; width: 72%; z-index: 0; overflow: hidden; border-radius: 0 0 0 0; -webkit-mask-image: linear-gradient(90deg, transparent 0%, #000 22%); mask-image: linear-gradient(90deg, transparent 0%, #000 22%); }
+  .s5-bg img { width: 100%; height: 100%; object-fit: cover; object-position: 60% 62%; }
+  .s5 .fest-eyebrow, .s5 .diwali-sub { color: #2A1E0C; }
+  @media (max-width: 900px) {
+    .s5 { flex-direction: column; }
+    .s5 .s-split { min-height: 0; }
+    .s5-bg { position: relative; inset: auto; width: 100%; aspect-ratio: 960 / 780; margin-top: 18px; -webkit-mask-image: none; mask-image: none; }
+    .s5-bg img { object-position: center; }
+  }
   .s-obj { position: absolute; display: block; height: auto; filter: drop-shadow(0 22px 22px rgba(17,17,16,.22)); }
   .s5 .diwali-title { font-family: var(--serif); font-style: normal; font-size: clamp(4.2rem, 8.4vw, 8rem); line-height: .86; letter-spacing: -0.02em; margin: 0; }
   .diwali-title :global(.sw) { background: linear-gradient(170deg, #F6D27A 0%, #C8891E 38%, #8E5410 62%, #E8B44A 100%); -webkit-background-clip: text; background-clip: text; color: transparent; padding-right: .04em; }
@@ -471,16 +477,6 @@ const printerNotes: Record<string, string> = { 'Mini-N': 'Compact. For desks, ho
   .lotus { width: 200px; height: auto; }
   .cta-gold { --b: transparent; background: linear-gradient(120deg, #F6D27A, #C8891E 60%, #A8670F); border-color: transparent; color: #1A1206 !important; }
   .cta-gold::after { background: rgba(0,0,0,.12); }
-  .arch { position: absolute; width: 74%; aspect-ratio: 1; left: 20%; top: -2%; border-radius: 50%; background: radial-gradient(circle at 45% 40%, #FBE3A0 0%, #E7B54C 55%, #C98C22 100%); box-shadow: 0 0 0 6px rgba(231,181,76,.35), 0 40px 80px -30px rgba(201,140,34,.6); }
-  .bokeh { position: absolute; inset: 0 -4% 10% 70%; pointer-events: none; }
-  .bokeh i { position: absolute; width: 14px; height: 14px; border-radius: 50%; background: radial-gradient(circle, #FFF2C2, rgba(255,210,110,.0) 70%); left: calc(var(--i) * 37% % 100%); top: calc(var(--i) * 13% % 100%); animation: twinkle 2.6s ease-in-out calc(var(--i) * -.37s) infinite; }
-  @keyframes twinkle { 0%,100% { opacity: .25; transform: scale(.7); } 50% { opacity: 1; transform: scale(1.4); } }
-  .podium { position: absolute; border-radius: 50%; background: linear-gradient(180deg, #FBF5EA, #E9DDC6); box-shadow: 0 18px 30px -18px rgba(120,80,20,.45), inset 0 3px 0 rgba(255,255,255,.8); }
-  .p1 { width: 30%; height: 9%; left: 10%; bottom: 8%; } .p2 { width: 46%; height: 11%; left: 34%; bottom: 6%; } .p3 { width: 22%; height: 8%; right: -2%; bottom: 8%; }
-  .d-printer { width: 36%; left: 40%; bottom: 11%; z-index: 3; }
-  .d-spool { width: 24%; left: 14%; bottom: 12%; z-index: 4; }
-  .d-pens { width: 11%; right: 3%; bottom: 12%; z-index: 4; }
-  .d-diya { width: 16%; left: -2%; bottom: -2%; z-index: 5; }
 
   .s6 .kid-title, .s7 .kid-title { font-family: var(--sans); font-weight: 700; font-size: clamp(2.8rem, 5.6vw, 5.2rem); line-height: .98; letter-spacing: -0.035em; color: var(--navy); margin: 0; }
   .kid-title .t-orange { color: #F27A12; } .kid-title .t-teal { color: #13B3A6; }
@@ -511,7 +507,7 @@ const printerNotes: Record<string, string> = { 'Mini-N': 'Compact. For desks, ho
   .k-dino { width: 24%; right: 4%; bottom: 20%; z-index: 5; }
   .k-fly { width: 20%; right: 10%; top: 0; z-index: 5; }
   .k-star { width: 11%; right: -1%; top: 24%; z-index: 5; }
-  @media (max-width: 900px) { .s5-stage, .s6-stage, .s7-stage { aspect-ratio: 1 / 1; max-width: 520px; width: 100%; justify-self: center; } }
+  @media (max-width: 900px) { .s6-stage, .s7-stage { aspect-ratio: 1 / 1; max-width: 520px; width: 100%; justify-self: center; } }
   @media (max-width: 760px) { .s5 .diwali-title { font-size: clamp(3rem, 15vw, 4.2rem); } .s6 .kid-title, .s7 .kid-title { font-size: clamp(2.2rem, 10vw, 3rem); } .bubble { display: none; } .lotus { width: 150px; } }
   /* Banner slider */
   .slides { --fil-grad: linear-gradient(125deg, #4C86FF 0%, #3CCB7F 32%, #FFD23F 62%, #FF8A3D 100%); }
@@ -541,12 +537,13 @@ const printerNotes: Record<string, string> = { 'Mini-N': 'Compact. For desks, ho
   .s2-copy .s-cta { justify-content: center; }
   .s2-stage { width: 100%; max-width: 1180px; aspect-ratio: 1320 / 340; }
   .arc { position: absolute; left: 8%; right: 8%; bottom: 0; height: 100%; background: var(--sun); border-radius: 50% 50% 0 0 / 100% 100% 0 0; }
-  .pr-c { width: 24%; left: 38%; bottom: 0; z-index: 4; }
-  .pr-2 { width: 16%; left: 23%; bottom: 4%; z-index: 3; rotate: -4deg; }
-  .pr-3 { width: 16%; right: 23%; bottom: 4%; z-index: 3; rotate: 4deg; }
-  .pr-1 { width: 13%; left: 10%; bottom: 0; z-index: 2; rotate: -7deg; }
-  .pr-4 { width: 13%; right: 10%; bottom: 0; z-index: 2; rotate: 7deg; }
-  .pr-5 { width: 11%; right: 0; bottom: 34%; z-index: 1; rotate: 10deg; }
+  .pr-c { width: 22%; left: 39%; bottom: 0; z-index: 5; }
+  .pr-l1 { width: 15%; left: 25.5%; bottom: 3%; z-index: 4; rotate: -3deg; }
+  .pr-r1 { width: 15%; right: 25.5%; bottom: 3%; z-index: 4; rotate: 3deg; }
+  .pr-l2 { width: 12.5%; left: 14.5%; bottom: 2%; z-index: 3; rotate: -6deg; }
+  .pr-r2 { width: 12.5%; right: 14.5%; bottom: 2%; z-index: 3; rotate: 6deg; }
+  .pr-l3 { width: 11%; left: 5%; bottom: 0; z-index: 2; rotate: -9deg; }
+  .pr-r3 { width: 11%; right: 5%; bottom: 0; z-index: 2; rotate: 9deg; }
   .s-pr .spool-tag { font-size: .74rem; padding: 6px 10px; }
 
   .s-split { display: grid; grid-template-columns: 1fr 1.1fr; gap: clamp(28px, 4vw, 64px); align-items: center; }
@@ -585,8 +582,10 @@ const printerNotes: Record<string, string> = { 'Mini-N': 'Compact. For desks, ho
     .slider-ui { margin-top: 18px; }
     .s2-stage { aspect-ratio: 1 / 1; margin-top: 8px; }
     .arc { left: 0; right: 0; }
-    .pr-c { width: 40%; left: 30%; } .pr-2 { width: 26%; left: 6%; bottom: 20%; } .pr-3 { width: 26%; right: 6%; bottom: 20%; }
-    .pr-1 { width: 22%; left: 0; } .pr-4 { width: 22%; right: 0; } .pr-5 { width: 20%; right: 2%; bottom: 58%; }
+    .pr-c { width: 36%; left: 32%; }
+    .pr-l1 { width: 24%; left: 10%; bottom: 22%; } .pr-r1 { width: 24%; right: 10%; bottom: 22%; }
+    .pr-l2 { width: 21%; left: 2%; bottom: 46%; } .pr-r2 { width: 21%; right: 2%; bottom: 46%; }
+    .pr-l3 { width: 20%; left: 0; bottom: 0; } .pr-r3 { width: 20%; right: 0; bottom: 0; }
     .s-pr:not(.pr-c) .spool-tag { display: none; }
     .s3-stage .spool-tag { display: none; }
     .s-cta { width: 100%; } .s-cta .btn { flex: 1 1 100%; }
