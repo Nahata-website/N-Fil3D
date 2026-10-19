@@ -168,32 +168,7 @@ const printerNotes: Record<string, string> = { 'Mini-N': 'Compact. For desks, ho
       </div>
     </div>
 
-    <div class="slide s6" data-slide="3" data-until="2026-10-23" aria-roledescription="slide" aria-hidden="true" inert>
-      <div class="wrap s-split">
-        <div class="stack gap-24">
-          <span class="eyebrow s-eyebrow kid-eyebrow"><svg class="sparks draw" viewBox="0 0 60 40" aria-hidden="true"><g fill="none" stroke-width="4" stroke-linecap="round"><path d="M10 30 L22 22" /><path d="M24 14 L28 2" /><path d="M36 22 L52 18" /></g></svg>Celebrate creativity</span>
-          <p class="s-title kid-title">Happy <span class="t-orange">Dussehra</span></p>
-          <svg class="swoosh draw s-sub" viewBox="0 0 320 24" aria-hidden="true"><path d="M6 16 C 90 2, 230 2, 314 14" fill="none" stroke="#FFC21A" stroke-width="7" stroke-linecap="round" /></svg>
-          <p class="lead s-sub kid-sub"><strong>Let imagination triumph.</strong><br>Create your own festive 3D masterpieces.</p>
-          <div class="row gap-12 s-cta"><a class="btn btn-accent btn-lg cta-yellow" href="/product-category/3d-pens-filaments/">Explore 3D pen filaments <span class="arrow" aria-hidden="true">→</span></a></div>
-        </div>
-        <div class="s6-stage s-stage">
-          <div class="sunlite s-shape" aria-hidden="true"></div>
-          <img class="bunting" src="/images/fest/bunting.webp" width="722" height="290" alt="" aria-hidden="true" loading="lazy" decoding="async">
-          <div class="bubble" aria-hidden="true">What will<br>you create?</div>
-          <svg class="tstar s-shape" viewBox="0 0 100 100" aria-hidden="true"><polygon points="50,4 62,36 96,38 69,59 79,93 50,73 21,93 31,59 4,38 38,36" fill="#2EC4C0" stroke="#1FA8A4" stroke-width="4" stroke-linejoin="round" /></svg>
-          <img class="s-obj coil-img u-coils" src="/images/fest/coils.webp" width="958" height="196" alt="Coils of NFIL3D 3D pen filament" loading="lazy" decoding="async">
-          <a href="/product-category/3d-pen/" aria-label="3D pens"><img class="s-obj u-ravan" src="/images/fest/u-ravan.webp" width="754" height="763" alt="Ravan figure made with a 3D pen" loading="lazy" decoding="async"></a>
-          <a href="/product-category/3d-pens-filaments/" aria-label="3D pen filaments"><img class="s-obj u-pouch s-spool" src="/images/fest/u-pouch.webp" width="498" height="700" alt="NFIL3D 3D pen filaments pouch" loading="lazy" decoding="async"></a>
-          <img class="s-obj u-bow float" src="/images/fest/u-bow.webp" width="371" height="395" alt="Bow and arrow made with a 3D pen" loading="lazy" decoding="async">
-          <img class="s-obj marigold mg-1" src="/images/fest/marigold.webp" width="264" height="182" alt="" aria-hidden="true" loading="lazy" decoding="async"><img class="s-obj marigold mg-2" src="/images/fest/marigold.webp" width="264" height="182" alt="" aria-hidden="true" loading="lazy" decoding="async">
-          <svg class="sparks draw sp-1" viewBox="0 0 60 40" aria-hidden="true"><g fill="none" stroke-width="4" stroke-linecap="round"><path d="M10 30 L22 22" /><path d="M24 14 L28 2" /><path d="M36 22 L52 18" /></g></svg>
-          <svg class="sparks draw sp-2" viewBox="0 0 60 40" aria-hidden="true"><g fill="none" stroke-width="4" stroke-linecap="round"><path d="M10 30 L22 22" /><path d="M24 14 L28 2" /><path d="M36 22 L52 18" /></g></svg>
-        </div>
-      </div>
-    </div>
-
-    <div class="slide s7" data-slide="4" aria-roledescription="slide" aria-hidden="true" inert>
+    <div class="slide s7" data-slide="3" aria-roledescription="slide" aria-hidden="true" inert>
       <div class="wrap s-split">
         <div class="stack gap-24">
           <span class="eyebrow s-eyebrow kid-eyebrow"><svg class="sparks draw" viewBox="0 0 60 40" aria-hidden="true"><g fill="none" stroke-width="4" stroke-linecap="round"><path d="M10 30 L22 22" /><path d="M24 14 L28 2" /><path d="M36 22 L52 18" /></g></svg>Big fun for little creators</span>
@@ -223,7 +198,7 @@ const printerNotes: Record<string, string> = { 'Mini-N': 'Compact. For desks, ho
 
     <div class="wrap slider-ui" data-slider-ui hidden>
       <div class="dots" role="tablist" aria-label="Choose slide">
-        {['Filament precision', 'Your ideas, made real', '3D pens', 'Happy Dussehra', 'Little creators'].map((label, i) => (
+        {['Filament precision', 'Your ideas, made real', '3D pens', 'Little creators'].map((label, i) => (
           <button type="button" class="dot" role="tab" aria-selected={i === 0 ? 'true' : 'false'} aria-label={label} data-go={i}><span class="dot-fill"></span></button>
         ))}
       </div>
@@ -499,7 +474,7 @@ const printerNotes: Record<string, string> = { 'Mini-N': 'Compact. For desks, ho
   .s2 .s-cta .btn-accent:hover, .s3 .s-cta .btn-accent:hover, .s4 .s-cta .btn-accent:hover { color: #111110; border-color: transparent; }
   .slides { display: grid; overflow-x: clip; position: relative; }
   .slide { grid-area: 1 / 1; display: flex; align-items: flex-start; min-width: 0; }
-  @media (min-width: 901px) { .s4 > .wrap, .s5 > .wrap { padding-top: clamp(32px, 4.5vw, 72px); } }
+  @media (min-width: 901px) { .s4 > .wrap, .s7 > .wrap { padding-top: clamp(32px, 4.5vw, 72px); } }
   .slide > .wrap { width: 100%; }
   .js .slide:not(.is-active) { visibility: hidden; opacity: 0; }
   .s-title { font-size: clamp(2.6rem, 5.4vw, 5rem); line-height: .98; letter-spacing: -0.045em; margin: 0; }
