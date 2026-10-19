@@ -5,7 +5,7 @@ const year = new Date().getFullYear();
 <footer class="ftr">
   <div class="wrap">
     <div class="ftr-top">
-      <div class="stack gap-16 brand">
+      <div class="stack gap-12 brand">
         <p class="h-2">Precision you can <span class="serif">measure.</span></p>
         <p class="muted">1.75 mm filament, 3D printers and pens for makers across India. {SITE.facts.tolerance} diameter tolerance, lifetime filament warranty.</p>
         <form class="news" action="/contact.php" method="post">
@@ -61,15 +61,19 @@ const year = new Date().getFullYear();
   </div>
 </footer>
 <style>
-  .ftr { border-top: 1px solid var(--line); margin-top: 40px; padding: 72px 0 32px; font-size: .95rem; }
+  .ftr { border-top: 1px solid var(--line); padding: 48px 0 24px; font-size: .92rem; line-height: 1.45; }
+  .ftr .h-2 { font-size: clamp(1.5rem, 2.2vw, 2rem); line-height: 1.08; margin: 0; }
+  .ftr p { margin: 0; }
+  .ftr nav.stack { gap: 6px; }
+  .ftr nav .mono { margin-bottom: 6px; }
   .ftr a { text-decoration: none; color: var(--ink-2); }
   .ftr a:hover { color: var(--accent); }
-  .ftr-top { display: grid; grid-template-columns: 2fr repeat(4, 1fr); gap: 40px; }
+  .ftr-top { display: grid; grid-template-columns: 2fr repeat(4, 1fr); gap: 32px; }
   @media (max-width: 960px) { .ftr-top { grid-template-columns: 1fr 1fr; } .brand { grid-column: 1 / -1; } }
   .brand { max-width: 460px; }
   .news { display: flex; gap: 8px; margin-top: 6px; }
   .news .input { border-radius: 999px; }
   .small { font-size: .85rem; }
-  .ftr-bot { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 16px; margin-top: 64px; padding-top: 24px; border-top: 1px solid var(--line); font-size: .88rem; }
+  .ftr-bot { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 16px; margin-top: 36px; padding-top: 20px; border-top: 1px solid var(--line); font-size: .88rem; }
   .social { list-style: none; margin: 0; padding: 0; }
 </style>
