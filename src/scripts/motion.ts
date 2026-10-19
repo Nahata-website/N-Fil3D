@@ -26,7 +26,7 @@ if (reduce) {
   document.fonts.ready.then(() => {
     // 1. Headings: words rise out of a line mask
     gsap.utils.toArray<HTMLElement>('main h1, main .h-1, main .h-2, main .h-display').forEach((h) => {
-      if (h.closest('[hidden], .card, .faq')) return;
+      if (h.closest('[hidden], .card, .faq, [data-slide]:not([data-slide="0"])')) return;
       reveals.delete(h);
       gsap.set(h, { autoAlpha: 1, y: 0, clearProps: 'transition' });
       const split = SplitText.create(h, { type: 'lines,words', mask: 'lines', linesClass: 'sl' });
@@ -39,7 +39,7 @@ if (reduce) {
 
     // 2. Eyebrows: characters type in
     gsap.utils.toArray<HTMLElement>('main .eyebrow').forEach((e) => {
-      if (e.closest('[hidden], .card')) return;
+      if (e.closest('[hidden], .card, [data-slide]:not([data-slide="0"])')) return;
       reveals.delete(e);
       gsap.set(e, { autoAlpha: 1, y: 0, clearProps: 'transition' });
       const split = SplitText.create(e, { type: 'chars' });

@@ -3,6 +3,7 @@ import Base from '../layouts/Base.astro';
 import ProductCard from '../components/ProductCard.astro';
 import Finder from '../components/Finder.astro';
 import Faq from '../components/Faq.astro';
+import PenArt from '../components/PenArt.astro';
 import { products, catBySlug, productsIn, posts, inr, family, swatch, colourName, isFilament } from '../lib/data';
 import { FAQ } from '../data/content';
 import { SITE } from '../config/site';
@@ -35,6 +36,11 @@ const cats = [
 // Hero: three spools — big in the centre, two smaller at the sides
 const heroSpools = ['premium-pla-tangy-orange-1-75mm', 'premium-pla-emerald-green-1-75mm', 'premium-pla-electric-blue-1-75mm']
   .map((s) => products.find((p) => p.slug === s)).filter((p): p is (typeof products)[number] => !!p && p.images.length > 0);
+// Banner slides 2–4
+const bySlugAny = (slug: string) => products.find((p) => p.slug === slug && p.images.length > 0);
+const slidePrinter = bySlugAny('mini-n-3d-printer') || bySlugAny('n1-3d-printer');
+const s2Spools = ['premium-pla-deep-blue-1-75mm', 'premium-pla-daffodil-yellow-1-75mm-2', 'premium-pla-fluoro-green-1-75mm'].map(bySlugAny).filter((p): p is (typeof products)[number] => !!p);
+const s3Spools = ['premium-pla-fluoro-green-1-75mm', 'premium-pla-daffodil-yellow-1-75mm-2', 'premium-pla-deep-blue-1-75mm', 'premium-pla-tangy-orange-1-75mm'].map(bySlugAny).filter((p): p is (typeof products)[number] => !!p);
 // Colour wall: one swatch per distinct colour name across PLA+ and PETG
 const wall: { name: string; hex: string; href: string }[] = [];
 const seen = new Set<string>();
@@ -51,6 +57,8 @@ const printerNotes: Record<string, string> = { 'Mini-N': 'Compact. For desks, ho
 >
 
   <section class="hero">
+    <div class="slides" data-slider aria-roledescription="carousel" aria-label="Featured">
+    <div class="slide is-active" data-slide="0" aria-roledescription="slide" aria-label="1 of 4">
     <div class="wrap hero-in">
       <div class="stack gap-24 hero-copy">
         <span class="eyebrow reveal">1.75 mm filament · {SITE.facts.years} years in plastics</span>
@@ -74,6 +82,108 @@ const printerNotes: Record<string, string> = { 'Mini-N': 'Compact. For desks, ho
           <span class="mono muted">Tolerance {SITE.facts.tolerance}</span>
         </div>
       </div>
+    </div>
+    </div>
+
+    <div class="slide s2" data-slide="1" aria-roledescription="slide" aria-label="2 of 4" aria-hidden="true" inert>
+      <div class="wrap s2-in">
+        <div class="s2-copy">
+          <p class="h-display s-title">Your ideas. <span class="serif">Made real.</span></p>
+          <p class="lead s-sub">Discover a world of 3D printing: printers, filament and pens, all from one Indian brand.</p>
+          <div class="row gap-12 s-cta">
+            <a class="btn btn-accent btn-lg" href="/printers/">Shop printers <span class="arrow" aria-hidden="true">→</span></a>
+            <a class="btn btn-ghost btn-lg" href="/product-category/3d-printer-filaments/">Explore filaments <span class="arrow" aria-hidden="true">→</span></a>
+          </div>
+        </div>
+        <div class="s2-stage s-stage">
+          <div class="arc s-shape" aria-hidden="true"></div>
+          {s2Spools[0] && <a class="s-card s-spool sp-a" href={s2Spools[0].path} aria-label={colourName(s2Spools[0])}><img src={s2Spools[0].images[0].src} srcset={s2Spools[0].images[0].srcset} sizes="220px" alt="" loading="lazy" width="600" height="600"></a>}
+          {s2Spools[1] && <a class="s-card s-spool sp-b" href={s2Spools[1].path} aria-label={colourName(s2Spools[1])}><img src={s2Spools[1].images[0].src} srcset={s2Spools[1].images[0].srcset} sizes="220px" alt="" loading="lazy" width="600" height="600"></a>}
+          {slidePrinter && <a class="s-card s-printer" href={slidePrinter.path} aria-label={slidePrinter.shortName}><img src={slidePrinter.images[0].src} srcset={slidePrinter.images[0].srcset} sizes="(max-width: 760px) 50vw, 360px" alt="" loading="lazy" width="800" height="800"><span class="spool-tag"><span>{slidePrinter.shortName.replace(' 3D Printer', '')}</span><strong>{inr(slidePrinter.price)}</strong></span></a>}
+          {s2Spools[2] && <a class="s-card s-spool sp-c" href={s2Spools[2].path} aria-label={colourName(s2Spools[2])}><img src={s2Spools[2].images[0].src} srcset={s2Spools[2].images[0].srcset} sizes="220px" alt="" loading="lazy" width="600" height="600"></a>}
+          <a class="s2-pen s-pen" href="/product-category/3d-pen/" aria-label="3D pens"><PenArt /></a>
+        </div>
+      </div>
+    </div>
+
+    <div class="slide s3" data-slide="2" aria-roledescription="slide" aria-label="3 of 4" aria-hidden="true" inert>
+      <div class="wrap s-split">
+        <div class="stack gap-24">
+          <span class="eyebrow s-eyebrow">3D printing filaments</span>
+          <p class="h-display s-title">Every colour.<br> <span class="serif">A new possibility.</span></p>
+          <p class="lead s-sub">PLA+, PETG, ABS and speciality grades in {wall.length}+ colours. Find the right filament for your next idea.</p>
+          <div class="row gap-12 s-cta"><a class="btn btn-accent btn-lg" href="/product-category/3d-printer-filaments/">Explore filaments <span class="arrow" aria-hidden="true">→</span></a></div>
+        </div>
+        <div class="s3-stage s-stage">
+          <div class="panel s-shape" aria-hidden="true"></div>
+          {s3Spools.map((p, i) => (
+            <a class={`s-card s-spool s3-${i}`} href={p.path} aria-label={colourName(p)}>
+              <img src={p.images[0].src} srcset={p.images[0].srcset} sizes="(max-width: 760px) 45vw, 300px" alt="" loading="lazy" width="600" height="600">
+              {i === 1 && <span class="spool-tag"><span>{colourName(p)}</span><strong>{inr(p.price)}</strong></span>}
+            </a>
+          ))}
+          <svg class="gem s-shape" viewBox="0 0 120 140" aria-hidden="true">
+            <polygon points="60,4 108,34 96,98 60,136 22,104 12,38" fill="#1E5BFF" />
+            <polygon points="60,4 108,34 64,52" fill="#3D7BFF" />
+            <polygon points="60,4 12,38 64,52" fill="#2B67FF" />
+            <polygon points="12,38 22,104 64,52" fill="#174BD6" />
+            <polygon points="108,34 96,98 64,52" fill="#1A55F0" />
+            <polygon points="22,104 60,136 64,52" fill="#123FB8" />
+            <polygon points="96,98 60,136 64,52" fill="#1647CC" />
+          </svg>
+        </div>
+      </div>
+    </div>
+
+    <div class="slide s4" data-slide="3" aria-roledescription="slide" aria-label="4 of 4" aria-hidden="true" inert>
+      <div class="wrap s-split">
+        <div class="stack gap-24">
+          <span class="eyebrow s-eyebrow">3D pens</span>
+          <p class="h-display s-title">Think it. Draw it. <span class="serif">Create it.</span></p>
+          <p class="lead s-sub">Bring your imagination into a new dimension. Starter kits with filament, stand and stencils.</p>
+          <div class="row gap-12 s-cta"><a class="btn btn-accent btn-lg" href="/product-category/3d-pen/">Explore 3D pens <span class="arrow" aria-hidden="true">→</span></a></div>
+        </div>
+        <div class="s4-stage s-stage">
+          <div class="sun s-shape" aria-hidden="true"></div>
+          <div class="disc s-shape" aria-hidden="true"></div>
+          <svg class="doodle butterfly" viewBox="0 0 240 200" aria-hidden="true">
+            <g fill="none" stroke="#1E5BFF" stroke-width="5" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M120 60 C 90 10, 20 0, 14 40 C 8 80, 70 96, 116 96" />
+              <path d="M120 60 C 150 10, 220 0, 226 40 C 232 80, 170 96, 124 96" />
+              <path d="M116 100 C 70 104, 40 140, 58 168 C 76 194, 110 160, 118 112" />
+              <path d="M124 100 C 170 104, 200 140, 182 168 C 164 194, 130 160, 122 112" />
+              <path d="M120 56 L120 150" stroke-width="7" />
+              <path d="M118 56 C 110 36, 98 24, 88 18" /><path d="M122 56 C 130 36, 142 24, 152 18" />
+              <path d="M40 34 C 60 44, 84 56, 110 74" /><path d="M200 34 C 180 44, 156 56, 130 74" />
+              <path d="M30 60 C 54 66, 80 76, 108 86" /><path d="M210 60 C 186 66, 160 76, 132 86" />
+              <path d="M70 140 C 84 132, 98 122, 114 108" /><path d="M170 140 C 156 132, 142 122, 126 108" />
+            </g>
+          </svg>
+          <svg class="doodle house" viewBox="0 0 220 220" aria-hidden="true">
+            <g fill="none" stroke="#FF6A1A" stroke-width="5" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M20 100 L110 22 L200 100" />
+              <path d="M40 86 L40 200 L180 200 L180 86" />
+              <path d="M150 54 L150 22 L172 22 L172 74" />
+              <path d="M62 120 h36 v34 h-36 z" /><path d="M80 120 v34" /><path d="M62 137 h36" />
+              <path d="M122 120 h36 v34 h-36 z" /><path d="M140 120 v34" /><path d="M122 137 h36" />
+              <path d="M96 200 v-30 h28 v30" />
+              <path d="M40 100 L180 180" opacity=".5" /><path d="M180 100 L40 180" opacity=".5" />
+              <path d="M60 70 L160 70" opacity=".5" /><path d="M20 210 L200 210" />
+            </g>
+          </svg>
+          <a class="s4-pen s-pen" href="/product-category/3d-pen/" aria-label="3D pens"><PenArt /></a>
+        </div>
+      </div>
+    </div>
+    </div>
+
+    <div class="wrap slider-ui" data-slider-ui>
+      <div class="dots" role="tablist" aria-label="Choose slide">
+        {['Filament precision', 'Your ideas, made real', 'Every colour', '3D pens'].map((label, i) => (
+          <button type="button" class="dot" role="tab" aria-selected={i === 0 ? 'true' : 'false'} aria-label={label} data-go={i}><span class="dot-fill"></span></button>
+        ))}
+      </div>
+      <button type="button" class="pause" data-pause aria-label="Pause slideshow"><span class="ic-pause" aria-hidden="true"></span></button>
     </div>
     <div class="wrap">
       <ul class="trust reveal">
@@ -230,6 +340,67 @@ const printerNotes: Record<string, string> = { 'Mini-N': 'Compact. For desks, ho
   .hero-in { display: grid; grid-template-columns: 1fr 1.05fr; gap: clamp(28px, 4vw, 64px); align-items: center; }
   @media (max-width: 900px) { .hero-in { grid-template-columns: 1fr; } }
   .hero-copy strong { color: var(--ink); font-weight: 600; }
+  /* Banner slider */
+  .slides { display: grid; }
+  .slide { grid-area: 1 / 1; display: flex; align-items: center; min-width: 0; }
+  .slide > .wrap { width: 100%; }
+  .js .slide:not(.is-active) { visibility: hidden; opacity: 0; }
+  .s-title { font-size: clamp(2.6rem, 5.4vw, 5rem); line-height: .98; letter-spacing: -0.045em; margin: 0; }
+  .s-card { position: absolute; display: block; background: #fff; border: 1px solid var(--line); border-radius: 24px; overflow: hidden; box-shadow: 0 30px 60px -30px rgba(17,17,16,.35), 0 8px 20px -12px rgba(17,17,16,.2); text-decoration: none; color: #111110; }
+  .s-card img { display: block; width: 100%; aspect-ratio: 1; object-fit: contain; }
+  .s-pen { position: absolute; display: block; }
+  .s-pen :global(svg) { display: block; width: 100%; height: auto; filter: drop-shadow(0 18px 18px rgba(17,17,16,.22)); }
+  .s-stage { position: relative; }
+
+  .s2-in { display: flex; flex-direction: column; align-items: center; gap: 22px; text-align: center; }
+  .s2-copy { display: flex; flex-direction: column; align-items: center; gap: 16px; max-width: 900px; }
+  .s2-copy .s-sub { max-width: 560px; }
+  .s2-copy .s-cta { justify-content: center; }
+  .s2-stage { width: 100%; aspect-ratio: 1320 / 380; }
+  .arc { position: absolute; left: 8%; right: 8%; bottom: 0; height: 100%; background: var(--sun); border-radius: 50% 50% 0 0 / 100% 100% 0 0; }
+  .s-printer { width: 25%; left: 37.5%; bottom: 0; z-index: 3; }
+  .sp-a { width: 13%; left: 12%; bottom: 0; z-index: 2; rotate: -6deg; }
+  .sp-b { width: 12%; left: 23%; bottom: 22%; z-index: 1; rotate: 5deg; }
+  .sp-c { width: 13%; right: 18%; bottom: 8%; z-index: 2; rotate: 6deg; }
+  .s2-pen { width: 22%; right: 2%; bottom: -2%; z-index: 4; rotate: -14deg; }
+
+  .s-split { display: grid; grid-template-columns: 1fr 1.1fr; gap: clamp(28px, 4vw, 64px); align-items: center; }
+  @media (max-width: 900px) { .s-split { grid-template-columns: 1fr; } }
+  .s3-stage, .s4-stage { aspect-ratio: 5 / 4; }
+  .panel { position: absolute; right: 0; top: 0; bottom: 14%; width: 62%; background: var(--sun); border-radius: 28px; }
+  .s3-0 { width: 30%; left: 2%; top: 22%; z-index: 2; rotate: -6deg; }
+  .s3-1 { width: 42%; left: 24%; top: 26%; z-index: 4; }
+  .s3-2 { width: 30%; right: 12%; top: 4%; z-index: 3; rotate: 5deg; }
+  .s3-3 { width: 26%; right: 0; top: 44%; z-index: 3; rotate: 8deg; }
+  .gem { position: absolute; width: 14%; left: 64%; bottom: 0; z-index: 5; filter: drop-shadow(0 14px 14px rgba(17,17,16,.25)); }
+
+  .sun { position: absolute; width: 74%; aspect-ratio: 1; right: -4%; top: -6%; border-radius: 50%; background: var(--sun); }
+  .disc { position: absolute; width: 40%; height: 9%; left: 4%; bottom: 2%; border-radius: 50%; background: var(--surface); border: 1px solid var(--line); box-shadow: 0 16px 30px -18px rgba(17,17,16,.35); }
+  .doodle { position: absolute; overflow: visible; }
+  .butterfly { width: 36%; left: 6%; bottom: 8%; z-index: 3; }
+  .house { width: 30%; right: 6%; bottom: 0; z-index: 3; }
+  .s4-pen { width: 76%; right: 0; top: 14%; z-index: 4; rotate: -34deg; transform-origin: 30% 50%; }
+
+  @media (max-width: 760px) {
+    .s-title { font-size: clamp(2.2rem, 10vw, 3rem); }
+    .s2-stage { aspect-ratio: 4 / 3; margin-top: 8px; }
+    .arc { left: 0; right: 0; }
+    .s-printer { width: 50%; left: 25%; }
+    .sp-a { width: 26%; left: 0; } .sp-b { width: 24%; left: 6%; bottom: 40%; } .sp-c { width: 26%; right: 0; bottom: 30%; }
+    .s2-pen { width: 46%; right: -4%; bottom: -4%; }
+    .s-printer .spool-tag, .s3-stage .spool-tag { display: none; }
+    .s-cta { width: 100%; } .s-cta .btn { flex: 1 1 100%; }
+  }
+
+  .slider-ui { display: flex; align-items: center; gap: 14px; margin-top: 28px; }
+  .dots { display: flex; gap: 8px; }
+  .dot { position: relative; width: 44px; height: 24px; padding: 0; border: 0; background: transparent; cursor: pointer; }
+  .dot::before { content: ''; position: absolute; left: 0; right: 0; top: 50%; height: 3px; margin-top: -1.5px; border-radius: 3px; background: var(--line); }
+  .dot-fill { position: absolute; left: 0; top: 50%; height: 3px; margin-top: -1.5px; width: 100%; border-radius: 3px; background: var(--ink); transform: scaleX(0); transform-origin: left; }
+  .dot[aria-selected="true"] .dot-fill { transform: scaleX(var(--p, 1)); }
+  .pause { width: 32px; height: 32px; border-radius: 50%; border: 1px solid var(--line); background: var(--surface); cursor: pointer; display: grid; place-items: center; color: var(--ink); }
+  .ic-pause { width: 10px; height: 10px; border-left: 3px solid currentColor; border-right: 3px solid currentColor; }
+  .pause[aria-pressed="true"] .ic-pause { border: 0; width: 0; height: 0; border-left: 9px solid currentColor; border-top: 6px solid transparent; border-bottom: 6px solid transparent; margin-left: 3px; }
   .hero-visual { position: relative; aspect-ratio: 5 / 4; border-radius: var(--radius-lg); background: radial-gradient(70% 60% at 50% 45%, var(--surface) 0%, transparent 100%); }
   @media (max-width: 760px) { .hero-visual { aspect-ratio: 1 / 1; margin-top: 8px; } }
   .spool { position: absolute; display: block; border-radius: 28px; background: #fff; border: 1px solid var(--line); box-shadow: 0 30px 60px -30px rgba(17,17,16,.35), 0 8px 20px -12px rgba(17,17,16,.2); overflow: hidden; text-decoration: none; color: #111110; transition: box-shadow .4s var(--ease); }
@@ -301,6 +472,7 @@ const printerNotes: Record<string, string> = { 'Mini-N': 'Compact. For desks, ho
 </style>
 
 <script>
+  import '../scripts/slider.ts';
   document.querySelectorAll('[data-tabs]').forEach((list) => {
     const tabs = list.querySelectorAll<HTMLButtonElement>('[data-tab]');
     tabs.forEach((t) => t.addEventListener('click', () => {
