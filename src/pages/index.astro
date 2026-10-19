@@ -473,8 +473,8 @@ const printerNotes: Record<string, string> = { 'Mini-N': 'Compact. For desks, ho
   .s4 .s-cta .btn-accent::after { background: #F0B400; }
   .s2 .s-cta .btn-accent:hover, .s3 .s-cta .btn-accent:hover, .s4 .s-cta .btn-accent:hover { color: #111110; border-color: transparent; }
   .slides { display: grid; overflow-x: clip; position: relative; }
-  .slide { grid-area: 1 / 1; display: flex; align-items: flex-start; min-width: 0; }
-  @media (min-width: 901px) { .s4 > .wrap, .s7 > .wrap { padding-top: clamp(32px, 4.5vw, 72px); } }
+  .slide { grid-area: 1 / 1; display: flex; align-items: center; min-width: 0; }
+  .slide.s2 { align-items: flex-start; }
   .slide > .wrap { width: 100%; }
   .js .slide:not(.is-active) { visibility: hidden; opacity: 0; }
   .s-title { font-size: clamp(2.6rem, 5.4vw, 5rem); line-height: .98; letter-spacing: -0.045em; margin: 0; }
