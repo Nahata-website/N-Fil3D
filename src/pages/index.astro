@@ -345,7 +345,7 @@ const printerNotes: Record<string, string> = { 'Mini-N': 'Compact. For desks, ho
   @media (max-width: 900px) { .hero-in { grid-template-columns: 1fr; } }
   .hero-copy strong { color: var(--ink); font-weight: 600; }
   /* Banner slider */
-  .slides { display: grid; }
+  .slides { display: grid; overflow-x: clip; }
   .slide { grid-area: 1 / 1; display: flex; align-items: center; min-width: 0; }
   .slide > .wrap { width: 100%; }
   .js .slide:not(.is-active) { visibility: hidden; opacity: 0; }
