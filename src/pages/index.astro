@@ -92,11 +92,6 @@ const printerNotes: Record<string, string> = { 'Mini-N': 'Compact. For desks, ho
             <span class="spool-tag"><span>{colourName(p)}</span></span>
           </a>
         ))}
-        <div class="readout" aria-label={`Diameter 1.750 millimetres, tolerance ${SITE.facts.tolerance}`}>
-          <span class="mono">Diameter · measured</span>
-          <span class="val" data-count="1.750">1.750<small> mm</small></span>
-          <span class="mono muted">Tolerance {SITE.facts.tolerance}</span>
-        </div>
       </div>
     </div>
     </div>
@@ -177,7 +172,7 @@ const printerNotes: Record<string, string> = { 'Mini-N': 'Compact. For desks, ho
       <div class="wrap s-split">
         <div class="stack gap-24">
           <span class="eyebrow s-eyebrow fest-eyebrow">Festive special</span>
-          <p class="s-title diwali-title">Diwali <br>Sale</p>
+          <p class="s-title diwali-title">Diwali Sale</p>
           <svg class="lotus draw s-sub" viewBox="0 0 220 34" aria-hidden="true"><g fill="none" stroke="#C8891E" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M70 22 H8" /><path d="M150 22 H212" /><path d="M110 28 C 98 20, 98 10, 110 2 C 122 10, 122 20, 110 28 Z" /><path d="M110 28 C 96 26, 86 18, 84 8 C 96 10, 106 18, 110 28" /><path d="M110 28 C 124 26, 134 18, 136 8 C 124 10, 114 18, 110 28" /><path d="M110 30 C 96 32, 82 26, 76 18" /><path d="M110 30 C 124 32, 138 26, 144 18" /></g></svg>
           <p class="lead s-sub diwali-sub">Light up your creativity. Printers, filament and 3D pens for the festive season.</p>
           <div class="row gap-12 s-cta"><a class="btn btn-accent btn-lg cta-gold" href="/shop/">Shop the sale <span class="arrow" aria-hidden="true">→</span></a></div>
@@ -455,7 +450,7 @@ const printerNotes: Record<string, string> = { 'Mini-N': 'Compact. For desks, ho
     .s5-bg img { object-position: center; }
   }
   .s-obj { position: absolute; display: block; height: auto; filter: drop-shadow(0 22px 22px rgba(17,17,16,.22)); }
-  .s5 .diwali-title { font-family: var(--serif); font-style: normal; font-size: clamp(4.2rem, 8.4vw, 8rem); line-height: .86; letter-spacing: -0.02em; margin: 0; }
+  .s5 .diwali-title { font-family: var(--serif); font-style: normal; font-size: clamp(3.4rem, 6.4vw, 6.4rem); line-height: 1; white-space: nowrap; letter-spacing: -0.02em; margin: 0; }
   .diwali-title :global(.sw) { background: linear-gradient(170deg, #F6D27A 0%, #C8891E 38%, #8E5410 62%, #E8B44A 100%); -webkit-background-clip: text; background-clip: text; color: transparent; padding-right: .04em; }
   .fest-eyebrow { color: var(--ink); letter-spacing: .38em; }
   .lotus { width: 200px; height: auto; }
@@ -497,7 +492,7 @@ const printerNotes: Record<string, string> = { 'Mini-N': 'Compact. For desks, ho
   .k-fly { width: 20%; right: 10%; top: 0; z-index: 5; }
   .k-star { width: 11%; right: -1%; top: 24%; z-index: 5; }
   @media (max-width: 900px) { .s6-stage, .s7-stage { aspect-ratio: 1 / 1; max-width: 520px; width: 100%; justify-self: center; } }
-  @media (max-width: 760px) { .s5 .diwali-title { font-size: clamp(3rem, 15vw, 4.2rem); } .s6 .kid-title, .s7 .kid-title { font-size: clamp(2.2rem, 10vw, 3rem); } .bubble { display: none; } .lotus { width: 150px; } }
+  @media (max-width: 760px) { .s5 .diwali-title { font-size: clamp(2.6rem, 12vw, 3.4rem); } .s6 .kid-title, .s7 .kid-title { font-size: clamp(2.2rem, 10vw, 3rem); } .bubble { display: none; } .lotus { width: 150px; } }
   .s3 { position: relative; }
   .s3 > .wrap { position: relative; z-index: 1; }
   .s3-bg { position: absolute; top: 0; bottom: 0; right: 0; width: 64%; z-index: 0; overflow: hidden; -webkit-mask-image: linear-gradient(90deg, transparent 0%, #000 16%); mask-image: linear-gradient(90deg, transparent 0%, #000 16%); }
@@ -520,7 +515,7 @@ const printerNotes: Record<string, string> = { 'Mini-N': 'Compact. For desks, ho
   .s2 .s-cta .btn-accent:hover, .s3 .s-cta .btn-accent:hover, .s4 .s-cta .btn-accent:hover { color: #111110; border-color: transparent; }
   .slides { display: grid; overflow-x: clip; position: relative; }
   .slide { grid-area: 1 / 1; display: flex; align-items: flex-start; min-width: 0; }
-  @media (min-width: 901px) { .s4 > .wrap { padding-top: clamp(32px, 4.5vw, 72px); } }
+  @media (min-width: 901px) { .s4 > .wrap, .s5 > .wrap { padding-top: clamp(32px, 4.5vw, 72px); } }
   .slide > .wrap { width: 100%; }
   .js .slide:not(.is-active) { visibility: hidden; opacity: 0; }
   .s-title { font-size: clamp(2.6rem, 5.4vw, 5rem); line-height: .98; letter-spacing: -0.045em; margin: 0; }
