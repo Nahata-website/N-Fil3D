@@ -22,7 +22,10 @@ const nav = [
     { label: 'Brand Story', href: '/brand-story/', note: 'Who makes NFIL3D' },
   ]},
   { label: 'Blog', href: '/blog/' },
-  { label: 'Brand Story', href: '/brand-story/' },
+  { label: 'About', href: '/about-us/', menu: [
+    { label: 'About NFIL3D', href: '/about-us/', note: 'Who we are, facility and testing' },
+    { label: 'Brand Story', href: '/brand-story/', note: 'How NFIL3D began' },
+  ]},
   { label: 'Bulk & B2B', href: '/bulk/' },
 ];
 const path = Astro.url.pathname;
@@ -92,7 +95,8 @@ const path = Astro.url.pathname;
   .nav > li { position: relative; }
   .nav > li > a { display: block; padding: 9px 11px; border-radius: 999px; text-decoration: none; font-size: .9rem; font-weight: 500; white-space: nowrap; color: var(--ink-2); transition: color .2s, background-color .2s; }
   .nav > li > a:hover, .nav > li > a[aria-current] { color: var(--ink); background: color-mix(in srgb, var(--surface) 70%, transparent); box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--ink) 8%, transparent), inset 0 1px 0 rgba(255,255,255,.5); }
-  .menu { position: absolute; top: calc(100% + 8px); left: -8px; min-width: 520px; padding: 10px; background: color-mix(in srgb, var(--surface) 72%, transparent); backdrop-filter: saturate(1.8) blur(24px); -webkit-backdrop-filter: saturate(1.8) blur(24px); border: 1px solid color-mix(in srgb, var(--ink) 9%, transparent); border-radius: 22px; box-shadow: 0 24px 60px -24px rgba(17,17,16,.35), inset 0 1px 0 rgba(255,255,255,.5); opacity: 0; visibility: hidden; transform: translateY(-6px) scale(.98); transform-origin: top left; transition: opacity .25s var(--ease), transform .35s var(--ease), visibility .25s; }
+  .menu { position: absolute; top: calc(100% + 8px); left: -8px; min-width: 520px; padding: 10px; background: color-mix(in srgb, var(--surface) 90%, transparent); backdrop-filter: saturate(1.8) blur(28px); -webkit-backdrop-filter: saturate(1.8) blur(24px); border: 1px solid color-mix(in srgb, var(--ink) 9%, transparent); border-radius: 22px; box-shadow: 0 24px 60px -24px rgba(17,17,16,.35), inset 0 1px 0 rgba(255,255,255,.5); opacity: 0; visibility: hidden; transform: translateY(-6px) scale(.98); transform-origin: top left; transition: opacity .25s var(--ease), transform .35s var(--ease), visibility .25s; }
+  .nav > li:nth-last-child(-n+3) .menu { left: auto; right: -8px; transform-origin: top right; }
   .menu::before { content: ''; position: absolute; inset: -12px 0 auto 0; height: 12px; }
   .has-menu:hover .menu, .has-menu:focus-within .menu { opacity: 1; visibility: visible; transform: none; }
   .menu ul { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: 1fr 1fr; gap: 2px; }

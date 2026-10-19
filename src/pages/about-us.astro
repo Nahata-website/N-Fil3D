@@ -1,15 +1,140 @@
 ---
 import Base from '../layouts/Base.astro';
-import PageHead from '../components/PageHead.astro';
-import { SITE } from '../config/site';
+import Breadcrumbs from '../components/Breadcrumbs.astro';
+
+const stats = [
+  ['37+', 'Years experience'],
+  ['4 lakh', 'Sq. ft. facility'],
+  ['In-house', 'Testing lab'],
+];
+const offers = [
+  ['3D Filaments', 'PLA+, PETG, ABS, TPU, ASA, HIPS, Nylon, rPLA and advanced materials.', '/product-category/3d-printer-filaments/'],
+  ['3D Printers', 'Reliable 3D printers for creators, professionals, students and industries.', '/printers/'],
+  ['3D Pens', 'Creative 3D pens and kits for kids, students, designers and makers.', '/product-category/3d-pen/'],
+  ['Spares & Accessories', '3D scanners, resins, spares and accessories for complete support.', '/product-category/accessories-and-spares/'],
+];
+const tests = [
+  ['Thermal testing', 'Checks heat resistance and material stability.', 'M12 3v10.5a3.5 3.5 0 1 0 0 0M12 3a2 2 0 0 1 2 2v8'],
+  ['Mechanical testing', 'Measures strength, durability and flexibility.', 'M4 20h16M7 20V9l5-5 5 5v11M10 20v-5h4v5'],
+  ['Rheological testing', 'Ensures smooth flow and consistent extrusion.', 'M3 12c3-6 6 6 9 0s6 6 9 0'],
+  ['Printer testing', 'Validates real-world printing performance.', 'M6 9V3h12v6M6 18H4v-7h16v7h-2M8 14h8v7H8z'],
+];
+const brands = ['IFB', 'Crompton', 'Bajaj', 'Surya', 'Godrej', 'Symphony'];
+const ld = {
+  '@context': 'https://schema.org', '@type': 'AboutPage', name: 'About NFIL3D', url: 'https://nfil3d.com/about-us/',
+  description: 'NFIL3D is a 3D printing solutions brand backed by 37+ years of experience in engineering plastic compounds and biopolymers.',
+};
 ---
-<Base title="About NFIL3D: 3D Printing Solutions Brand from India" description="NFIL3D makes and sells 3D printer filament, 3D printers, 3D pens and scanners, backed by 37+ years of plastics experience and an in-house testing lab.">
-  <PageHead crumb="About us" eyebrow="About us" title='Built on experience, quality <span class="serif">and innovation.</span>' lead="NFIL3D is a 3D printing solutions brand backed by decades of experience in engineering plastic compounds, biopolymers and advanced material manufacturing. We offer 3D printers, filament, 3D pens, resins, scanners and accessories: a one-stop destination for 3D printing in India." />
-  <section class="wrap section-sm grid cols-3">
-    <div class="card box reveal"><span class="eyebrow">Experience</span><h2 class="h-3">{SITE.facts.years} years</h2><p class="muted">in engineering plastics and biopolymers.</p></div>
-    <div class="card box reveal" style="--d:.05s"><span class="eyebrow">Scale</span><h2 class="h-3">{SITE.facts.facility}</h2><p class="muted">manufacturing facility.</p></div>
-    <div class="card box reveal" style="--d:.1s"><span class="eyebrow">Quality</span><h2 class="h-3">In-house lab</h2><p class="muted">for filament testing and R&amp;D.</p></div>
+<Base title="About NFIL3D: Engineering Better 3D Printing Materials" description="NFIL3D makes 3D printers and filament and supplies 3D pens, resins, scanners and spares, backed by 37+ years in engineering plastics, a 4 lakh sq. ft. facility and an in-house testing lab." jsonld={ld}>
+  <div class="wrap" style="padding-top:20px"><Breadcrumbs items={[{ name: 'About us' }]} /></div>
+
+  <section class="wrap ab-hero">
+    <div class="stack gap-24">
+      <span class="eyebrow reveal">About NFIL3D</span>
+      <h1 class="h-display">Engineering better <span class="serif">3D printing materials.</span></h1>
+      <p class="lead reveal">N-Fil3D is a 3D printing solutions brand backed by decades of experience in engineering plastic compounds, biopolymers and advanced material manufacturing.</p>
+    </div>
+    <ul class="stats">
+      {stats.map(([n, l]) => <li class="reveal"><strong>{n}</strong><span>{l}</span></li>)}
+    </ul>
   </section>
-  <section class="wrap section-sm row gap-12"><a class="btn btn-accent" href="/brand-story/">Read our story</a><a class="btn btn-ghost" href="/contact/">Contact us</a></section>
+
+  <section class="wrap section who">
+    <div class="stack gap-16">
+      <span class="eyebrow reveal">Who we are</span>
+      <h2 class="h-1">Built on experience, quality <span class="serif">and innovation.</span></h2>
+    </div>
+    <div class="stack gap-16 who-text">
+      <p class="lead reveal">N-Fil3D was founded by individuals with more than 37 years of extensive experience in manufacturing engineering plastic compounds and biopolymers, serving notable clients such as IFB, Crompton, Bajaj, Surya, Godrej, Symphony and more.</p>
+      <p class="reveal muted">We manufacture a wide range of high-quality 3D printers and 3D filaments, and supply 3D pens, 3D resins, 3D scanners, spares and accessories. We are your one-stop solution for 3D printing.</p>
+    </div>
+  </section>
+
+  <section class="section offer">
+    <div class="wrap">
+      <div class="section-head"><div class="stack"><span class="eyebrow">What we offer</span><h2 class="h-1">Complete 3D printing <span class="serif">solutions.</span></h2><p class="lead">Everything you need for reliable and consistent 3D printing performance.</p></div></div>
+      <div class="grid cols-4">
+        {offers.map(([t, d, h], i) => (
+          <a class="card off reveal" href={h}>
+            <span class="num mono">0{i + 1}</span>
+            <h3 class="h-3">{t}</h3>
+            <p class="muted">{d}</p>
+            <span class="link">Explore <span aria-hidden="true">→</span></span>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="wrap section fac">
+    <div class="stack gap-16">
+      <span class="eyebrow reveal">Our facility</span>
+      <h2 class="h-1">Advanced manufacturing with <span class="serif">in-house quality testing.</span></h2>
+      <p class="lead reveal">Our facility spans 4 lakh square feet and includes an in-house laboratory dedicated to testing the thermal, mechanical and rheological properties of each batch of 3D filament.</p>
+      <p class="reveal muted">We also use a range of 3D printers, including our own, to consistently assess filament quality, which strengthens our research and development.</p>
+    </div>
+    <div class="tests">
+      {tests.map(([t, d, path]) => (
+        <div class="card test reveal">
+          <span class="ic" aria-hidden="true"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d={path} /></svg></span>
+          <div><h3 class="h-3">{t}</h3><p class="muted">{d}</p></div>
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <section class="section brands">
+    <div class="wrap stack gap-16 center">
+      <span class="eyebrow reveal">Trusted experience</span>
+      <h2 class="h-1">Experience serving <span class="serif">leading brands.</span></h2>
+      <p class="lead reveal">Our team's background includes experience with well-known industry names.</p>
+    </div>
+    <div class="marquee" aria-label="Brands our team has worked with">
+      <ul class="track">
+        {[...brands, ...brands, ...brands, ...brands].map((b, i) => <li aria-hidden={i >= brands.length ? 'true' : undefined}>{b}</li>)}
+      </ul>
+    </div>
+    <p class="wrap small muted center note">Brand names belong to their owners and refer to our founders' prior experience.</p>
+  </section>
+
+  <section class="wrap section-sm">
+    <div class="cta-card reveal">
+      <h2 class="h-1">Start your 3D printing journey <span class="serif">with NFIL3D.</span></h2>
+      <p class="lead">Explore our range of filaments, printers, pens, spares and accessories designed for smooth and consistent 3D printing.</p>
+      <div class="row gap-12" style="justify-content:center"><a class="btn btn-accent btn-lg" href="/shop/">Explore products <span class="arrow" aria-hidden="true">→</span></a><a class="btn btn-ghost btn-lg" href="/brand-story/">Our story</a></div>
+    </div>
+  </section>
 </Base>
-<style>.box { padding: 28px; display: flex; flex-direction: column; gap: 8px; }</style>
+<style>
+  .ab-hero { display: grid; grid-template-columns: 1.3fr 1fr; gap: clamp(28px, 5vw, 80px); align-items: end; padding-block: clamp(32px, 6vw, 88px) clamp(24px, 4vw, 48px); }
+  .ab-hero h1 { font-size: clamp(2.6rem, 5vw, 4.6rem); line-height: 1; }
+  .stats { list-style: none; margin: 0; padding: 0; display: grid; gap: 12px; }
+  .stats li { display: flex; align-items: baseline; justify-content: space-between; gap: 16px; padding: 20px 24px; border-radius: var(--radius); background: color-mix(in srgb, var(--surface) 70%, transparent); border: 1px solid var(--line); backdrop-filter: blur(12px); }
+  .stats strong { font-size: clamp(2rem, 3.4vw, 3rem); letter-spacing: -0.04em; font-weight: 600; }
+  .stats span { color: var(--muted); }
+  .who, .fac { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(28px, 5vw, 80px); align-items: start; }
+  .who-text { padding-top: 34px; }
+  .offer { background: var(--surface-2); }
+  .off { display: flex; flex-direction: column; gap: 10px; padding: 28px; text-decoration: none; transition: transform .45s var(--ease), box-shadow .45s var(--ease); }
+  .off:hover { transform: translateY(-4px); box-shadow: var(--shadow); }
+  .off .num { color: var(--accent); font-size: .9rem; }
+  .off .link { margin-top: auto; font-weight: 600; font-size: .92rem; }
+  .tests { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  .test { display: flex; flex-direction: column; gap: 14px; padding: 24px; }
+  .test .ic { width: 44px; height: 44px; border-radius: 12px; display: grid; place-items: center; background: var(--accent-soft); color: var(--accent); }
+  .test p { margin: 6px 0 0; font-size: .92rem; }
+  .center { text-align: center; align-items: center; }
+  .brands .lead { max-width: 560px; }
+  .marquee { margin-top: 40px; overflow: hidden; mask-image: linear-gradient(90deg, transparent, #000 10%, #000 90%, transparent); -webkit-mask-image: linear-gradient(90deg, transparent, #000 10%, #000 90%, transparent); }
+  .track { list-style: none; margin: 0; padding: 8px 0; display: flex; gap: 16px; width: max-content; animation: slide 36s linear infinite; }
+  .marquee:hover .track { animation-play-state: paused; }
+  .track li { min-width: 200px; padding: 26px 34px; text-align: center; border-radius: 22px; background: var(--surface); border: 1px solid var(--line); font-size: 1.35rem; font-weight: 650; letter-spacing: -0.02em; color: var(--ink-2); box-shadow: 0 10px 30px -22px rgba(17,17,16,.35); }
+  @keyframes slide { to { transform: translateX(-50%); } }
+  @media (prefers-reduced-motion: reduce) { .track { animation: none; flex-wrap: wrap; width: auto; justify-content: center; } }
+  .note { margin-top: 18px; font-size: .8rem; }
+  .small { font-size: .85rem; }
+  .cta-card { text-align: center; display: flex; flex-direction: column; align-items: center; gap: 18px; padding: clamp(36px, 6vw, 72px) clamp(20px, 5vw, 64px); border-radius: var(--radius-lg); background: radial-gradient(80% 120% at 0% 0%, var(--accent-soft), transparent 60%), var(--surface); border: 1px solid var(--line); }
+  .cta-card .lead { max-width: 620px; }
+  @media (max-width: 900px) { .ab-hero, .who, .fac { grid-template-columns: 1fr; } .who-text { padding-top: 0; } }
+  @media (max-width: 760px) { .tests { grid-template-columns: 1fr; } .track li { min-width: 150px; padding: 20px 24px; font-size: 1.1rem; } }
+</style>

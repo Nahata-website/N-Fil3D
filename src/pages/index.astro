@@ -43,8 +43,11 @@ const heroSpools = ['premium-pla-tangy-orange-1-75mm', 'premium-pla-emerald-gree
   .map((s) => products.find((p) => p.slug === s)).filter((p): p is (typeof products)[number] => !!p && p.images.length > 0);
 // Banner slides 2–4
 const bySlugAny = (slug: string) => products.find((p) => p.slug === slug && p.images.length > 0);
-const slidePrinter = bySlugAny('mini-n-3d-printer') || bySlugAny('n1-3d-printer');
-const s2Spools = ['premium-pla-deep-blue-1-75mm', 'premium-pla-daffodil-yellow-1-75mm-2', 'premium-pla-fluoro-green-1-75mm'].map(bySlugAny).filter((p): p is (typeof products)[number] => !!p);
+// Slide 2: printers only (outer → inner), N2 in the centre
+const s2Printers = [
+  ['halot-one', 'pr-1', 'Halot One'], ['mini-n-3d-printer', 'pr-2', 'Mini-N'], ['n2-3d-printer', 'pr-c', 'N2'],
+  ['n1-3d-printer', 'pr-3', 'N1'], ['halot-max', 'pr-4', 'Halot Max'], ['all-in-one-washing-and-curing-station-uw-02', 'pr-5', 'UW-02'],
+].map(([slug, cls, label]) => ({ p: bySlugAny(slug), cls, label })).filter((x) => x.p);
 const s3Spools = ['premium-pla-fluoro-green-1-75mm', 'premium-pla-daffodil-yellow-1-75mm-2', 'premium-pla-deep-blue-1-75mm', 'premium-pla-tangy-orange-1-75mm'].map(bySlugAny).filter((p): p is (typeof products)[number] => !!p);
 const flags = [0, 1, 2, 3, 4, 5, 6, 7].map((k) => { const x = 30 + k * 72; const y = 10 + Math.sin((x / 600) * Math.PI) * 30; return { pts: `${x - 22},${y} ${x + 22},${y + 2} ${x},${y + 46}`, fill: k % 2 ? '#FFC21A' : '#FF7A1A' }; });
 const dots14 = Array.from({ length: 14 }, (_, i) => i);
@@ -97,19 +100,20 @@ const printerNotes: Record<string, string> = { 'Mini-N': 'Compact. For desks, ho
       <div class="wrap s2-in">
         <div class="s2-copy">
           <p class="h-display s-title">Your ideas. <span class="serif">Made real.</span></p>
-          <p class="lead s-sub">Discover a world of 3D printing: printers, filament and pens, all from one Indian brand.</p>
+          <p class="lead s-sub">FDM and resin 3D printers for homes, classrooms and workshops, plus washing and curing for finished resin prints.</p>
           <div class="row gap-12 s-cta">
             <a class="btn btn-accent btn-lg" href="/printers/">Shop printers <span class="arrow" aria-hidden="true">→</span></a>
-            <a class="btn btn-ghost btn-lg" href="/product-category/3d-printer-filaments/">Explore filaments <span class="arrow" aria-hidden="true">→</span></a>
+            <a class="btn btn-ghost btn-lg" href="/product-category/3d-printers/resin-3d-printers/">Resin printers <span class="arrow" aria-hidden="true">→</span></a>
           </div>
         </div>
         <div class="s2-stage s-stage">
           <div class="arc s-shape" aria-hidden="true"></div>
-          {s2Spools[0] && <a class="s-card s-spool sp-a" href={s2Spools[0].path} aria-label={colourName(s2Spools[0])}><img src={s2Spools[0].images[0].src} srcset={s2Spools[0].images[0].srcset} sizes="220px" alt="" loading="lazy" width="600" height="600"></a>}
-          {s2Spools[1] && <a class="s-card s-spool sp-b" href={s2Spools[1].path} aria-label={colourName(s2Spools[1])}><img src={s2Spools[1].images[0].src} srcset={s2Spools[1].images[0].srcset} sizes="220px" alt="" loading="lazy" width="600" height="600"></a>}
-          {slidePrinter && <a class="s-card s-printer" href={slidePrinter.path} aria-label={slidePrinter.shortName}><img src={slidePrinter.images[0].src} srcset={slidePrinter.images[0].srcset} sizes="(max-width: 760px) 50vw, 360px" alt="" loading="lazy" width="800" height="800"><span class="spool-tag"><span>{slidePrinter.shortName.replace(' 3D Printer', '')}</span></span></a>}
-          {s2Spools[2] && <a class="s-card s-spool sp-c" href={s2Spools[2].path} aria-label={colourName(s2Spools[2])}><img src={s2Spools[2].images[0].src} srcset={s2Spools[2].images[0].srcset} sizes="220px" alt="" loading="lazy" width="600" height="600"></a>}
-          <a class="s2-pen s-pen" href="/product-category/3d-pen/" aria-label="3D pens"><img src="/images/pen-3d.webp" width="386" height="900" alt="NFIL3D 3D pen" loading="lazy" decoding="async"></a>
+          {s2Printers.map(({ p, cls, label }) => (
+            <a class={`s-card s-spool s-pr ${cls}`} href={p!.path} aria-label={p!.shortName}>
+              <img src={p!.images[0].src} srcset={p!.images[0].srcset} sizes={cls === 'pr-c' ? '(max-width: 760px) 45vw, 340px' : '(max-width: 760px) 30vw, 220px'} alt={p!.images[0].alt || label} loading="lazy" width="800" height="800">
+              <span class="spool-tag"><span>{label}</span></span>
+            </a>
+          ))}
         </div>
       </div>
     </div>
@@ -512,8 +516,10 @@ const printerNotes: Record<string, string> = { 'Mini-N': 'Compact. For desks, ho
   /* Banner slider */
   .slides { --fil-grad: linear-gradient(125deg, #4C86FF 0%, #3CCB7F 32%, #FFD23F 62%, #FF8A3D 100%); }
   /* CTA takes the colour of the slide's shape: gradient where many filaments show, yellow for the pen */
-  .s2 .s-cta .btn-accent, .s3 .s-cta .btn-accent { --b: transparent; background: var(--fil-grad); border-color: transparent; color: #111110; }
-  .s2 .s-cta .btn-accent::after, .s3 .s-cta .btn-accent::after { background: rgba(17,17,16,.12); }
+  .s2 .s-cta .btn-accent { --b: var(--sun); color: #111110; }
+  .s2 .s-cta .btn-accent::after { background: #F0B400; }
+  .s3 .s-cta .btn-accent { --b: transparent; background: var(--fil-grad); border-color: transparent; color: #111110; }
+  .s3 .s-cta .btn-accent::after { background: rgba(17,17,16,.12); }
   .s4 .s-cta .btn-accent { --b: var(--sun); color: #111110; }
   .s4 .s-cta .btn-accent::after { background: #F0B400; }
   .s2 .s-cta .btn-accent:hover, .s3 .s-cta .btn-accent:hover, .s4 .s-cta .btn-accent:hover { color: #111110; border-color: transparent; }
@@ -534,12 +540,14 @@ const printerNotes: Record<string, string> = { 'Mini-N': 'Compact. For desks, ho
   .s2-copy .s-sub { max-width: 560px; }
   .s2-copy .s-cta { justify-content: center; }
   .s2-stage { width: 100%; max-width: 1180px; aspect-ratio: 1320 / 340; }
-  .arc { position: absolute; left: 8%; right: 8%; bottom: 0; height: 100%; background: var(--fil-grad); border-radius: 50% 50% 0 0 / 100% 100% 0 0; }
-  .s-printer { width: 25%; left: 37.5%; bottom: 0; z-index: 3; }
-  .sp-a { width: 13%; left: 12%; bottom: 0; z-index: 2; rotate: -6deg; }
-  .sp-b { width: 12%; left: 23%; bottom: 22%; z-index: 1; rotate: 5deg; }
-  .sp-c { width: 13%; right: 18%; bottom: 8%; z-index: 2; rotate: 6deg; }
-  .s2-pen { width: 7.5%; right: 9%; bottom: -26%; z-index: 4; rotate: 68deg; }
+  .arc { position: absolute; left: 8%; right: 8%; bottom: 0; height: 100%; background: var(--sun); border-radius: 50% 50% 0 0 / 100% 100% 0 0; }
+  .pr-c { width: 24%; left: 38%; bottom: 0; z-index: 4; }
+  .pr-2 { width: 16%; left: 23%; bottom: 4%; z-index: 3; rotate: -4deg; }
+  .pr-3 { width: 16%; right: 23%; bottom: 4%; z-index: 3; rotate: 4deg; }
+  .pr-1 { width: 13%; left: 10%; bottom: 0; z-index: 2; rotate: -7deg; }
+  .pr-4 { width: 13%; right: 10%; bottom: 0; z-index: 2; rotate: 7deg; }
+  .pr-5 { width: 11%; right: 0; bottom: 34%; z-index: 1; rotate: 10deg; }
+  .s-pr .spool-tag { font-size: .74rem; padding: 6px 10px; }
 
   .s-split { display: grid; grid-template-columns: 1fr 1.1fr; gap: clamp(28px, 4vw, 64px); align-items: center; }
   @media (max-width: 900px) { .s-split { grid-template-columns: 1fr; } }
@@ -577,10 +585,10 @@ const printerNotes: Record<string, string> = { 'Mini-N': 'Compact. For desks, ho
     .slider-ui { margin-top: 18px; }
     .s2-stage { aspect-ratio: 1 / 1; margin-top: 8px; }
     .arc { left: 0; right: 0; }
-    .s-printer { width: 50%; left: 25%; }
-    .sp-a { width: 26%; left: 0; } .sp-b { width: 24%; left: 6%; bottom: 40%; } .sp-c { width: 26%; right: 0; bottom: 30%; }
-    .s2-pen { width: 15%; right: 6%; bottom: -14%; }
-    .s-printer .spool-tag, .s3-stage .spool-tag { display: none; }
+    .pr-c { width: 40%; left: 30%; } .pr-2 { width: 26%; left: 6%; bottom: 20%; } .pr-3 { width: 26%; right: 6%; bottom: 20%; }
+    .pr-1 { width: 22%; left: 0; } .pr-4 { width: 22%; right: 0; } .pr-5 { width: 20%; right: 2%; bottom: 58%; }
+    .s-pr:not(.pr-c) .spool-tag { display: none; }
+    .s3-stage .spool-tag { display: none; }
     .s-cta { width: 100%; } .s-cta .btn { flex: 1 1 100%; }
   }
 
