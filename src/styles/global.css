@@ -4,13 +4,13 @@
 
 /* ---------- Tokens ---------- */
 :root {
-  --bg: #F7F6F3;
+  --bg: #FFFFFF;
   --surface: #FFFFFF;
-  --surface-2: #EFEDE8;
+  --surface-2: #F4F5F7;
   --ink: #111110;
   --ink-2: #3D3B37;
   --muted: #6B6862;
-  --line: #E3E0D9;
+  --line: #E6E7EA;
   --accent: #E8501C;
   --accent-ink: #FFFFFF;
   --cta: #D4430D;

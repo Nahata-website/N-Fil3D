@@ -86,8 +86,8 @@ if (root && ui) {
     if (bgImg) tl.fromTo(bgImg, { scale: 1.12, autoAlpha: 0.4 }, { scale: 1, autoAlpha: 1, duration: 2.4, ease: 'power2.out' }, 0);
     const blob = s.querySelector('.blob');
     if (blob) tl.fromTo(blob, { scale: 0.3, rotation: -20, autoAlpha: 0 }, { scale: 1, rotation: 0, autoAlpha: 1, duration: 1.3 }, 0);
-    const pen = s.querySelector<HTMLElement>('.s-pen');
-    if (pen) tl.fromTo(pen, { autoAlpha: 0, x: 160, y: -60 }, { autoAlpha: 1, x: 0, y: 0, duration: 1.3 }, 0.45);
+    const pens = s.querySelectorAll<HTMLElement>('.s-pen');
+    if (pens.length) tl.fromTo(pens, { autoAlpha: 0, x: 160, y: -60 }, { autoAlpha: 1, x: 0, y: 0, duration: 1.3, stagger: 0.12 }, 0.45);
     // doodles draw themselves, as if traced by the pen
     s.querySelectorAll<SVGPathElement>('.doodle path, .draw path').forEach((p, k) => {
       const len = Number(p.dataset.len || 0);
@@ -99,7 +99,7 @@ if (root && ui) {
   // Idle motion: pens bob and drift, doodles breathe
   if (!reduce) {
     root.querySelectorAll<HTMLElement>('.s-pen').forEach((pen, k) => {
-      gsap.to(pen, { y: k ? -14 : -8, rotation: k ? '+=4' : '-=3', duration: 2.4 + k * 0.4, ease: 'sine.inOut', yoyo: true, repeat: -1 });
+      gsap.to(pen, { y: -8 - (k % 3) * 4, rotation: k % 2 ? '+=3' : '-=3', duration: 2.2 + (k % 4) * 0.35, ease: 'sine.inOut', yoyo: true, repeat: -1 });
     });
     root.querySelectorAll<HTMLElement>('.gem').forEach((g) => gsap.to(g, { y: -10, rotation: 6, duration: 3, ease: 'sine.inOut', yoyo: true, repeat: -1 }));
     root.querySelectorAll<HTMLElement>('.s-obj.float').forEach((f, k) => gsap.to(f, { y: -10 - (k % 3) * 4, rotation: k % 2 ? 3 : -3, duration: 2.2 + (k % 4) * 0.35, ease: 'sine.inOut', yoyo: true, repeat: -1 }));
