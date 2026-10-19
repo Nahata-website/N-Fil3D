@@ -236,9 +236,9 @@ details.faq .a { padding: 0 52px 24px 0; color: var(--ink-2); max-width: 70ch; }
 }
 @media (min-width: 1500px) { :root { --max: 1320px; } }
 
-/* Desktop scale: at 100% browser zoom the site looks like 125% on wide screens */
-@media (min-width: 1440px) { html { zoom: 1.25; } }
-@media (min-width: 1200px) and (max-width: 1439px) { html { zoom: 1.1; } }
+/* Desktop scale: at 100% browser zoom the site looks like ~112% on wide screens (user prefers the 90% look) */
+@media (min-width: 1440px) { html { zoom: 1.125; } }
+@media (min-width: 1200px) and (max-width: 1439px) { html { zoom: 1; } }
 
 .form-note { margin: 10px 0 0; font-size: .88rem; font-weight: 550; color: var(--success); }
 .form-note[data-ok="0"] { color: var(--accent); }

@@ -462,7 +462,8 @@ const printerNotes: Record<string, string> = { 'Mini-N': 'Compact. For desks, ho
   .swoosh { width: min(320px, 70%); height: auto; margin-top: -10px; }
   .cta-yellow { --b: #FFD21F; color: #14234B !important; }
   .cta-yellow::after { background: #F2BE00; }
-  .cta-outline { border-color: var(--navy); color: var(--navy); }
+  .cta-outline { background: #fff !important; border: 2px solid #14234B !important; color: #14234B !important; }
+  .cta-outline:hover { background: #14234B !important; color: #fff !important; }
   .sparks { position: absolute; width: 7%; height: auto; overflow: visible; }
   .sparks path { stroke: #FFC21A; }
   .sp-1 { left: 30%; top: 30%; } .sp-2 { right: 26%; top: 14%; rotate: 120deg; } .sp-3 { left: 30%; top: 40%; }
