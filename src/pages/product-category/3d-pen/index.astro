@@ -96,7 +96,7 @@ const ld = { '@context': 'https://schema.org', '@type': 'CollectionPage', name: 
       <div class="boxes">
         {kits.map((k, i) => (
           <a class={`bx reveal ${k.n === 9 ? 'feat' : ''}`} href={k.first.p.path} style={`--d:${i * 0.07}s`}>
-            {k.n === 9 && <span class="badge"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M3 18h18l-1.5-10-4.5 4-3-6-3 6-4.5-4z"/></svg>Recommended</span>}
+            {k.n === 9 && <span class="badge"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M3 18h18l-1.5-10-4.5 4-3-6-3 6-4.5-4z"/></svg>Most popular</span>}
             <span class="bimg">{k.first.p.images[0] && <img src={k.first.p.images[0].src} srcset={k.first.p.images[0].srcset} sizes="(max-width: 960px) 90vw, 380px" alt={k.title} width="600" height="400" loading="lazy">}</span>
             <h3>{k.title}</h3>
             <ul>{k.box.map((b) => <li>{b}</li>)}</ul>

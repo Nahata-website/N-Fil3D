@@ -34,7 +34,7 @@ export const SITE = {
   // CONFIRM: dispatch time shown on product pages, e.g. '1–2 working days'. Empty hides it.
   dispatch: '',
   // Big Qube / Mega Qube teaser on the home page. Set false to hide until launch.
-  showQubeTeaser: true,
+  showQubeTeaser: false,
 };
 
 export const cartUrl = (id: number, qty = 1) => `${SITE.storeUrl}/cart/?add-to-cart=${id}&quantity=${qty}`;
