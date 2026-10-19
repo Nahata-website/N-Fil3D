@@ -20,7 +20,8 @@ const mats = MATERIALS.map((m) => {
   const c = catBySlug.get(slug);
   const list = c ? productsIn(c.id) : [];
   const p = list.find((x) => x.inStock && x.images.length > 1) || list.find((x) => x.images.length) ;
-  return { ...m, img: p?.images[0] };
+  const own: Record<string, string> = { pla: 'mat-pla', matte: 'mat-matte', tf: 'mat-tf' };
+  return { ...m, img: own[m.key] ? { src: `/images/finder/${own[m.key]}.webp`, srcset: undefined, alt: '' } : p?.images[0] };
 });
 ---
 <section class="finder" aria-labelledby="finder-h" id="finder" data-finder>
