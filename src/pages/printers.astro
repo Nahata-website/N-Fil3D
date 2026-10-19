@@ -66,7 +66,7 @@ const hero = pimg('n2-3d-printer', 0);
       <div class="fit-head"><h2 class="h-1">Find your fit.</h2><p class="muted small">See each printer page for full specifications.</p></div>
       <div class="tscroll">
         <table data-table>
-          <thead><tr><th><span class="sr-only">Feature</span></th>{fdm.map((f, i) => <th scope="col" data-c={i}><a href={f.p.path}>{f.p.images[0] && <img src={f.p.images[0].src} alt="" width="120" height="120" loading="lazy">}<span>{f.name}</span></a></th>)}</tr></thead>
+          <thead><tr><th class="tlead"><span class="tk">Side by side</span><strong>Compare printers</strong><span class="ts">Choose the right fit for your workspace.</span></th>{fdm.map((f, i) => <th scope="col" data-c={i}><a href={f.p.path}>{f.p.images[0] && <img src={f.p.images[0].src} alt="" width="120" height="120" loading="lazy">}<span>{f.name}</span></a></th>)}</tr></thead>
           <tbody>{rows.map(([k, v]) => <tr><th scope="row">{k}</th>{v.map((x, i) => <td data-c={i}>{x}</td>)}</tr>)}</tbody>
         </table>
       </div>
@@ -139,6 +139,11 @@ const hero = pimg('n2-3d-printer', 0);
   table { width: 100%; border-collapse: collapse; min-width: 640px; }
   th, td { padding: 14px 18px; text-align: center; border-bottom: 1px solid var(--line); transition: background-color .3s; }
   tbody th { text-align: left; color: var(--muted); font-weight: 500; width: 22%; }
+  .tlead { text-align: left; vertical-align: middle; padding: 22px 24px; }
+  .tlead span, .tlead strong { display: block; }
+  .tk { color: #E0A800; font-weight: 650; font-size: .95rem; margin-bottom: 4px; }
+  .tlead strong { font-size: clamp(1.2rem, 1.8vw, 1.6rem); font-weight: 650; letter-spacing: -0.02em; color: var(--ink); }
+  .ts { color: var(--muted); font-weight: 400; font-size: .88rem; margin-top: 4px; }
   thead a { display: flex; flex-direction: column; align-items: center; gap: 6px; text-decoration: none; font-weight: 650; }
   thead img { width: 72px; height: 72px; object-fit: contain; mix-blend-mode: multiply; }
   tr:last-child th, tr:last-child td { border-bottom: 0; }
