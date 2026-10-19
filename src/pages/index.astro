@@ -71,9 +71,9 @@ const printerNotes: Record<string, string> = { 'Mini-N': 'Compact. For desks, ho
       </div>
       <div class="hero-visual reveal" style="--d:.1s">
         {heroSpools.map((p, i) => (
-          <a class={`spool spool-${['l', 'c', 'r'][i]}`} href={p.path} aria-label={`${colourName(p)}, ${inr(p.price)}`}>
+          <a class={`spool spool-${['l', 'c', 'r'][i]}`} href={p.path} aria-label={colourName(p)}>
             <img src={p.images[0].src} srcset={p.images[0].srcset} sizes={i === 1 ? '(max-width: 760px) 60vw, 34vw' : '(max-width: 760px) 40vw, 22vw'} alt={p.images[0].alt || colourName(p)} width="600" height="600" fetchpriority={i === 1 ? 'high' : undefined} loading={i === 1 ? undefined : 'lazy'}>
-            <span class="spool-tag"><span>{colourName(p)}</span><strong>{inr(p.price)}</strong></span>
+            <span class="spool-tag"><span>{colourName(p)}</span></span>
           </a>
         ))}
         <div class="readout" aria-label={`Diameter 1.750 millimetres, tolerance ${SITE.facts.tolerance}`}>
@@ -99,7 +99,7 @@ const printerNotes: Record<string, string> = { 'Mini-N': 'Compact. For desks, ho
           <div class="arc s-shape" aria-hidden="true"></div>
           {s2Spools[0] && <a class="s-card s-spool sp-a" href={s2Spools[0].path} aria-label={colourName(s2Spools[0])}><img src={s2Spools[0].images[0].src} srcset={s2Spools[0].images[0].srcset} sizes="220px" alt="" loading="lazy" width="600" height="600"></a>}
           {s2Spools[1] && <a class="s-card s-spool sp-b" href={s2Spools[1].path} aria-label={colourName(s2Spools[1])}><img src={s2Spools[1].images[0].src} srcset={s2Spools[1].images[0].srcset} sizes="220px" alt="" loading="lazy" width="600" height="600"></a>}
-          {slidePrinter && <a class="s-card s-printer" href={slidePrinter.path} aria-label={slidePrinter.shortName}><img src={slidePrinter.images[0].src} srcset={slidePrinter.images[0].srcset} sizes="(max-width: 760px) 50vw, 360px" alt="" loading="lazy" width="800" height="800"><span class="spool-tag"><span>{slidePrinter.shortName.replace(' 3D Printer', '')}</span><strong>{inr(slidePrinter.price)}</strong></span></a>}
+          {slidePrinter && <a class="s-card s-printer" href={slidePrinter.path} aria-label={slidePrinter.shortName}><img src={slidePrinter.images[0].src} srcset={slidePrinter.images[0].srcset} sizes="(max-width: 760px) 50vw, 360px" alt="" loading="lazy" width="800" height="800"><span class="spool-tag"><span>{slidePrinter.shortName.replace(' 3D Printer', '')}</span></span></a>}
           {s2Spools[2] && <a class="s-card s-spool sp-c" href={s2Spools[2].path} aria-label={colourName(s2Spools[2])}><img src={s2Spools[2].images[0].src} srcset={s2Spools[2].images[0].srcset} sizes="220px" alt="" loading="lazy" width="600" height="600"></a>}
           <a class="s2-pen s-pen" href="/product-category/3d-pen/" aria-label="3D pens"><PenArt /></a>
         </div>
@@ -119,7 +119,7 @@ const printerNotes: Record<string, string> = { 'Mini-N': 'Compact. For desks, ho
           {s3Spools.map((p, i) => (
             <a class={`s-card s-spool s3-${i}`} href={p.path} aria-label={colourName(p)}>
               <img src={p.images[0].src} srcset={p.images[0].srcset} sizes="(max-width: 760px) 45vw, 300px" alt="" loading="lazy" width="600" height="600">
-              {i === 1 && <span class="spool-tag"><span>{colourName(p)}</span><strong>{inr(p.price)}</strong></span>}
+              {i === 1 && <span class="spool-tag"><span>{colourName(p)}</span></span>}
             </a>
           ))}
           <svg class="gem s-shape" viewBox="0 0 120 140" aria-hidden="true">
@@ -410,7 +410,7 @@ const printerNotes: Record<string, string> = { 'Mini-N': 'Compact. For desks, ho
   .spool-l { width: 30%; left: 0; top: 44%; z-index: 2; rotate: -7deg; }
   .spool-r { width: 30%; right: 0; top: 36%; z-index: 2; rotate: 7deg; }
   .spool:hover { box-shadow: 0 40px 70px -30px rgba(17,17,16,.45), 0 10px 24px -12px rgba(17,17,16,.25); z-index: 4; }
-  .spool-tag { position: absolute; left: 10px; right: 10px; bottom: 10px; display: flex; justify-content: space-between; align-items: center; gap: 8px; padding: 8px 12px; border-radius: 999px; background: rgba(255,255,255,.88); backdrop-filter: blur(8px); border: 1px solid rgba(17,17,16,.08); font-size: .8rem; font-weight: 550; }
+  .spool-tag { position: absolute; left: 10px; right: 10px; bottom: 10px; display: flex; justify-content: center; align-items: center; gap: 8px; padding: 8px 12px; border-radius: 999px; background: rgba(255,255,255,.88); backdrop-filter: blur(8px); border: 1px solid rgba(17,17,16,.08); font-size: .8rem; font-weight: 550; }
   .spool-l .spool-tag, .spool-r .spool-tag { font-size: .7rem; padding: 6px 10px; }
   .spool-tag strong { font-weight: 650; }
   .readout { position: absolute; left: 4%; top: 2%; z-index: 5; display: flex; flex-direction: column; gap: 2px; padding: 12px 16px; border-radius: 16px; background: color-mix(in srgb, var(--bg) 80%, transparent); backdrop-filter: blur(10px); border: 1px solid var(--line); color: var(--ink); }
