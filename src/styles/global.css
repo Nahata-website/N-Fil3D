@@ -190,7 +190,7 @@ details.faq .a { padding: 0 52px 24px 0; color: var(--ink-2); max-width: 70ch; }
 /* Reveal on scroll (no library) */
 .js .reveal { opacity: 0; transform: translateY(18px); transition: opacity .9s var(--ease), transform .9s var(--ease); transition-delay: var(--d, 0s); }
 .js .reveal.in { opacity: 1; transform: none; }
-.sl { padding-bottom: .08em; margin-bottom: -.08em; }
+.sl { padding: .06em 0 .1em; margin: -.06em 0 -.1em; }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation-duration: .01ms !important; transition-duration: .01ms !important; scroll-behavior: auto !important; }
   .js .reveal { opacity: 1; transform: none; }
