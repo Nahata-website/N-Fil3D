@@ -46,6 +46,8 @@ const heroSpools = ['premium-pla-tangy-orange-1-75mm', 'premium-pla-emerald-gree
 // Banner slides 2–4
 const bySlugAny = (slug: string) => products.find((p) => p.slug === slug && p.images.length > 0);
 // Slide 2: printers only (outer → inner), N2 in the centre
+// Clean PNG cutouts supplied by the brand team
+const PR_IMG: Record<string, string> = { 'halot-sky': 'halot-sky', 'halot-one': 'halot-one', 'mini-n-3d-printer': 'mini-n', 'n2-3d-printer': 'n2', 'n1-3d-printer': 'n1', 'halot-max': 'halot-max', 'all-in-one-washing-and-curing-station-uw-02': 'uw02' };
 const s2Printers = [
   ['halot-sky', 'pr-l3', 'Halot Sky'], ['halot-one', 'pr-l2', 'Halot One'], ['mini-n-3d-printer', 'pr-l1', 'Mini-N'],
   ['n2-3d-printer', 'pr-c', 'N2'],
@@ -112,8 +114,8 @@ const printerNotes: Record<string, string> = { 'Mini-N': 'Compact. For desks, ho
         <div class="s2-stage s-stage">
           <div class="arc s-shape" aria-hidden="true"></div>
           {s2Printers.map(({ p, cls, label }) => (
-            <a class={`s-card s-spool s-pr ${cls}`} href={p!.path} aria-label={p!.shortName}>
-              <img src={p!.images[0].src} srcset={p!.images[0].srcset} sizes={cls === 'pr-c' ? '(max-width: 760px) 45vw, 340px' : '(max-width: 760px) 30vw, 220px'} alt={p!.images[0].alt || label} loading="lazy" width="800" height="800">
+            <a class={`s-spool s-pr ${cls}`} href={p!.path} aria-label={p!.shortName}>
+              <img src={`/images/pr-${PR_IMG[p!.slug]}.webp`} alt={`${label} 3D printer`} loading="lazy" decoding="async" width="500" height="800">
               <span class="spool-tag"><span>{label}</span></span>
             </a>
           ))}
@@ -527,16 +529,19 @@ const printerNotes: Record<string, string> = { 'Mini-N': 'Compact. For desks, ho
   .s2-copy .s-title { font-size: clamp(2.4rem, 4.4vw, 4.2rem); }
   .s2-copy .s-sub { max-width: 560px; }
   .s2-copy .s-cta { justify-content: center; }
-  .s2-stage { width: 100%; max-width: 1180px; aspect-ratio: 1320 / 340; }
-  .arc { position: absolute; left: 8%; right: 8%; bottom: 0; height: 100%; background: var(--sun); border-radius: 50% 50% 0 0 / 100% 100% 0 0; }
-  .pr-c { width: 22%; left: 39%; bottom: 0; z-index: 5; }
-  .pr-l1 { width: 15%; left: 25.5%; bottom: 3%; z-index: 4; rotate: -3deg; }
-  .pr-r1 { width: 15%; right: 25.5%; bottom: 3%; z-index: 4; rotate: 3deg; }
-  .pr-l2 { width: 12.5%; left: 14.5%; bottom: 2%; z-index: 3; rotate: -6deg; }
-  .pr-r2 { width: 12.5%; right: 14.5%; bottom: 2%; z-index: 3; rotate: 6deg; }
-  .pr-l3 { width: 11%; left: 5%; bottom: 0; z-index: 2; rotate: -9deg; }
-  .pr-r3 { width: 11%; right: 5%; bottom: 0; z-index: 2; rotate: 9deg; }
-  .s-pr .spool-tag { font-size: .74rem; padding: 6px 10px; }
+  .s2-stage { width: 100%; max-width: 1180px; aspect-ratio: 1320 / 470; }
+  .arc { position: absolute; left: 6%; right: 6%; bottom: 0; height: 74%; background: var(--sun); border-radius: 50% 50% 0 0 / 100% 100% 0 0; }
+  .s-pr { position: absolute; bottom: 4%; display: block; translate: -50% 0; text-decoration: none; color: #111110; }
+  .s-pr img { display: block; height: 100%; width: auto; filter: drop-shadow(0 22px 18px rgba(17,17,16,.28)); }
+  .s-pr::after { content: ''; position: absolute; left: 12%; right: 12%; bottom: -6px; height: 14px; border-radius: 50%; background: radial-gradient(closest-side, rgba(17,17,16,.28), transparent); z-index: -1; }
+  .pr-c  { height: 84%; left: 50%; z-index: 7; }
+  .pr-l1 { height: 50%; left: 35.5%; z-index: 5; }
+  .pr-r1 { height: 68%; left: 64%; z-index: 6; }
+  .pr-l2 { height: 56%; left: 22%; z-index: 4; }
+  .pr-r2 { height: 60%; left: 77.5%; z-index: 4; }
+  .pr-l3 { height: 50%; left: 9.5%; z-index: 3; }
+  .pr-r3 { height: 48%; left: 90.5%; z-index: 3; }
+  .s-pr .spool-tag { position: absolute; left: 50%; right: auto; bottom: -16px; translate: -50% 0; white-space: nowrap; }
 
   .s-split { display: grid; grid-template-columns: 1fr 1.1fr; gap: clamp(28px, 4vw, 64px); align-items: center; }
   @media (max-width: 900px) { .s-split { grid-template-columns: 1fr; } }
@@ -576,10 +581,10 @@ const printerNotes: Record<string, string> = { 'Mini-N': 'Compact. For desks, ho
     .slider-ui { margin-top: 18px; }
     .s2-stage { aspect-ratio: 1 / 1; margin-top: 8px; }
     .arc { left: 0; right: 0; }
-    .pr-c { width: 36%; left: 32%; }
-    .pr-l1 { width: 24%; left: 10%; bottom: 22%; } .pr-r1 { width: 24%; right: 10%; bottom: 22%; }
-    .pr-l2 { width: 21%; left: 2%; bottom: 46%; } .pr-r2 { width: 21%; right: 2%; bottom: 46%; }
-    .pr-l3 { width: 20%; left: 0; bottom: 0; } .pr-r3 { width: 20%; right: 0; bottom: 0; }
+    .s2-stage { aspect-ratio: 1 / 1.05; }
+    .arc { height: 100%; }
+    .pr-l3 { height: 30%; left: 13%; bottom: 46%; } .pr-l2 { height: 32%; left: 37%; bottom: 46%; } .pr-r2 { height: 33%; left: 63%; bottom: 46%; } .pr-r3 { height: 29%; left: 87%; bottom: 46%; }
+    .pr-l1 { height: 27%; left: 19%; bottom: 4%; } .pr-c { height: 46%; left: 50%; } .pr-r1 { height: 38%; left: 81%; bottom: 4%; }
     .s-pr:not(.pr-c) .spool-tag { display: none; }
     .s3-stage .spool-tag { display: none; }
     .s-cta { width: 100%; } .s-cta .btn { flex: 1 1 100%; }
@@ -590,7 +595,7 @@ const printerNotes: Record<string, string> = { 'Mini-N': 'Compact. For desks, ho
   .sarrow:hover { background: var(--ink); color: var(--bg); transform: scale(1.06); }
   .sprev { left: 16px; }
   .snext { right: 16px; }
-  @media (min-width: 761px) and (max-width: 1700px) { .sarrow { width: 46px; height: 46px; margin-top: 0; top: auto; bottom: 28px; } .sprev { left: auto; right: 82px; } .snext { right: 26px; } }
+  @media (min-width: 761px) and (max-width: 1700px) { .s2-stage { max-width: min(1180px, calc(100% - 280px)); } .sarrow { width: 46px; height: 46px; margin-top: 0; top: auto; bottom: 28px; } .sprev { left: auto; right: 82px; } .snext { right: 26px; } }
   @media (max-width: 760px) { .sarrow { width: 40px; height: 40px; margin-top: -20px; top: auto; bottom: 8px; } .sprev { left: auto; right: 64px; } .snext { right: 14px; } }
   .slider-ui[hidden] { display: none !important; }
   .slider-ui { display: flex; align-items: center; gap: 14px; margin-top: 28px; }
