@@ -37,6 +37,9 @@ const cats = [
 // Filament tile: hover swaps to a different colour spool
 const altSpool = products.find((p) => p.slug === 'premium-pla-emerald-green-1-75mm' && p.images.length);
 if (altSpool) cats[0].img2 = altSpool.images[0];
+// Scanners tile: hover swaps Mole for the Magic Swift Plus scanner
+const swift = products.find((p) => p.slug === 'magic-swift-plus-3d-scanner-premium' && p.images.length);
+if (swift) cats[4].img2 = swift.images[0];
 // Hero: three spools — big in the centre, two smaller at the sides
 const heroSpools = ['premium-pla-tangy-orange-1-75mm', 'premium-pla-emerald-green-1-75mm', 'premium-pla-electric-blue-1-75mm']
   .map((s) => products.find((p) => p.slug === s)).filter((p): p is (typeof products)[number] => !!p && p.images.length > 0);
