@@ -53,7 +53,6 @@ if (reduce) {
     // 3. Hero: image unmasks, readout counts up, CTA rises
     if (hero) {
       const vis = hero.querySelector<HTMLElement>('.hero-visual');
-      const img = vis?.querySelector('img');
       const readout = vis?.querySelector<HTMLElement>('.readout');
       const val = readout?.querySelector<HTMLElement>('[data-count]');
       const copy = gsap.utils.toArray<HTMLElement>('.hero-copy > .reveal:not(h1):not(.eyebrow)', hero);
@@ -61,18 +60,38 @@ if (reduce) {
       const tl = gsap.timeline({ defaults: { ease: EASE } });
       tl.fromTo(copy, { autoAlpha: 0, y: 28 }, { autoAlpha: 1, y: 0, duration: 1.1, stagger: 0.1, clearProps: 'transition,transform,translate' }, 0.5);
       if (vis) {
-        gsap.set(vis, { autoAlpha: 1, y: 0 });
-        tl.fromTo(vis, { clipPath: 'inset(12% 14% 12% 14% round 48px)' }, { clipPath: 'inset(0% 0% 0% 0% round 28px)', duration: 1.6, clearProps: 'clipPath' }, 0.1);
-        if (img) gsap.set(img, { transition: 'none' });
-        if (img) tl.fromTo(img, { scale: 1.25 }, { scale: 1, duration: 1.9 }, 0.1);
-        if (readout) tl.fromTo(readout, { autoAlpha: 0, x: -24 }, { autoAlpha: 1, x: 0, duration: 1 }, 0.9);
+        gsap.set(vis, { autoAlpha: 1, y: 0, clearProps: 'transition' });
+        const spools = gsap.utils.toArray<HTMLElement>('.spool', vis);
+        const centre = vis.querySelector<HTMLElement>('.spool-c');
+        const sides = spools.filter((s) => s !== centre);
+        if (centre) tl.fromTo(centre, { autoAlpha: 0, y: 90, scale: 0.85 }, { autoAlpha: 1, y: 0, scale: 1, duration: 1.4 }, 0.15);
+        sides.forEach((s, i) => {
+          const dir = s.classList.contains('spool-l') ? -1 : 1;
+          tl.fromTo(s, { autoAlpha: 0, x: -dir * 120, y: 60, rotate: dir * -12 }, { autoAlpha: 1, x: 0, y: 0, rotate: dir * 7, duration: 1.4 }, 0.35 + i * 0.08);
+        });
+        if (readout) tl.fromTo(readout, { autoAlpha: 0, y: -16 }, { autoAlpha: 1, y: 0, duration: 1 }, 0.9);
         if (val) {
           const target = parseFloat(val.dataset.count || '0');
           const unit = val.querySelector('small')?.outerHTML || '';
           const o = { v: 0 };
           tl.to(o, { v: target, duration: 1.4, ease: 'power3.out', onUpdate: () => { val.innerHTML = o.v.toFixed(3) + unit; } }, 0.9);
         }
-        if (img) gsap.to(img, { yPercent: 8, ease: 'none', scrollTrigger: { trigger: vis, start: 'top top', end: 'bottom top', scrub: true } });
+        // gentle idle float, each spool on its own rhythm
+        tl.add(() => {
+          spools.forEach((s, i) => gsap.to(s, { y: i === 1 ? -12 : -8, duration: 2.6 + i * 0.5, ease: 'sine.inOut', yoyo: true, repeat: -1 }));
+        });
+        // pointer parallax: centre moves least, sides more
+        if (matchMedia('(hover: hover) and (pointer: fine)').matches) {
+          const movers = spools.map((s) => ({ x: gsap.quickTo(s, 'x', { duration: 0.8, ease: 'power3.out' }), depth: s === centre ? 10 : 22 }));
+          vis.addEventListener('pointermove', (e) => {
+            const r = vis.getBoundingClientRect();
+            const nx = (e.clientX - r.left) / r.width - 0.5;
+            movers.forEach((m) => m.x(nx * m.depth));
+          });
+          vis.addEventListener('pointerleave', () => movers.forEach((m) => m.x(0)));
+        }
+        // scroll: spools drift apart slightly as the hero leaves
+        gsap.to(sides, { yPercent: (i) => (i === 0 ? 10 : 16), ease: 'none', scrollTrigger: { trigger: vis, start: 'top top', end: 'bottom top', scrub: true } });
       }
     }
 

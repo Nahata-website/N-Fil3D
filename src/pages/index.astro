@@ -19,14 +19,22 @@ const tabs = [
   { key: 'abs', label: 'ABS & ASA', items: [...bySlug('abs-3d-printer-filaments').slice(0, 2), ...bySlug('asa-cat').slice(0, 1), ...bySlug('abs-fr').slice(0, 1)] },
   { key: 'special', label: 'Speciality', items: pick([...bySlug('pla_tf'), ...bySlug('matte_pla'), ...bySlug('pla_cf'), ...bySlug('pla_lw'), ...bySlug('3d-pens-filaments')]) },
 ];
+const railFrom = (list: typeof products) => {
+  const first = list.find((p) => p.images.length) || list[0];
+  const second = first?.images[1] || list.find((p) => p !== first && p.images.length)?.images[0];
+  return { img: first?.images[0], img2: second };
+};
 const cats = [
-  { name: 'Filament', href: '/product-category/3d-printer-filaments/', img: bySlug('pla')[0]?.images[0] },
-  { name: '3D Printers', href: '/printers/', img: productsIn(catBySlug.get('fdm-3d-printers')!.id)[0]?.images[0] },
-  { name: '3D Pens', href: '/product-category/3d-pen/', img: productsIn(catBySlug.get('3d-pen')!.id)[0]?.images[0] },
-  { name: 'Resin printers', href: '/product-category/3d-printers/resin-3d-printers/', img: productsIn(catBySlug.get('resin-3d-printers')!.id)[0]?.images[0] },
-  { name: 'Scanners', href: '/product-category/3d-scanner/', img: productsIn(catBySlug.get('3d-scanner')!.id)[0]?.images[0] },
-  { name: 'Spares', href: '/product-category/accessories-and-spares/', img: productsIn(catBySlug.get('accessories-and-spares')!.id)[0]?.images[0] },
+  { name: 'Filament', href: '/product-category/3d-printer-filaments/', ...railFrom(bySlug('pla')) },
+  { name: '3D Printers', href: '/printers/', ...railFrom(productsIn(catBySlug.get('fdm-3d-printers')!.id)) },
+  { name: '3D Pens', href: '/product-category/3d-pen/', ...railFrom(productsIn(catBySlug.get('3d-pen')!.id)) },
+  { name: 'Resin printers', href: '/product-category/3d-printers/resin-3d-printers/', ...railFrom(productsIn(catBySlug.get('resin-3d-printers')!.id)) },
+  { name: 'Scanners', href: '/product-category/3d-scanner/', ...railFrom(productsIn(catBySlug.get('3d-scanner')!.id)) },
+  { name: 'Spares', href: '/product-category/accessories-and-spares/', ...railFrom(productsIn(catBySlug.get('accessories-and-spares')!.id)) },
 ];
+// Hero: three spools — big in the centre, two smaller at the sides
+const heroSpools = ['premium-pla-tangy-orange-1-75mm', 'premium-pla-emerald-green-1-75mm', 'premium-pla-electric-blue-1-75mm']
+  .map((s) => products.find((p) => p.slug === s)).filter((p): p is (typeof products)[number] => !!p && p.images.length > 0);
 // Colour wall: one swatch per distinct colour name across PLA+ and PETG
 const wall: { name: string; hex: string; href: string }[] = [];
 const seen = new Set<string>();
@@ -41,7 +49,6 @@ const printerNotes: Record<string, string> = { 'Mini-N': 'Compact. For desks, ho
   title="3D Printers & Filament Online in India | NFIL3D"
   description="Shop 3D printers, PLA, PETG and ABS filament, 3D pens and scanners from NFIL3D. Lifetime warranty on filament and free shipping across India."
 >
-  <link slot="head" rel="preload" as="image" href="/images/hero-desktop.webp" media="(min-width: 761px)">
 
   <section class="hero">
     <div class="wrap hero-in">
@@ -55,10 +62,12 @@ const printerNotes: Record<string, string> = { 'Mini-N': 'Compact. For desks, ho
         </div>
       </div>
       <div class="hero-visual reveal" style="--d:.1s">
-        <picture>
-          <source media="(max-width: 760px)" srcset="/images/hero-mobile.webp" width="1122" height="1402">
-          <img src="/images/hero-desktop.webp" width="1448" height="1086" alt="NFIL3D Emerald Green filament spool with a digital caliper measuring the filament" fetchpriority="high">
-        </picture>
+        {heroSpools.map((p, i) => (
+          <a class={`spool spool-${['l', 'c', 'r'][i]}`} href={p.path} aria-label={`${colourName(p)}, ${inr(p.price)}`}>
+            <img src={p.images[0].src} srcset={p.images[0].srcset} sizes={i === 1 ? '(max-width: 760px) 60vw, 34vw' : '(max-width: 760px) 40vw, 22vw'} alt={p.images[0].alt || colourName(p)} width="600" height="600" fetchpriority={i === 1 ? 'high' : undefined} loading={i === 1 ? undefined : 'lazy'}>
+            <span class="spool-tag"><span>{colourName(p)}</span><strong>{inr(p.price)}</strong></span>
+          </a>
+        ))}
         <div class="readout" aria-label={`Diameter 1.750 millimetres, tolerance ${SITE.facts.tolerance}`}>
           <span class="mono">Diameter · measured</span>
           <span class="val" data-count="1.750">1.750<small> mm</small></span>
@@ -83,7 +92,10 @@ const printerNotes: Record<string, string> = { 'Mini-N': 'Compact. For desks, ho
         {cats.map((c, i) => (
           <li class="reveal" style={`--d:${i * 0.04}s`}>
             <a href={c.href} class="rail-item">
-              {c.img && <img src={c.img.src} srcset={c.img.srcset} sizes="160px" alt="" loading="lazy" width="300" height="300">}
+              <span class="rail-media">
+                {c.img && <img src={c.img.src} srcset={c.img.srcset} sizes="200px" alt="" loading="lazy" width="300" height="300">}
+                {c.img2 && <img class="rail-alt" src={c.img2.src} srcset={c.img2.srcset} sizes="200px" alt="" loading="lazy" width="300" height="300">}
+              </span>
               <span>{c.name}</span>
             </a>
           </li>
@@ -218,15 +230,22 @@ const printerNotes: Record<string, string> = { 'Mini-N': 'Compact. For desks, ho
   .hero-in { display: grid; grid-template-columns: 1fr 1.05fr; gap: clamp(28px, 4vw, 64px); align-items: center; }
   @media (max-width: 900px) { .hero-in { grid-template-columns: 1fr; } }
   .hero-copy strong { color: var(--ink); font-weight: 600; }
-  .hero-visual { position: relative; border-radius: var(--radius-lg); overflow: hidden; background: #0b0b0a; aspect-ratio: 4 / 3; }
-  @media (max-width: 760px) { .hero-visual { aspect-ratio: 4 / 5; } }
-  .hero-visual img { width: 100%; height: 100%; object-fit: cover; transform: scale(1.04); transition: transform 1.6s var(--ease); }
-  .hero-visual.in img { transform: scale(1); }
-  .readout { position: absolute; left: 20px; top: 20px; display: flex; flex-direction: column; gap: 2px; padding: 14px 18px; border-radius: 16px; background: rgba(10,10,9,.72); backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,.12); color: #F2F0EB; }
-  @media (max-width: 760px) { .readout { top: auto; left: auto; right: 14px; bottom: 14px; } }
-  .readout .mono { font-size: .66rem; color: #A19D95; }
-  .readout .val { font-family: var(--mono); font-size: 2rem; color: #FF8A5C; letter-spacing: .02em; line-height: 1.1; }
-  .readout small { font-size: .9rem; color: #F2F0EB; }
+  .hero-visual { position: relative; aspect-ratio: 5 / 4; border-radius: var(--radius-lg); background: radial-gradient(70% 60% at 50% 45%, var(--surface) 0%, transparent 100%); }
+  @media (max-width: 760px) { .hero-visual { aspect-ratio: 1 / 1; margin-top: 8px; } }
+  .spool { position: absolute; display: block; border-radius: 28px; background: #fff; border: 1px solid var(--line); box-shadow: 0 30px 60px -30px rgba(17,17,16,.35), 0 8px 20px -12px rgba(17,17,16,.2); overflow: hidden; text-decoration: none; color: #111110; transition: box-shadow .4s var(--ease); }
+  .spool img { display: block; width: 100%; aspect-ratio: 1; object-fit: contain; }
+  .spool-c { width: 46%; left: 27%; top: 10%; z-index: 3; }
+  .spool-l { width: 30%; left: 0; top: 44%; z-index: 2; rotate: -7deg; }
+  .spool-r { width: 30%; right: 0; top: 36%; z-index: 2; rotate: 7deg; }
+  .spool:hover { box-shadow: 0 40px 70px -30px rgba(17,17,16,.45), 0 10px 24px -12px rgba(17,17,16,.25); z-index: 4; }
+  .spool-tag { position: absolute; left: 10px; right: 10px; bottom: 10px; display: flex; justify-content: space-between; align-items: center; gap: 8px; padding: 8px 12px; border-radius: 999px; background: rgba(255,255,255,.88); backdrop-filter: blur(8px); border: 1px solid rgba(17,17,16,.08); font-size: .8rem; font-weight: 550; }
+  .spool-l .spool-tag, .spool-r .spool-tag { font-size: .7rem; padding: 6px 10px; }
+  .spool-tag strong { font-weight: 650; }
+  .readout { position: absolute; left: 4%; top: 2%; z-index: 5; display: flex; flex-direction: column; gap: 2px; padding: 12px 16px; border-radius: 16px; background: color-mix(in srgb, var(--bg) 80%, transparent); backdrop-filter: blur(10px); border: 1px solid var(--line); color: var(--ink); }
+  @media (max-width: 760px) { .readout { left: 0; top: 0; padding: 10px 12px; } .spool-tag { font-size: .7rem; } .spool-l .spool-tag, .spool-r .spool-tag { display: none; } }
+  .readout .mono { font-size: .64rem; color: var(--muted); }
+  .readout .val { font-family: var(--mono); font-size: 1.8rem; color: var(--accent); letter-spacing: .02em; line-height: 1.1; }
+  .readout small { font-size: .85rem; color: var(--ink); }
   @media (max-width: 760px) { .hero-copy .row .btn { flex: 1 1 100%; } .trust { grid-template-columns: 1fr 1fr !important; } .readout .val { font-size: 1.5rem; } .bulk { padding: 28px 22px; } .qube { padding: 24px; } .proof .big { font-size: 3.4rem; } .quote { padding: 22px; } }
   .trust { list-style: none; margin: clamp(32px, 4vw, 56px) 0 0; padding: 22px 0 0; border-top: 1px solid var(--line); display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 16px; }
   .trust li { display: flex; flex-direction: column; }
@@ -237,7 +256,11 @@ const printerNotes: Record<string, string> = { 'Mini-N': 'Compact. For desks, ho
   @media (max-width: 900px) { .rail { grid-template-columns: repeat(6, 132px); overflow-x: auto; padding-bottom: 6px; scroll-snap-type: x mandatory; } .rail li { scroll-snap-align: start; } }
   .rail-item { display: flex; flex-direction: column; align-items: center; gap: 10px; padding: 14px 12px 16px; border-radius: var(--radius); background: var(--surface); border: 1px solid var(--line); text-decoration: none; font-weight: 550; font-size: .92rem; transition: transform .4s var(--ease), border-color .3s; }
   .rail-item:hover { transform: translateY(-3px); border-color: var(--ink); color: var(--ink); }
-  .rail-item img { width: 100%; aspect-ratio: 1; object-fit: contain; border-radius: 12px; background: #fff; }
+  .rail-media { position: relative; display: block; width: 100%; aspect-ratio: 1; border-radius: 12px; background: #fff; overflow: hidden; }
+  .rail-media img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; transition: opacity .5s var(--ease), transform .7s var(--ease); }
+  .rail-alt { opacity: 0; transform: scale(1.06); }
+  .rail-item:hover .rail-media img:first-child, .rail-item:focus-visible .rail-media img:first-child { opacity: 0; transform: scale(.96); }
+  .rail-item:hover .rail-alt, .rail-item:focus-visible .rail-alt { opacity: 1; transform: scale(1); }
 
   .colour { background: var(--surface); border-block: 1px solid var(--line); overflow-x: clip; }
   @media (hover: none) { .tip { display: none; } }
