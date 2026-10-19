@@ -604,16 +604,19 @@ const printerNotes: Record<string, string> = { 'Mini-N': 'Compact. For desks, ho
     .slider-ui { margin-top: 18px; }
     .s2-stage { aspect-ratio: 1 / 1; margin-top: 8px; }
     .arc { left: 0; right: 0; }
-    .s2-stage { aspect-ratio: 1 / 1.05; }
+    .s2-stage { aspect-ratio: 1 / 1.22; container-type: inline-size; }
     .arc { height: 100%; bottom: 0; left: 0; right: 0; }
     .podium { display: none; }
-    .s-pr::before { display: none; }
-    .s-pr { bottom: 4%; }
-    .s-pr .spool-tag { top: auto; bottom: -10px; }
-    .s2-trust { font-size: .8rem; } .s2-trust li { padding: 0 10px; gap: 8px; } .s2-trust li + li { border-left: 0; } .s2-trust svg { width: 22px; height: 22px; }
-    .pr-l3 { height: 30%; left: 13%; bottom: 46%; } .pr-l2 { height: 32%; left: 37%; bottom: 46%; } .pr-r2 { height: 33%; left: 63%; bottom: 46%; } .pr-r3 { height: 29%; left: 87%; bottom: 46%; }
-    .pr-l1 { height: 27%; left: 19%; bottom: 4%; } .pr-c { height: 46%; left: 50%; } .pr-r1 { height: 38%; left: 81%; bottom: 4%; }
-    .s-pr:not(.pr-c) .spool-tag { display: none; }
+    .s-pr::before { width: 23cqw; height: 5.4cqw; top: calc(100% - 1.3cqw); }
+    .pr-l1::before, .pr-r1::before { width: 27cqw; }
+    .pr-c::before { width: 31cqw; height: 6.4cqw; }
+    .s-pr .spool-tag { top: calc(100% + 1.2cqw); bottom: auto; font-size: .62rem; padding: 3px 9px; }
+    .s2-copy .s2-trust { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; width: 100%; font-size: .72rem; line-height: 1.3; }
+    .s2-trust li { flex-direction: column; text-align: center; padding: 0 4px; gap: 6px; }
+    .s2-trust li + li { border-left: 1px solid var(--line); }
+    .s2-trust svg { width: 24px; height: 24px; }
+    .pr-l3 { height: 27%; left: 13%; bottom: 56%; } .pr-l2 { height: 28%; left: 37.5%; bottom: 56%; } .pr-r2 { height: 29%; left: 62.5%; bottom: 56%; } .pr-r3 { height: 26%; left: 87%; bottom: 56%; }
+    .pr-l1 { height: 23%; left: 18%; bottom: 9%; z-index: 8; } .pr-c { height: 41%; left: 50%; bottom: 9%; z-index: 9; } .pr-r1 { height: 33%; left: 82%; bottom: 9%; z-index: 8; }
     .s3-stage .spool-tag { display: none; }
     .s-cta { width: 100%; } .s-cta .btn { flex: 1 1 100%; }
   }
@@ -624,7 +627,7 @@ const printerNotes: Record<string, string> = { 'Mini-N': 'Compact. For desks, ho
   .sprev { left: 16px; }
   .snext { right: 16px; }
   @media (min-width: 761px) and (max-width: 1700px) { .s2-stage { max-width: min(1180px, calc(100% - 280px)); } .sarrow { width: 44px; height: 44px; margin-top: 0; top: auto; bottom: -6px; } .sprev { left: max(24px, calc((100% - var(--max)) / 2 + 24px)); } .snext { right: auto; left: calc(max(24px, calc((100% - var(--max)) / 2 + 24px)) + 56px); } }
-  @media (max-width: 760px) { .sarrow { width: 40px; height: 40px; margin-top: -20px; top: auto; bottom: 8px; } .sprev { left: auto; right: 64px; } .snext { right: 14px; } }
+  @media (max-width: 760px) { .slides { padding-bottom: 56px; } .sarrow { width: 40px; height: 40px; margin-top: 0; top: auto; bottom: 4px; } .sprev { left: auto; right: 64px; } .snext { right: 14px; } }
   .slider-ui[hidden] { display: none !important; }
   .slider-ui { display: flex; align-items: center; gap: 14px; margin-top: 28px; }
   .dots { display: flex; gap: 8px; }
