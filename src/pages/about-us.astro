@@ -1,140 +1,153 @@
 ---
 import Base from '../layouts/Base.astro';
-import Breadcrumbs from '../components/Breadcrumbs.astro';
+import CtaBand from '../components/CtaBand.astro';
+import { pimg } from '../lib/data';
 
-const stats = [
-  ['37+', 'Years experience'],
-  ['4 lakh', 'Sq. ft. facility'],
-  ['In-house', 'Testing lab'],
-];
+const stats = [['37+ years', 'Polymer experience'], ['4 lakh sq. ft.', 'Manufacturing facility'], ['In-house', 'Testing & development']];
 const offers = [
-  ['3D Filaments', 'PLA+, PETG, ABS, TPU, ASA, HIPS, Nylon, rPLA and advanced materials.', '/product-category/3d-printer-filaments/'],
-  ['3D Printers', 'Reliable 3D printers for creators, professionals, students and industries.', '/printers/'],
-  ['3D Pens', 'Creative 3D pens and kits for kids, students, designers and makers.', '/product-category/3d-pen/'],
-  ['Spares & Accessories', '3D scanners, resins, spares and accessories for complete support.', '/product-category/accessories-and-spares/'],
-];
+  ['Filaments', '/product-category/3d-printer-filaments/', pimg('premium-hs-pla-fluoro-yellow-1-75mm', 1)],
+  ['3D Printers', '/printers/', pimg('n2-3d-printer', 0)],
+  ['3D Pens', '/product-category/3d-pen/', pimg('nfil3d-pen-for-kids-adults-nfil3d', 1)],
+  ['Spares & Accessories', '/product-category/accessories-and-spares/', pimg('all-in-one-washing-and-curing-station-uw-02', 0)],
+] as const;
 const tests = [
-  ['Thermal testing', 'Checks heat resistance and material stability.', 'M12 3v10.5a3.5 3.5 0 1 0 0 0M12 3a2 2 0 0 1 2 2v8'],
-  ['Mechanical testing', 'Measures strength, durability and flexibility.', 'M4 20h16M7 20V9l5-5 5 5v11M10 20v-5h4v5'],
-  ['Rheological testing', 'Ensures smooth flow and consistent extrusion.', 'M3 12c3-6 6 6 9 0s6 6 9 0'],
-  ['Printer testing', 'Validates real-world printing performance.', 'M6 9V3h12v6M6 18H4v-7h16v7h-2M8 14h8v7H8z'],
+  ['Thermal testing', 'Heat resistance and material stability.'],
+  ['Mechanical testing', 'Strength, durability and flexibility.'],
+  ['Rheological testing', 'Smooth flow and consistent extrusion.'],
+  ['Printer testing', 'Real-world performance on our own printers.'],
 ];
-const brands = ['IFB', 'Crompton', 'Bajaj', 'Surya', 'Godrej', 'Symphony'];
-const ld = {
-  '@context': 'https://schema.org', '@type': 'AboutPage', name: 'About NFIL3D', url: 'https://nfil3d.com/about-us/',
-  description: 'NFIL3D is a 3D printing solutions brand backed by 37+ years of experience in engineering plastic compounds and biopolymers.',
-};
+const brands = ['Bajaj', 'Surya', 'Godrej', 'Symphony', 'IFB', 'Crompton'];
+const YT = 'https://youtu.be/UjGvlBgBbrY';
+const ld = { '@context': 'https://schema.org', '@type': 'AboutPage', name: 'About NFIL3D', url: 'https://nfil3d.com/about-us/',
+  description: 'NFIL3D is a 3D printing solutions brand backed by 37+ years of experience in engineering plastic compounds and biopolymers.' };
 ---
-<Base title="About NFIL3D: Engineering Better 3D Printing Materials" description="NFIL3D makes 3D printers and filament and supplies 3D pens, resins, scanners and spares, backed by 37+ years in engineering plastics, a 4 lakh sq. ft. facility and an in-house testing lab." jsonld={ld}>
-  <div class="wrap" style="padding-top:20px"><Breadcrumbs items={[{ name: 'About us' }]} /></div>
-
-  <section class="wrap ab-hero">
-    <div class="stack gap-24">
-      <span class="eyebrow reveal">About NFIL3D</span>
-      <h1 class="h-display">Engineering better <span class="serif">3D printing materials.</span></h1>
-      <p class="lead reveal">N-Fil3D is a 3D printing solutions brand backed by decades of experience in engineering plastic compounds, biopolymers and advanced material manufacturing.</p>
+<Base title="About NFIL3D: Engineering Possibilities, Layer by Layer" description="NFIL3D makes 3D printers and filament and supplies 3D pens, resins, scanners and spares, backed by 37+ years in engineering plastics, a 4 lakh sq. ft. facility and an in-house testing lab." jsonld={ld}>
+  <section class="wrap ah">
+    <div class="stack gap-16">
+      <span class="eyebrow gold">About NFIL3D</span>
+      <h1 class="h-display">Engineering possibilities. <br>Layer by layer.</h1>
+      <p class="lead">Decades of polymer expertise. A new world of 3D printing.</p>
     </div>
-    <ul class="stats">
-      {stats.map(([n, l]) => <li class="reveal"><strong>{n}</strong><span>{l}</span></li>)}
-    </ul>
+    <a class="story-link" href="/brand-story/">Discover our story <span aria-hidden="true">→</span></a>
   </section>
 
-  <section class="wrap section who">
+  <a class="ah-img reveal" href={YT} target="_blank" rel="noopener" aria-label="Watch the NFIL3D corporate video on YouTube">
+    <img src="/images/nfil3d-video.webp" width="1054" height="572" alt="NFIL3D filament spools and printed figures in front of the Nahata wall" fetchpriority="high">
+  </a>
+
+  <section class="wrap">
+    <ul class="stats">{stats.map(([n, l]) => <li class="reveal"><strong>{n}</strong><span>{l}</span></li>)}</ul>
+  </section>
+
+  <section class="wrap section story">
     <div class="stack gap-16">
-      <span class="eyebrow reveal">Who we are</span>
-      <h2 class="h-1">Built on experience, quality <span class="serif">and innovation.</span></h2>
+      <span class="eyebrow gold">Our story</span>
+      <h2 class="h-1">Built on experience. <br>Driven by possibility.</h2>
     </div>
-    <div class="stack gap-16 who-text">
-      <p class="lead reveal">N-Fil3D was founded by individuals with more than 37 years of extensive experience in manufacturing engineering plastic compounds and biopolymers, serving notable clients such as IFB, Crompton, Bajaj, Surya, Godrej, Symphony and more.</p>
-      <p class="reveal muted">We manufacture a wide range of high-quality 3D printers and 3D filaments, and supply 3D pens, 3D resins, 3D scanners, spares and accessories. We are your one-stop solution for 3D printing.</p>
+    <div class="stack gap-12 story-t">
+      <p class="reveal">N-Fil3D was founded by people with more than 37 years of experience manufacturing engineering plastic compounds and biopolymers, serving clients such as IFB, Crompton, Bajaj, Surya, Godrej and Symphony.</p>
+      <p class="reveal muted">We manufacture high-quality 3D printers and 3D filaments, and supply 3D pens, resins, scanners, spares and accessories: one partner for everything 3D printing.</p>
     </div>
   </section>
 
   <section class="section offer">
     <div class="wrap">
-      <div class="section-head"><div class="stack"><span class="eyebrow">What we offer</span><h2 class="h-1">Complete 3D printing <span class="serif">solutions.</span></h2><p class="lead">Everything you need for reliable and consistent 3D printing performance.</p></div></div>
-      <div class="grid cols-4">
-        {offers.map(([t, d, h], i) => (
-          <a class="card off reveal" href={h}>
-            <span class="num mono">0{i + 1}</span>
-            <h3 class="h-3">{t}</h3>
-            <p class="muted">{d}</p>
-            <span class="link">Explore <span aria-hidden="true">→</span></span>
+      <span class="eyebrow gold">Our offering</span>
+      <h2 class="h-1 offer-h">One partner. <br>Complete 3D printing solutions.</h2>
+      <div class="ogrid">
+        {offers.map(([t, h, im], i) => (
+          <a class="ocard reveal" href={h} style={`--d:${i * 0.06}s`}>
+            <span class="oimg">{im && <img src={im.src} srcset={im.srcset} sizes="(max-width: 760px) 45vw, 300px" alt={im.alt || t} width="600" height="600" loading="lazy">}</span>
+            <span class="olabel">{t} <span class="arr" aria-hidden="true">→</span></span>
           </a>
         ))}
       </div>
     </div>
   </section>
 
-  <section class="wrap section fac">
-    <div class="stack gap-16">
-      <span class="eyebrow reveal">Our facility</span>
-      <h2 class="h-1">Advanced manufacturing with <span class="serif">in-house quality testing.</span></h2>
-      <p class="lead reveal">Our facility spans 4 lakh square feet and includes an in-house laboratory dedicated to testing the thermal, mechanical and rheological properties of each batch of 3D filament.</p>
-      <p class="reveal muted">We also use a range of 3D printers, including our own, to consistently assess filament quality, which strengthens our research and development.</p>
+  <section class="fac">
+    <div class="fac-img reveal"><img src="/images/hero-desktop.webp" width="1448" height="1086" alt="Measuring NFIL3D filament diameter with a digital caliper" loading="lazy"></div>
+    <div class="fac-t">
+      <span class="eyebrow gold">Our facility</span>
+      <h2 class="h-1">Quality, tested <br>at every stage.</h2>
+      <p class="muted">Our 4 lakh sq. ft. facility has an in-house lab that tests the thermal, mechanical and rheological properties of every batch of filament, then proves it on 3D printers, including our own.</p>
+      <ul class="tests">{tests.map(([t, d]) => <li class="reveal"><strong>{t}</strong><span class="muted">{d}</span></li>)}</ul>
     </div>
-    <div class="tests">
-      {tests.map(([t, d, path]) => (
-        <div class="card test reveal">
-          <span class="ic" aria-hidden="true"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d={path} /></svg></span>
-          <div><h3 class="h-3">{t}</h3><p class="muted">{d}</p></div>
-        </div>
-      ))}
-    </div>
-  </section>
-
-  <section class="section brands">
-    <div class="wrap stack gap-16 center">
-      <span class="eyebrow reveal">Trusted experience</span>
-      <h2 class="h-1">Experience serving <span class="serif">leading brands.</span></h2>
-      <p class="lead reveal">Our team's background includes experience with well-known industry names.</p>
-    </div>
-    <div class="marquee" aria-label="Brands our team has worked with">
-      <ul class="track">
-        {[...brands, ...brands, ...brands, ...brands].map((b, i) => <li aria-hidden={i >= brands.length ? 'true' : undefined}>{b}</li>)}
-      </ul>
-    </div>
-    <p class="wrap small muted center note">Brand names belong to their owners and refer to our founders' prior experience.</p>
   </section>
 
   <section class="wrap section-sm">
-    <div class="cta-card reveal">
-      <h2 class="h-1">Start your 3D printing journey <span class="serif">with NFIL3D.</span></h2>
-      <p class="lead">Explore our range of filaments, printers, pens, spares and accessories designed for smooth and consistent 3D printing.</p>
-      <div class="row gap-12" style="justify-content:center"><a class="btn btn-accent btn-lg" href="/shop/">Explore products <span class="arrow" aria-hidden="true">→</span></a><a class="btn btn-ghost btn-lg" href="/brand-story/">Our story</a></div>
-    </div>
+    <a class="vband reveal" href={YT} target="_blank" rel="noopener">
+      <span class="vthumb"><img src="/images/nfil3d-video.webp" width="1054" height="572" alt="" loading="lazy"><span class="vplay-sm" aria-hidden="true">▶</span></span>
+      <span class="vtext"><strong>See NFIL3D in action.</strong><span>From materials to manufacturing, a closer look at our process and possibilities.</span></span>
+      <span class="vplay" aria-hidden="true"><svg width="26" height="26" viewBox="0 0 24 24"><path d="M8 5v14l11-7z" fill="currentColor"/></svg></span>
+    </a>
   </section>
+
+  <section class="wrap section-sm brands">
+    <span class="eyebrow gold">Trusted experience</span>
+    <h2 class="h-2">Experience serving leading brands</h2>
+    <ul class="blist">{brands.map((b) => <li>{b}</li>)}</ul>
+    <p class="note muted">Brand names belong to their owners and refer to our founders' prior experience.</p>
+  </section>
+
+  <CtaBand title="Let's build what's next." href="/contact/" label="Talk to our team" />
 </Base>
 <style>
-  .ab-hero { display: grid; grid-template-columns: 1.3fr 1fr; gap: clamp(28px, 5vw, 80px); align-items: end; padding-block: clamp(32px, 6vw, 88px) clamp(24px, 4vw, 48px); }
-  .ab-hero h1 { font-size: clamp(2.6rem, 5vw, 4.6rem); line-height: 1; }
-  .stats { list-style: none; margin: 0; padding: 0; display: grid; gap: 12px; }
-  .stats li { display: flex; align-items: baseline; justify-content: space-between; gap: 16px; padding: 20px 24px; border-radius: var(--radius); background: color-mix(in srgb, var(--surface) 70%, transparent); border: 1px solid var(--line); backdrop-filter: blur(12px); }
-  .stats strong { font-size: clamp(2rem, 3.4vw, 3rem); letter-spacing: -0.04em; font-weight: 600; }
+  .gold { color: #C99A00; }
+  .ah { display: flex; flex-wrap: wrap; gap: 24px; justify-content: space-between; align-items: flex-end; padding-block: clamp(32px, 6vw, 72px) 32px; }
+  .ah h1 { font-size: clamp(2.6rem, 6vw, 5.6rem); line-height: .98; }
+  .ah .lead { margin: 0; }
+  .story-link { font-weight: 600; text-decoration: none; padding-bottom: 6px; border-bottom: 2px solid var(--sun); }
+  .story-link span { color: #C99A00; }
+  .ah-img { display: block; position: relative; height: clamp(260px, 36vw, 560px); overflow: hidden; clip-path: polygon(0 12%, 100% 0, 100% 100%, 0 100%); }
+  .ah-img img { width: 100%; height: 100%; object-fit: cover; object-position: center 60%; }
+  .stats { list-style: none; margin: 0; padding: clamp(24px, 3vw, 40px) 0; display: grid; grid-template-columns: repeat(3, 1fr); border-bottom: 1px solid var(--line); }
+  .stats li { display: flex; flex-direction: column; gap: 4px; padding: 0 clamp(16px, 3vw, 40px); }
+  .stats li + li { border-left: 1px solid var(--line); }
+  .stats strong { font-size: clamp(1.6rem, 3vw, 2.6rem); font-weight: 600; letter-spacing: -0.04em; }
   .stats span { color: var(--muted); }
-  .who, .fac { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(28px, 5vw, 80px); align-items: start; }
-  .who-text { padding-top: 34px; }
+  .story { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(28px, 5vw, 80px); align-items: center; }
+  .story-t p { margin: 0; font-size: 1.05rem; }
   .offer { background: var(--surface-2); }
-  .off { display: flex; flex-direction: column; gap: 10px; padding: 28px; text-decoration: none; transition: transform .45s var(--ease), box-shadow .45s var(--ease); }
-  .off:hover { transform: translateY(-4px); box-shadow: var(--shadow); }
-  .off .num { color: var(--accent); font-size: .9rem; }
-  .off .link { margin-top: auto; font-weight: 600; font-size: .92rem; }
-  .tests { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
-  .test { display: flex; flex-direction: column; gap: 14px; padding: 24px; }
-  .test .ic { width: 44px; height: 44px; border-radius: 12px; display: grid; place-items: center; background: var(--accent-soft); color: var(--accent); }
-  .test p { margin: 6px 0 0; font-size: .92rem; }
-  .center { text-align: center; align-items: center; }
-  .brands .lead { max-width: 560px; }
-  .marquee { margin-top: 40px; overflow: hidden; mask-image: linear-gradient(90deg, transparent, #000 10%, #000 90%, transparent); -webkit-mask-image: linear-gradient(90deg, transparent, #000 10%, #000 90%, transparent); }
-  .track { list-style: none; margin: 0; padding: 8px 0; display: flex; gap: 16px; width: max-content; animation: slide 36s linear infinite; }
-  .marquee:hover .track { animation-play-state: paused; }
-  .track li { min-width: 200px; padding: 26px 34px; text-align: center; border-radius: 22px; background: var(--surface); border: 1px solid var(--line); font-size: 1.35rem; font-weight: 650; letter-spacing: -0.02em; color: var(--ink-2); box-shadow: 0 10px 30px -22px rgba(17,17,16,.35); }
-  @keyframes slide { to { transform: translateX(-50%); } }
-  @media (prefers-reduced-motion: reduce) { .track { animation: none; flex-wrap: wrap; width: auto; justify-content: center; } }
-  .note { margin-top: 18px; font-size: .8rem; }
-  .small { font-size: .85rem; }
-  .cta-card { text-align: center; display: flex; flex-direction: column; align-items: center; gap: 18px; padding: clamp(36px, 6vw, 72px) clamp(20px, 5vw, 64px); border-radius: var(--radius-lg); background: radial-gradient(80% 120% at 0% 0%, var(--accent-soft), transparent 60%), var(--surface); border: 1px solid var(--line); }
-  .cta-card .lead { max-width: 620px; }
-  @media (max-width: 900px) { .ab-hero, .who, .fac { grid-template-columns: 1fr; } .who-text { padding-top: 0; } }
-  @media (max-width: 760px) { .tests { grid-template-columns: 1fr; } .track li { min-width: 150px; padding: 20px 24px; font-size: 1.1rem; } }
+  .offer-h { margin: 12px 0 32px; }
+  .ogrid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+  .ocard { display: flex; flex-direction: column; background: var(--surface); border-radius: var(--radius); overflow: hidden; text-decoration: none; transition: transform .45s var(--ease), box-shadow .45s var(--ease); }
+  .ocard:hover { transform: translateY(-4px); box-shadow: var(--shadow); }
+  .oimg { aspect-ratio: 5 / 4; background: #fff; overflow: hidden; }
+  .oimg img { width: 100%; height: 100%; object-fit: contain; transition: transform .7s var(--ease); }
+  .ocard:hover .oimg img { transform: scale(1.05); }
+  .olabel { padding: 16px 18px; font-weight: 600; display: flex; gap: 10px; align-items: center; border-top: 1px solid var(--line); }
+  .arr { color: #C99A00; transition: transform .3s var(--ease); }
+  .ocard:hover .arr { transform: translateX(4px); }
+  .fac { display: grid; grid-template-columns: 1.1fr 1fr; align-items: center; gap: clamp(28px, 5vw, 72px); padding-block: clamp(28px, 4vw, 48px); }
+  .fac-img { height: 100%; min-height: 380px; overflow: hidden; border-radius: 0 var(--radius-lg) var(--radius-lg) 0; }
+  .fac-img img { width: 100%; height: 100%; object-fit: cover; }
+  .fac-t { display: flex; flex-direction: column; gap: 14px; padding-right: max(24px, calc((100vw - var(--max)) / 2 + 24px)); }
+  .fac-t p { margin: 0; }
+  .tests { list-style: none; margin: 8px 0 0; padding: 0; }
+  .tests li { display: flex; justify-content: space-between; gap: 16px; padding: 12px 0; border-top: 1px solid var(--line); font-size: .95rem; }
+  .tests li span { text-align: right; font-size: .86rem; }
+  .vband { display: grid; grid-template-columns: minmax(180px, 34%) 1fr auto; gap: clamp(16px, 3vw, 40px); align-items: center; padding: 14px; border-radius: var(--radius-lg); background: #111110; color: #F4F2EC; text-decoration: none; }
+  .vthumb { position: relative; display: block; aspect-ratio: 16 / 7; border-radius: var(--radius); overflow: hidden; }
+  .vthumb img { width: 100%; height: 100%; object-fit: cover; transition: transform .7s var(--ease); }
+  .vband:hover .vthumb img { transform: scale(1.05); }
+  .vplay-sm { position: absolute; inset: 0; margin: auto; width: 48px; height: 48px; border-radius: 50%; display: grid; place-items: center; border: 2px solid #fff; color: #fff; background: rgba(0,0,0,.25); }
+  .vtext { display: flex; flex-direction: column; gap: 6px; }
+  .vtext strong { font-size: clamp(1.2rem, 2vw, 1.6rem); font-weight: 600; letter-spacing: -0.02em; }
+  .vtext span { color: #BDB9B0; font-size: .95rem; }
+  .vplay { width: 72px; height: 72px; margin-right: clamp(8px, 2vw, 24px); border-radius: 50%; display: grid; place-items: center; background: var(--sun); color: #111110; padding-left: 4px; transition: transform .4s var(--ease); }
+  .vband:hover .vplay { transform: scale(1.1); }
+  .brands { text-align: center; display: flex; flex-direction: column; align-items: center; gap: 10px; }
+  .blist { list-style: none; margin: 14px 0 0; padding: 0; display: flex; flex-wrap: wrap; justify-content: center; }
+  .blist li { padding: 6px clamp(16px, 3vw, 36px); font-size: clamp(1.05rem, 1.6vw, 1.35rem); font-weight: 600; color: var(--ink-2); }
+  .blist li + li { border-left: 1px solid var(--line); }
+  .note { font-size: .78rem; margin: 6px 0 0; }
+  @media (max-width: 900px) {
+    .story, .fac { grid-template-columns: 1fr; }
+    .fac-img { border-radius: 0; min-height: 260px; }
+    .fac-t { padding: 0 18px; }
+    .ogrid { grid-template-columns: repeat(2, 1fr); }
+    .vband { grid-template-columns: 1fr; } .vplay { display: none; }
+  }
+  @media (max-width: 600px) { .stats { grid-template-columns: 1fr; } .stats li + li { border-left: 0; border-top: 1px solid var(--line); padding-top: 14px; margin-top: 14px; } .tests li { flex-direction: column; gap: 2px; } .tests li span { text-align: left; } }
 </style>

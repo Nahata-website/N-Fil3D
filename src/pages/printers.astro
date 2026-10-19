@@ -1,83 +1,170 @@
 ---
 import Base from '../layouts/Base.astro';
-import PageHead from '../components/PageHead.astro';
-import ProductCard from '../components/ProductCard.astro';
+import Breadcrumbs from '../components/Breadcrumbs.astro';
+import CtaBand from '../components/CtaBand.astro';
 import Faq from '../components/Faq.astro';
-import { products, productsIn, catBySlug, inr } from '../lib/data';
+import { bySlug, inr, pimg } from '../lib/data';
 import { SITE } from '../config/site';
-const nf = ['mini-n-3d-printer', 'n1-3d-printer', 'n2-3d-printer'].map((s) => products.find((p) => p.slug.startsWith(s))).filter(Boolean) as typeof products;
-const resin = productsIn(catBySlug.get('resin-3d-printers')!.id);
-const others = productsIn(catBySlug.get('3d-printers')!.id).filter((p) => !nf.includes(p) && !resin.includes(p));
+
+const fdm = [
+  ['mini-n-3d-printer', 'Mini-N', 'Compact & everyday', 'Home, desks & classrooms.'],
+  ['n1-3d-printer', 'N1', 'Versatile making', 'Prototypes & everyday parts.'],
+  ['n2-3d-printer', 'N2', 'Room to create', 'Bigger, longer prints.'],
+].map(([s, name, tag, best]) => ({ p: bySlug(s)!, name, tag, best })).filter((x) => x.p);
+const resin = [
+  ['halot-sky', 'Halot Sky'], ['halot-max', 'Halot Max'], ['halot-one', 'Halot One'], ['all-in-one-washing-and-curing-station-uw-02', 'Washing & Curing Station UW-02'],
+].map(([s, name]) => ({ p: bySlug(s)!, name })).filter((x) => x.p);
 const rows: [string, string[]][] = [
-  ['Best for', ['Home, desks, classrooms', 'Prototypes and everyday parts', 'Bigger, longer prints']],
+  ['Best for', ['Home, desks & classrooms', 'Prototypes & everyday parts', 'Bigger, longer prints']],
   ['Technology', ['FDM (filament)', 'FDM (filament)', 'FDM (filament)']],
   ['Filament size', ['1.75 mm', '1.75 mm', '1.75 mm']],
-  ['Warranty', ['1 year on parts', '1 year on parts', '1 year on parts']],
+  ['Parts warranty', ['1 year on parts', '1 year on parts', '1 year on parts']],
 ];
+const hero = pimg('n2-3d-printer', 0);
 ---
-<Base title="Compare 3D Printers: Mini-N, N1 & N2 | NFIL3D" description="Compare NFIL3D FDM printers (Mini-N, N1, N2) and Halot resin printers. 1-year printer warranty, free shipping in India and support Mon–Sat.">
-  <PageHead crumb="3D Printers" eyebrow="3D printers" title='Pick the right printer, <span class="serif">first time.</span>' lead="NFIL3D's own FDM printers for homes, schools and workshops, plus resin printers for fine detail. 1-year warranty on parts, support from India." />
-
-  <section class="wrap section-sm">
-    <div class="cmp card reveal">
-      <table>
-        <caption class="sr-only">Compare NFIL3D printers</caption>
-        <thead><tr><th scope="col"><span class="sr-only">Feature</span></th>{nf.map((p) => (
-          <th scope="col"><a href={p.path} class="pcol">{p.images[0] && <img src={p.images[0].src} srcset={p.images[0].srcset} sizes="220px" alt={p.images[0].alt} loading="lazy" width="400" height="400">}<span class="h-3">{p.shortName.replace(' 3D Printer', '')}</span><span class="price"><strong>{inr(p.price)}</strong></span></a></th>
-        ))}</tr></thead>
-        <tbody>{rows.map(([k, v]) => <tr><th scope="row">{k}</th>{v.map((x) => <td>{x}</td>)}</tr>)}</tbody>
-        <tfoot><tr><td></td>{nf.map((p) => <td><a class="btn btn-sm" href={p.path}>View details</a></td>)}</tr></tfoot>
-      </table>
+<Base title="Compare 3D Printers: Mini-N, N1 & N2 | NFIL3D" description="Compare NFIL3D FDM printers (Mini-N, N1, N2), Halot resin printers and the UW-02 wash and cure station. 1-year warranty on parts, free shipping in India.">
+  <section class="prh">
+    <div class="wrap prh-in">
+      <div class="stack gap-16">
+        <Breadcrumbs items={[{ name: '3D Printers' }]} />
+        <span class="eyebrow">Engineered for your next idea</span>
+        <h1 class="h-display">Make room <br>for bigger ideas.</h1>
+        <p class="lead">Find the right 3D printer for your home, classroom or workshop.</p>
+        <div class="row gap-12"><a class="btn btn-lg dark" href="#fdm">Explore printers <span class="arrow" aria-hidden="true">→</span></a><a class="btn btn-lg btn-ghost" href="#fit">Compare models</a></div>
+      </div>
+      <div class="prh-art reveal">
+        <span class="prh-bg" aria-hidden="true"></span>
+        {hero && <img src={hero.src} srcset={hero.srcset} sizes="(max-width: 760px) 80vw, 520px" alt="NFIL3D N2 3D printer" width="800" height="800" fetchpriority="high">}
+      </div>
     </div>
-    <div class="cmp-m">
-      {nf.map((p) => (
-        <a class="card pm reveal" href={p.path}>
-          {p.images[0] && <img src={p.images[0].src} srcset={p.images[0].srcset} sizes="40vw" alt={p.images[0].alt} loading="lazy" width="400" height="400">}
-          <div class="stack gap-8">
-            <span class="h-3">{p.shortName.replace(' 3D Printer', '')}</span>
-            <strong>{inr(p.price)}</strong>
-            <dl>{rows.map(([k, v]) => <div><dt>{k}</dt><dd>{v[nf.indexOf(p)]}</dd></div>)}</dl>
-            <span class="link">View details →</span>
+  </section>
+
+  <nav class="wrap ptabs" aria-label="Printer types">
+    <a href="#fdm" aria-current="true">FDM Printers</a><a href="#resin">Resin Printers</a><a href="#resin">Wash &amp; Cure</a>
+  </nav>
+
+  <section class="wrap section-sm" id="fdm">
+    <h2 class="h-1">Three printers. Your next possibility.</h2>
+    <div class="fgrid">
+      {fdm.map((f, i) => (
+        <article class="fcard reveal" style={`--d:${i * 0.06}s`} data-col={i}>
+          <a class="fimg" href={f.p.path}>{f.p.images[0] && <img src={f.p.images[0].src} srcset={f.p.images[0].srcset} sizes="(max-width: 760px) 90vw, 380px" alt={`NFIL3D ${f.name} 3D printer`} width="600" height="600" loading="lazy">}</a>
+          <div class="fbody">
+            <span class="tag">{f.tag}</span>
+            <h3>{f.name}</h3>
+            <strong class="price">{inr(f.p.price)}</strong>
+            <p class="muted">{f.best}</p>
+            <div class="row gap-12 factions"><a class="btn dark" href={f.p.path}>View printer <span class="arrow" aria-hidden="true">→</span></a><a class="cmp-link" href="#fit" data-hi={i}>Compare</a></div>
           </div>
+        </article>
+      ))}
+    </div>
+  </section>
+
+  <section class="wrap section-sm" id="fit">
+    <div class="fit">
+      <div class="fit-head"><h2 class="h-1">Find your fit.</h2><p class="muted small">See each printer page for full specifications.</p></div>
+      <div class="tscroll">
+        <table data-table>
+          <thead><tr><th><span class="sr-only">Feature</span></th>{fdm.map((f, i) => <th scope="col" data-c={i}><a href={f.p.path}>{f.p.images[0] && <img src={f.p.images[0].src} alt="" width="120" height="120" loading="lazy">}<span>{f.name}</span></a></th>)}</tr></thead>
+          <tbody>{rows.map(([k, v]) => <tr><th scope="row">{k}</th>{v.map((x, i) => <td data-c={i}>{x}</td>)}</tr>)}</tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <section class="wrap section-sm" id="resin">
+    <h2 class="h-1">For finer detail.</h2>
+    <p class="lead">Explore resin printers and finishing equipment.</p>
+    <div class="rgrid">
+      {resin.map((r, i) => (
+        <a class="rcard reveal" href={r.p.path} style={`--d:${i * 0.06}s`}>
+          <span class="rimg">{r.p.images[0] && <img src={r.p.images[0].src} srcset={r.p.images[0].srcset} sizes="(max-width: 760px) 45vw, 280px" alt={r.name} width="600" height="600" loading="lazy">}{!r.p.inStock && <span class="oos">Out of stock</span>}</span>
+          <span class="rname">{r.name}</span>
+          <strong>{inr(r.p.price)}</strong>
+          <span class="link small">View details <span aria-hidden="true">→</span></span>
         </a>
       ))}
     </div>
-    <p class="muted small" style="margin-top:12px">Build volume, speed and full specifications are on each printer's page.</p>
   </section>
 
-  {resin.length > 0 && <section class="wrap section-sm"><div class="section-head"><div class="stack"><span class="eyebrow">Fine detail</span><h2 class="h-2">Resin printers &amp; curing</h2></div></div><div class="grid cols-4">{resin.map((p) => <ProductCard p={p} />)}</div></section>}
-  {others.length > 0 && <section class="wrap section-sm"><div class="section-head"><h2 class="h-2">More printers</h2></div><div class="grid cols-4">{others.map((p) => <ProductCard p={p} />)}</div></section>}
+  <section class="wrap section-sm">
+    <a class="learn reveal" href="/get-started/">
+      <img src={pimg('mini-n-3d-printer', 4)?.src} alt="NFIL3D printer printing a vase" width="800" height="800" loading="lazy">
+      <div class="stack gap-12"><h2 class="h-1">New to 3D printing?</h2><p class="muted">Start with clear guides and practical support.</p><span class="link">Visit the learning hub <span aria-hidden="true">→</span></span></div>
+    </a>
+  </section>
 
   <section class="wrap section-sm" style="max-width:900px">
     <h2 class="h-2" style="margin-bottom:16px">Printer questions</h2>
     <Faq items={[
       ['FDM or resin: which should I buy?', 'Choose FDM for prototypes, functional parts and larger prints; it uses 1.75 mm filament and is easier to live with. Choose resin for very fine detail such as miniatures, jewellery and dental models; prints need washing and curing.'],
       ['What warranty do NFIL3D printers have?', 'A 1-year warranty on parts and components against manufacturing defects. Defective parts are repaired or replaced at no cost; shipping charges may apply.'],
-      ['Which filament should I start with?', 'NFIL3D PLA+ is the easiest. Move to PETG or HI ABS+ for stronger, more heat-resistant parts.'],
       ['Do you help with setup?', `Yes. Call ${SITE.phone}, email ${SITE.email} or message us on WhatsApp, ${SITE.hours}.`],
     ]} />
   </section>
+
+  <CtaBand title="Need a hand choosing?" text="Get expert advice to find the right 3D printer for your needs." href="/contact/" label="Talk to our team" />
 </Base>
 <style>
-  .cmp { overflow-x: auto; padding: 8px; }
-  table { width: 100%; border-collapse: collapse; min-width: 720px; }
-  th, td { padding: 16px; text-align: left; border-bottom: 1px solid var(--line); vertical-align: top; }
-  tbody th { color: var(--muted); font-weight: 500; width: 180px; }
-  tfoot td { border-bottom: 0; }
-  .pcol { display: flex; flex-direction: column; gap: 8px; text-decoration: none; }
-  .pcol img { aspect-ratio: 1; object-fit: contain; background: #fff; border-radius: 16px; max-width: 220px; }
-  .small { font-size: .88rem; }
-  .cmp-m { display: none; }
-  @media (max-width: 760px) {
-    .cmp { display: none; }
-    .cmp-m { display: grid; gap: 14px; }
-    .pm { display: grid; grid-template-columns: 38% 1fr; gap: 14px; padding: 14px; text-decoration: none; align-items: start; }
-    .pm img { width: 100%; aspect-ratio: 1; object-fit: contain; background: #fff; border-radius: 14px; }
-    .pm dl { margin: 4px 0 0; display: grid; gap: 4px; font-size: .84rem; }
-    .pm dl div { display: flex; gap: 6px; }
-    .pm dt { color: var(--muted); white-space: nowrap; }
-    .pm dt::after { content: ':'; }
-    .pm dd { margin: 0; }
-    .pm .link { font-size: .88rem; font-weight: 600; margin-top: 4px; }
-  }
+  .prh { overflow: hidden; }
+  .prh-in { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; align-items: center; padding-block: clamp(20px, 3vw, 36px) clamp(24px, 4vw, 48px); }
+  .prh h1 { font-size: clamp(2.8rem, 5.6vw, 5.2rem); line-height: .96; }
+  .prh .lead { margin: 0; }
+  .dark { --b: #111110; color: #fff; }
+  .prh-art { position: relative; aspect-ratio: 1; display: grid; place-items: center; }
+  .prh-bg { position: absolute; inset: 4% -40% 4% 6%; border-radius: 28px; background: linear-gradient(135deg, #FFF3C4, #FFD95A); }
+  .prh-art img { position: relative; width: 82%; height: auto; mix-blend-mode: multiply; filter: drop-shadow(0 30px 30px rgba(0,0,0,.18)); }
+  .ptabs { display: flex; justify-content: center; gap: clamp(16px, 4vw, 48px); padding-block: 8px 0; border-bottom: 1px solid var(--line); }
+  .ptabs a { padding: 12px 4px; text-decoration: none; font-weight: 550; color: var(--muted); border-bottom: 3px solid transparent; }
+  .ptabs a:hover, .ptabs a[aria-current] { color: var(--ink); border-color: var(--sun); }
+  .fgrid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-top: 28px; }
+  .fcard { border: 1px solid var(--line); border-radius: var(--radius-lg); overflow: hidden; display: flex; flex-direction: column; transition: box-shadow .4s var(--ease), transform .4s var(--ease); }
+  .fcard:hover { box-shadow: var(--shadow); transform: translateY(-3px); }
+  .fimg { display: block; aspect-ratio: 1 / .9; background: #F6F6F6; overflow: hidden; }
+  .fimg img { width: 100%; height: 100%; object-fit: contain; mix-blend-mode: multiply; transition: transform .7s var(--ease); }
+  .fcard:hover .fimg img { transform: scale(1.05); }
+  .fbody { display: flex; flex-direction: column; gap: 6px; padding: 22px; }
+  .tag { font-family: var(--mono); font-size: .7rem; letter-spacing: .14em; text-transform: uppercase; color: var(--muted); }
+  .fbody h3 { margin: 0; font-size: 1.8rem; font-weight: 600; letter-spacing: -0.03em; }
+  .price { font-size: 1.3rem; font-weight: 650; }
+  .fbody p { margin: 0 0 8px; }
+  .factions { align-items: center; }
+  .cmp-link { font-size: .9rem; color: var(--ink-2); }
+  .fit { padding: clamp(20px, 3vw, 36px); border-radius: var(--radius-lg); background: var(--surface-2); }
+  .fit-head { display: flex; justify-content: space-between; align-items: baseline; flex-wrap: wrap; gap: 8px; margin-bottom: 18px; }
+  .fit-head .h-1 { margin: 0; font-size: clamp(1.8rem, 3vw, 2.6rem); }
+  .small { font-size: .86rem; }
+  .tscroll { overflow-x: auto; background: var(--surface); border-radius: var(--radius); }
+  table { width: 100%; border-collapse: collapse; min-width: 640px; }
+  th, td { padding: 14px 18px; text-align: center; border-bottom: 1px solid var(--line); transition: background-color .3s; }
+  tbody th { text-align: left; color: var(--muted); font-weight: 500; width: 22%; }
+  thead a { display: flex; flex-direction: column; align-items: center; gap: 6px; text-decoration: none; font-weight: 650; }
+  thead img { width: 72px; height: 72px; object-fit: contain; mix-blend-mode: multiply; }
+  tr:last-child th, tr:last-child td { border-bottom: 0; }
+  [data-c].hi { background: #FFF4C7; }
+  .rgrid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-top: 24px; }
+  .rcard { display: flex; flex-direction: column; gap: 6px; padding: 16px; border: 1px solid var(--line); border-radius: var(--radius-lg); text-decoration: none; transition: box-shadow .4s var(--ease); }
+  .rcard:hover { box-shadow: var(--shadow); }
+  .rimg { position: relative; aspect-ratio: 1; background: #F6F6F6; border-radius: var(--radius); overflow: hidden; margin-bottom: 8px; }
+  .rimg img { width: 100%; height: 100%; object-fit: contain; mix-blend-mode: multiply; transition: transform .7s var(--ease); }
+  .rcard:hover .rimg img { transform: scale(1.05); }
+  .oos { position: absolute; left: 10px; top: 10px; padding: 3px 9px; border-radius: 999px; background: var(--surface); font-size: .72rem; font-weight: 600; }
+  .rname { font-weight: 600; }
+  .learn { display: grid; grid-template-columns: 1.1fr 1fr; align-items: center; gap: clamp(20px, 4vw, 48px); border-radius: var(--radius-lg); overflow: hidden; background: var(--surface-2); text-decoration: none; }
+  .learn img { width: 100%; height: 100%; max-height: 300px; object-fit: cover; }
+  .learn .h-1 { margin: 0; font-size: clamp(1.8rem, 3vw, 2.6rem); }
+  .learn p { margin: 0; }
+  .learn > div { padding: 24px; }
+  @media (max-width: 960px) { .prh-in, .learn { grid-template-columns: 1fr; } .fgrid { grid-template-columns: 1fr; } .rgrid { grid-template-columns: repeat(2, 1fr); } .prh-bg { inset: 4% -10% 4% 0; } }
 </style>
+<script>
+  const table = document.querySelector('[data-table]');
+  const hi = (i: string | null) => table?.querySelectorAll<HTMLElement>('[data-c]').forEach((c) => c.classList.toggle('hi', c.dataset.c === i));
+  document.querySelectorAll<HTMLElement>('[data-col]').forEach((card) => {
+    card.addEventListener('pointerenter', () => hi(card.dataset.col!));
+    card.addEventListener('pointerleave', () => hi(null));
+  });
+  document.querySelectorAll<HTMLElement>('[data-hi]').forEach((a) => a.addEventListener('click', () => hi(a.dataset.hi!)));
+  table?.querySelectorAll<HTMLElement>('[data-c]').forEach((c) => c.addEventListener('pointerenter', () => hi(c.dataset.c!)));
+</script>

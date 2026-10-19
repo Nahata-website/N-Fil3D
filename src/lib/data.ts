@@ -112,3 +112,10 @@ export function displayName(p: Product): string {
   if (base.length > 70) base = base.slice(0, 67).replace(/\s+\S*$/, '') + '…';
   return base;
 }
+
+/** Product image by slug and index (falls back to the first image). */
+export function pimg(slug: string, i = 0) {
+  const p = products.find((x) => x.slug === slug);
+  return p?.images[i] || p?.images[0];
+}
+export const bySlug = (slug: string) => products.find((x) => x.slug === slug);

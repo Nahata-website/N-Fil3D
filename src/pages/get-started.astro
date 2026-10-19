@@ -1,6 +1,10 @@
 ---
 import Base from '../layouts/Base.astro';
-import PageHead from '../components/PageHead.astro';
+import Breadcrumbs from '../components/Breadcrumbs.astro';
+import CtaBand from '../components/CtaBand.astro';
+import Faq from '../components/Faq.astro';
+import { pimg } from '../lib/data';
+
 const temps = [
   ['PLA', 'Polar White', '198 °C'], ['PLA', 'Metallic Series', '204 °C'], ['PLA', 'Clear Series', '195 °C'],
   ['PLA', 'Other colours', '196 °C'], ['ABS', 'All colours', '230 °C'], ['HIPS', 'All colours', '220 °C'],
@@ -16,58 +20,148 @@ const sheets = [
   ['ABS FR', 'https://drive.google.com/file/d/1jIV6zvK7ykI0U1yeP24GbI44na4ehpLy/view'],
   ['Nylon', 'https://drive.google.com/file/d/1hR9BDZl1tNFurBzn0_BCqyDv4Z09INcy/view'],
 ];
-const ld = { '@context': 'https://schema.org', '@type': 'HowTo', name: 'Set up NFIL3D filament for your 3D printer',
-  step: [
-    { '@type': 'HowToStep', name: 'Start from the recommended nozzle temperature', text: 'Use the table for your material and colour, for example 196 °C for most PLA colours.' },
-    { '@type': 'HowToStep', name: 'Print a temperature tower', text: 'Print a temperature tower with the NFIL3D filament on your printer to find the best setting for that printer.' },
-    { '@type': 'HowToStep', name: 'Fit the filament filter', text: 'Place the included filament filter anywhere between the spool and the hot-end to stop dust reaching the nozzle.' },
-    { '@type': 'HowToStep', name: 'Store it dry', text: 'Keep the spool sealed with the desiccant. When the desiccant changes colour, dry it and reuse it.' },
-  ] };
+const steps = [
+  ['Prepare your printer', 'Check the bed, nozzle and extruder are clean and the bed is level.', pimg('n2-3d-printer', 1)],
+  ['Load your filament', 'Fit the filament filter, then feed 1.75 mm filament through the extruder.', pimg('premium-pla-deep-blue-1-75mm', 1)],
+  ['Dial in your settings', 'Start from the nozzle temperatures below and fine-tune for your printer.', pimg('n2-3d-printer', 3)],
+  ['Make your first print', 'Start with a simple model, like a vase or calibration cube.', pimg('mini-n-3d-printer', 4)],
+] as const;
+const ld = { '@context': 'https://schema.org', '@type': 'HowTo', name: 'Make your first 3D print with NFIL3D filament',
+  step: steps.map(([n, t]) => ({ '@type': 'HowToStep', name: n, text: t })) };
 ---
-<Base title="Get Started: NFIL3D Filament Settings & Setup Guide" description="Recommended nozzle temperatures, data sheets and storage tips for NFIL3D PLA+, PETG, ABS and HIPS filament, plus how to use the filter and desiccant." jsonld={ld}>
-  <PageHead crumb="Get Started" eyebrow="Get started" title='Your first perfect print, <span class="serif">step by step.</span>' lead="Recommended settings, data sheets and storage tips for NFIL3D filament. The best setting for your printer comes from a quick temperature tower." />
-
-  <section class="wrap section-sm two">
-    <div class="stack gap-16">
-      <h2 class="h-2">Nozzle temperatures</h2>
-      <p class="muted">Starting points. Print a temperature tower with NFIL3D filament on your printer to fine-tune.</p>
-      <div class="card tbl">
-        <table>
-          <thead><tr><th scope="col">Material</th><th scope="col">Colour</th><th scope="col">Nozzle</th></tr></thead>
-          <tbody>{temps.map(([m, c, t]) => <tr><td>{m}</td><td>{c}</td><td class="t">{t}</td></tr>)}</tbody>
-        </table>
+<Base title="Learn 3D Printing: Settings, Data Sheets & Tips | NFIL3D" description="The NFIL3D learning hub: your first print in four steps, nozzle temperatures for PLA, ABS and HIPS, technical data sheets, storage tips and answers to common problems." jsonld={ld}>
+  <section class="lh">
+    <div class="wrap lh-in">
+      <div class="stack gap-16 lh-copy">
+        <Breadcrumbs items={[{ name: 'Learn' }]} />
+        <span class="eyebrow">The NFIL3D learning hub</span>
+        <h1 class="h-display">Better prints <br>start here.</h1>
+        <p class="lead">Settings, guides and practical answers for every stage of your 3D printing journey.</p>
+        <div class="row"><a class="btn btn-lg dark" href="#steps">Start your first print <span class="arrow" aria-hidden="true">→</span></a></div>
       </div>
     </div>
-    <div class="stack gap-16">
-      <h2 class="h-2">Technical data sheets</h2>
-      <p class="muted">Full properties for each material.</p>
-      <ul class="sheets">{sheets.map(([n, u]) => <li><a href={u} rel="noopener"><span>{n}</span><span class="mono muted">PDF ↗</span></a></li>)}</ul>
+    <div class="lh-img"><img src={pimg('n2-3d-printer', 2)?.src} alt="NFIL3D N2 3D printer in a workshop" width="1200" height="1200" fetchpriority="high"></div>
+  </section>
+
+  <nav class="wrap tabs" aria-label="On this page">
+    <a href="#steps"><span>01</span> Get started</a>
+    <a href="#settings"><span>02</span> Material settings</a>
+    <a href="#care"><span>03</span> Care &amp; support</a>
+  </nav>
+
+  <section class="wrap section" id="steps">
+    <h2 class="h-1">Your first print, in four steps.</h2>
+    <ol class="steps">
+      {steps.map(([t, d, im], i) => (
+        <li class="reveal" style={`--d:${i * 0.06}s`}>
+          <span class="simg">{im && <img src={im.src} srcset={im.srcset} sizes="(max-width: 760px) 90vw, 300px" alt="" width="600" height="600" loading="lazy">}</span>
+          <span class="mono muted n">0{i + 1}</span>
+          <h3 class="h-3">{t}</h3>
+          <p class="muted">{d}</p>
+        </li>
+      ))}
+    </ol>
+  </section>
+
+  <section class="section settings" id="settings">
+    <div class="wrap two">
+      <div class="stack gap-12">
+        <span class="eyebrow">Material settings</span>
+        <h2 class="h-2">Find your starting settings.</h2>
+        <p class="muted">Starting points only. Print a temperature tower to fine-tune.</p>
+        <div class="row gap-12 sel">
+          <label>Material <select class="input" data-mat><option value="">All</option><option>PLA</option><option>ABS</option><option>HIPS</option></select></label>
+        </div>
+        <div class="card tbl">
+          <table>
+            <thead><tr><th scope="col">Material</th><th scope="col">Range</th><th scope="col">Nozzle</th></tr></thead>
+            <tbody>{temps.map(([m, c, t]) => <tr data-row={m}><td>{m}</td><td>{c}</td><td class="t">{t}</td></tr>)}</tbody>
+          </table>
+        </div>
+      </div>
+      <div class="stack gap-12">
+        <span class="eyebrow">Technical data sheets</span>
+        <h2 class="h-2">Technical data sheets</h2>
+        <p class="muted">Full properties for each material.</p>
+        <ul class="sheets card">{sheets.map(([n, u]) => <li><a href={u} target="_blank" rel="noopener"><span>{n}</span><span class="mono muted">PDF <span aria-hidden="true">↓</span></span></a></li>)}</ul>
+      </div>
     </div>
   </section>
 
-  <section class="wrap section-sm">
-    <ol class="steps">
-      <li class="card reveal"><span class="n mono">01</span><h3 class="h-3">Filament filter</h3><p class="muted">Every NFIL3D spool comes with a filter: a small case with a sponge inside. Place it anywhere between the spool and the hot-end. It wipes dust off the filament before it reaches the 0.3–0.4 mm nozzle, so clogs become far less likely.</p></li>
-      <li class="card reveal" style="--d:.05s"><span class="n mono">02</span><h3 class="h-3">Desiccant</h3><p class="muted">Two desiccants keep the spool dry. They change colour as they absorb moisture: dry, moist, wet. When yours turns, dry it and reuse it.</p></li>
-      <li class="card reveal" style="--d:.1s"><span class="n mono">03</span><h3 class="h-3">Storage kit</h3><p class="muted">Keep an open spool in the lockable bag with the desiccant. Damp filament causes stringing, bubbles and weak layers.</p></li>
-      <li class="card reveal" style="--d:.15s"><span class="n mono">04</span><h3 class="h-3">The spool</h3><p class="muted">Hexagon windows show how much filament is left at a glance, and the slots hold loose ends so the spool never unwinds.</p></li>
-    </ol>
+  <section class="wrap section" id="care">
+    <h2 class="h-1">Keep your filament print-ready.</h2>
+    <div class="care">
+      <div class="ccard card reveal">
+        <span class="cimg"><img src={pimg('premium-pla-deep-blue-1-75mm', 3)?.src} alt="NFIL3D premium packaging with desiccants and lockable bag" width="600" height="600" loading="lazy"></span>
+        <div><h3 class="h-3">Store it well</h3><p class="muted">Keep open spools in the lockable bag with the desiccants. When a desiccant changes colour, dry it and reuse it.</p></div>
+      </div>
+      <div class="ccard card reveal" style="--d:.06s">
+        <span class="cimg"><img src={pimg('premium-hs-pla-fluoro-yellow-1-75mm', 4)?.src} alt="NFIL3D spool with filament filter and packaging" width="600" height="600" loading="lazy"></span>
+        <div><h3 class="h-3">Keep the feed clean</h3><p class="muted">Every spool comes with a filament filter. Fit it between the spool and the hot-end to wipe dust off before it reaches the nozzle.</p></div>
+      </div>
+    </div>
+
+    <h2 class="h-2 faq-h">A little help goes a long way.</h2>
+    <Faq items={[
+      ['Why is my filament stringing?', 'Stringing usually means the nozzle is too hot or the filament has absorbed moisture. Lower the temperature by 5 °C at a time, increase retraction slightly, and dry the filament or store it with the desiccant.'],
+      ['How do I improve bed adhesion?', 'Level the bed, clean it with isopropyl alcohol, and print the first layer slower and slightly hotter. A glue stick or textured sheet helps with PETG and ABS.'],
+      ['Which material should I choose?', 'Start with PLA+ for models and prototypes. Choose PETG for stronger, heat-resistant parts, and ABS or ASA for tough parts in an enclosed printer.'],
+    ]} />
   </section>
-  <section class="wrap section-sm row gap-12"><a class="btn btn-accent" href="/materials/">Compare materials</a><a class="btn btn-ghost" href="/support/">Troubleshooting &amp; support</a></section>
+
+  <CtaBand title="Stuck on a print? Let's solve it." href="/support/" label="Get printing support" second={{ href: '/materials/', label: 'Compare materials' }} />
 </Base>
 <style>
-  .two { display: grid; grid-template-columns: 1.1fr 1fr; gap: 48px; }
-  @media (max-width: 900px) { .two { grid-template-columns: 1fr; } }
-  .tbl { overflow-x: auto; }
+  .lh { position: relative; overflow: hidden; background: var(--surface-2); }
+  .lh-in { position: relative; z-index: 1; padding-block: clamp(24px, 4vw, 48px) clamp(40px, 6vw, 80px); }
+  .lh-copy { max-width: 560px; }
+  .lh h1 { font-size: clamp(2.8rem, 6vw, 5.4rem); line-height: .96; }
+  .lh .lead { margin: 0; }
+  .dark { --b: #111110; color: #fff; }
+  .lh-img { position: absolute; top: 0; right: 0; bottom: 0; width: 52%; -webkit-mask-image: linear-gradient(90deg, transparent, #000 30%); mask-image: linear-gradient(90deg, transparent, #000 30%); }
+  .lh-img img { width: 100%; height: 100%; object-fit: cover; object-position: center 40%; }
+  .tabs { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; padding-block: 18px; border-bottom: 1px solid var(--line); }
+  .tabs a { display: flex; gap: 14px; padding-bottom: 10px; text-decoration: none; font-weight: 550; border-bottom: 3px solid transparent; transition: border-color .3s; }
+  .tabs a:hover, .tabs a:first-child { border-color: var(--sun); }
+  .tabs a span { color: var(--muted); font-family: var(--mono); }
+  .steps { list-style: none; margin: 32px 0 0; padding: 0; display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
+  .steps li { display: flex; flex-direction: column; gap: 6px; }
+  .simg { aspect-ratio: 4 / 3; border-radius: var(--radius); overflow: hidden; background: #111; margin-bottom: 8px; }
+  .simg img { width: 100%; height: 100%; object-fit: cover; transition: transform .7s var(--ease); }
+  .steps li:hover .simg img { transform: scale(1.05); }
+  .steps .n { font-size: .78rem; }
+  .steps h3, .steps p { margin: 0; }
+  .steps p { font-size: .92rem; }
+  .settings { background: var(--surface-2); }
+  .two { display: grid; grid-template-columns: 1.15fr 1fr; gap: clamp(32px, 5vw, 64px); }
+  .two .h-2 { margin: 0; }
+  .sel label { display: flex; align-items: center; gap: 10px; color: var(--muted); font-size: .92rem; }
+  .sel select { width: 180px; }
+  .tbl { overflow: hidden; padding: 0; }
   table { width: 100%; border-collapse: collapse; }
-  th, td { padding: 14px 18px; text-align: left; border-bottom: 1px solid var(--line); }
-  thead th { font-family: var(--mono); font-size: .72rem; text-transform: uppercase; color: var(--muted); font-weight: 500; }
-  tbody tr:last-child td { border-bottom: 0; }
-  .t { font-family: var(--mono); color: var(--accent); }
-  .sheets { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--line); }
-  .sheets a { display: flex; justify-content: space-between; padding: 14px 4px; border-bottom: 1px solid var(--line); text-decoration: none; transition: padding .3s var(--ease); }
-  .sheets a:hover { padding-left: 12px; }
-  .steps { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr)); gap: 16px; }
-  .steps li { padding: 24px; display: flex; flex-direction: column; gap: 10px; }
-  .n { color: var(--accent); }
+  th, td { text-align: left; padding: 14px 18px; border-bottom: 1px solid var(--line); }
+  th { background: var(--surface-2); font-size: .84rem; font-weight: 600; }
+  tr:last-child td { border-bottom: 0; }
+  .t { font-weight: 650; font-family: var(--mono); }
+  .sheets { list-style: none; margin: 0; padding: 0; overflow: hidden; }
+  .sheets a { display: flex; justify-content: space-between; padding: 13px 18px; border-bottom: 1px solid var(--line); text-decoration: none; transition: background-color .2s; }
+  .sheets li:last-child a { border-bottom: 0; }
+  .sheets a:hover { background: var(--surface-2); }
+  .care { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 28px; }
+  .ccard { display: grid; grid-template-columns: 46% 1fr; gap: 20px; align-items: center; padding: 0; overflow: hidden; }
+  .cimg { height: 100%; aspect-ratio: 1; background: #fff; }
+  .cimg img { width: 100%; height: 100%; object-fit: cover; }
+  .ccard > div { padding: 20px 20px 20px 0; }
+  .ccard h3 { margin: 0 0 6px; }
+  .faq-h { margin: clamp(40px, 5vw, 64px) 0 16px; }
+  @media (max-width: 960px) { .steps { grid-template-columns: repeat(2, 1fr); } .two, .care { grid-template-columns: 1fr; } }
+  @media (max-width: 760px) {
+    .lh-img { position: relative; width: 100%; height: 260px; -webkit-mask-image: none; mask-image: none; }
+    .tabs { grid-template-columns: 1fr 1fr 1fr; gap: 10px; font-size: .82rem; } .tabs a { flex-direction: column; gap: 2px; }
+    .steps { grid-template-columns: 1fr; } .ccard { grid-template-columns: 1fr; } .ccard > div { padding: 0 18px 18px; }
+  }
 </style>
+<script>
+  const sel = document.querySelector<HTMLSelectElement>('[data-mat]');
+  sel?.addEventListener('change', () => document.querySelectorAll<HTMLElement>('[data-row]').forEach((r) => { r.hidden = !!sel.value && r.dataset.row !== sel.value; }));
+</script>

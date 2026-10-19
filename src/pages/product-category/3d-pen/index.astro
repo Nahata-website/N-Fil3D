@@ -1,0 +1,208 @@
+---
+import Base from '../../../layouts/Base.astro';
+import Breadcrumbs from '../../../components/Breadcrumbs.astro';
+import CtaBand from '../../../components/CtaBand.astro';
+import Faq from '../../../components/Faq.astro';
+import { catBySlug, productsIn, inr, pimg } from '../../../lib/data';
+
+const SW: Record<string, string> = { Yellow: '#F7D21E', Purple: '#9B6BD6', Pink: '#F48FB1', Blue: '#4FB3E8' };
+const ORDER = ['Yellow', 'Purple', 'Pink', 'Blue'];
+const pens = productsIn(catBySlug.get('3d-pen')!.id).map((p) => ({
+  p, pcs: Number((p.name.match(/Includes (\d+)\s?Pcs/i) || [])[1] || 0), colour: (p.name.match(/\(([A-Za-z]+)\)\s*$/) || [])[1] || '',
+}));
+const kitInfo: Record<number, { title: string; short: string; blurb: string; type: string; box: string[] }> = {
+  3: { title: '3D Pen + 3 Filaments', short: '3-filament set', blurb: 'A simple start with one 3D pen and three colourful filaments.', type: 'Pen sets', box: ['1 × 3D pen (your chosen colour)', '3 × filaments, 5 m each', '1 × pen stand', '1 × stencils', '1 × cable'] },
+  9: { title: '3D Pen Kit · 9 Filaments', short: '9-filament kit', blurb: 'One 3D pen and nine colourful filaments for more creativity.', type: 'Creative kits', box: ['1 × 3D pen (your chosen colour)', '9 × filaments, 45 m in total', '1 × pen stand', '1 × USB cable'] },
+  14: { title: '3D Pen Kit · 14 Filaments', short: '14-filament kit + stencil book', blurb: 'One 3D pen, fourteen filaments and a stencils book.', type: 'Creative kits', box: ['1 × 3D pen (your chosen colour)', '14 × filaments, 70 m in total', '1 × pen stand', '1 × cable', '1 × stencils book'] },
+};
+const kits = [3, 9, 14].map((n) => {
+  const vs = pens.filter((x) => x.pcs === n).sort((a, b) => ORDER.indexOf(a.colour) - ORDER.indexOf(b.colour));
+  const first = vs.find((v) => v.p.inStock) || vs[0];
+  return { n, ...kitInfo[n], vs, first };
+}).filter((k) => k.vs.length);
+const refills = productsIn(catBySlug.get('3d-pens-filaments')!.id).length;
+const ld = { '@context': 'https://schema.org', '@type': 'CollectionPage', name: '3D Pens', url: 'https://nfil3d.com/product-category/3d-pen/',
+  mainEntity: { '@type': 'ItemList', itemListElement: kits.map((k, i) => ({ '@type': 'ListItem', position: i + 1, name: k.title, url: new URL(k.first.p.path, 'https://nfil3d.com').href })) } };
+---
+<Base title="3D Pens & Creative Kits for Kids | NFIL3D" description="NFIL3D 3D pens and creative kits with 3, 9 or 14 colourful filaments, a pen stand and stencils. Four pen colours, free shipping across India." jsonld={ld}>
+  <section class="ph">
+    <div class="wrap ph-in">
+      <div class="stack gap-16 ph-copy">
+        <Breadcrumbs items={[{ name: '3D Pens' }]} />
+        <span class="eyebrow">Draw beyond the page</span>
+        <h1 class="h-display">Small pen. <br>Big possibilities.</h1>
+        <p class="lead">Bring ideas to life with 3D pens and colourful creative kits.</p>
+        <div class="row"><a class="btn btn-lg dark" href="#kits">Find your kit <span class="arrow" aria-hidden="true">→</span></a></div>
+      </div>
+      <div class="ph-art reveal">
+        <span class="ph-shape" aria-hidden="true"></span>
+        <img class="ph-pens" src="/images/pen-yellow.webp" width="218" height="733" alt="" loading="eager">
+        <img class="ph-pens p2" src="/images/pen-blue.webp" width="228" height="733" alt="" loading="eager">
+        <img class="ph-pens p3" src="/images/pen-pink.webp" width="246" height="744" alt="" loading="eager">
+        <img class="ph-coil" src="/images/fest/coil-c.webp" width="700" height="343" alt="" loading="eager">
+        <img class="ph-fly" src="/images/fest/k-fly.webp" width="215" height="200" alt="Butterfly drawn with a 3D pen" loading="eager">
+        <img class="ph-star" src="/images/fest/k-star.webp" width="130" height="128" alt="" loading="eager">
+      </div>
+    </div>
+  </section>
+
+  <section class="wrap section-sm">
+    <div class="tops">
+      {kits.map((k, i) => {
+        const im = k.first.p.images[0];
+        return (
+          <a class="top reveal" href={`#kit-${k.n}`} style={`--d:${i * 0.06}s`}>
+            <div class="stack gap-8"><h2 class="h-3">{k.short}</h2><p class="muted">{k.blurb}</p><span class="link">Explore <span aria-hidden="true">→</span></span></div>
+            {im && <img src={im.src} srcset={im.srcset} sizes="200px" alt="" width="400" height="400" loading="lazy">}
+          </a>
+        );
+      })}
+    </div>
+  </section>
+
+  <section class="wrap section-sm" id="kits" data-kits>
+    <div class="khead">
+      <h2 class="h-1">Choose your creative kit.</h2>
+      <div class="row gap-8 chips" role="group" aria-label="Filter kits">
+        <button type="button" class="chip" aria-pressed="true" data-f="all">All pens &amp; kits</button>
+        <button type="button" class="chip" aria-pressed="false" data-f="Pen sets">Pen sets</button>
+        <button type="button" class="chip" aria-pressed="false" data-f="Creative kits">Creative kits</button>
+      </div>
+    </div>
+    <div class="kgrid">
+      {kits.map((k) => {
+        const im = k.first.p.images[0];
+        return (
+          <article class="kit reveal" id={`kit-${k.n}`} data-type={k.type}>
+            <a class="kimg" href={k.first.p.path} data-link>{im && <img src={im.src} srcset={im.srcset} sizes="(max-width: 760px) 90vw, 380px" alt={k.title} width="600" height="600" loading="lazy" data-img>}</a>
+            <div class="kbody">
+              <h3 class="h-3">{k.title}</h3>
+              <p class="muted">{k.blurb}</p>
+              <div class="sw" role="radiogroup" aria-label="Pen colour">
+                {k.vs.map((v) => (
+                  <button type="button" role="radio" aria-checked={v === k.first ? 'true' : 'false'} aria-label={v.colour + (v.p.inStock ? '' : ' (out of stock)')}
+                    style={`--c:${SW[v.colour] || '#ccc'}`} class={v.p.inStock ? '' : 'oos'}
+                    data-colour={v.colour} data-href={v.p.path} data-src={v.p.images[0]?.src} data-srcset={v.p.images[0]?.srcset}></button>
+                ))}
+              </div>
+              <span class="small muted" data-name>{k.first.colour}</span>
+              <div class="kfoot">
+                <span class="price"><strong>{inr(k.first.p.price)}</strong>{k.first.p.regularPrice > k.first.p.price && <s>{inr(k.first.p.regularPrice)}</s>}</span>
+                <a class="btn dark" href={k.first.p.path} data-link>View kit <span class="arrow" aria-hidden="true">→</span></a>
+              </div>
+            </div>
+          </article>
+        );
+      })}
+    </div>
+  </section>
+
+  <section class="wrap section-sm">
+    <div class="box-wrap">
+      <h2 class="h-2">Find the right starting point.</h2>
+      <div class="boxes">
+        {kits.map((k) => (
+          <div class="bx">
+            {k.first.p.images[0] && <img src={k.first.p.images[0].src} alt="" width="200" height="200" loading="lazy">}
+            <div><h3>{k.title}</h3><ul>{k.box.map((b) => <li>{b}</li>)}</ul></div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="wrap section-sm">
+    <a class="doodle reveal" href="/product-category/3d-pens-filaments/">
+      <div class="stack gap-12 dtext">
+        <h2 class="h-1">From a first doodle <br>to a new discovery.</h2>
+        <p class="muted">Make something that's yours. {refills} refill packs in bright colours, from 6 to 51 filaments.</p>
+        <span class="link">Explore pen filaments <span aria-hidden="true">→</span></span>
+      </div>
+      <img src={pimg('nfil3d-pen-kit-for-kids-yellow-nfil3d', 2)?.src} alt="Creating with an NFIL3D 3D pen and colourful filaments" width="800" height="800" loading="lazy">
+    </a>
+  </section>
+
+  <section class="wrap section-sm">
+    <h2 class="h-2" style="margin-bottom:16px">Frequently asked questions.</h2>
+    <Faq items={[
+      ['What comes in each kit?', 'The 3-filament set has a pen, 3 filaments, a stand, stencils and a cable. The 9-filament kit has a pen, 9 filaments (45 m), a stand and a USB cable. The 14-filament kit adds a stencils book and 14 filaments (70 m).'],
+      ['How do I get started?', 'Plug in the pen, let it heat up, load a filament and press the feed button. Start by tracing a stencil flat on paper, then build up in layers.'],
+      ['Which filament does the pen use?', 'NFIL3D 3D pens use 1.75 mm PLA filament. Refill packs are available in 6 to 51 colours.'],
+      ['Is it safe for kids?', 'The nozzle gets hot, so younger children should use the pen with an adult. Use the stand when the pen is not in your hand.'],
+    ]} />
+  </section>
+
+  <CtaBand title="A little help for your next big idea." text="Have a question? We're here to help." href="/contact/" label="Talk to our team" />
+</Base>
+<style>
+  .ph { overflow: hidden; }
+  .ph-in { display: grid; grid-template-columns: 1fr 1.1fr; gap: 32px; align-items: center; padding-block: clamp(20px, 3vw, 40px) clamp(24px, 4vw, 48px); }
+  .ph h1 { font-size: clamp(2.8rem, 5.6vw, 5.2rem); line-height: .96; }
+  .ph .lead { margin: 0; }
+  .dark { --b: #111110; color: #fff; }
+  .ph-art { position: relative; aspect-ratio: 6 / 5; }
+  .ph-shape { position: absolute; inset: 2% -30% 6% 8%; background: #FFE98A; clip-path: polygon(18% 0, 100% 0, 100% 100%, 0 100%); border-radius: 24px; }
+  .ph-pens { position: absolute; height: 74%; width: auto; left: 34%; top: 6%; rotate: -8deg; filter: drop-shadow(0 18px 18px rgba(0,0,0,.2)); z-index: 3; }
+  .ph-pens.p2 { left: 48%; top: 4%; rotate: 4deg; z-index: 2; }
+  .ph-pens.p3 { left: 62%; top: 10%; rotate: 14deg; z-index: 1; }
+  .ph-coil { position: absolute; width: 62%; left: 26%; bottom: 0; z-index: 4; }
+  .ph-fly { position: absolute; width: 22%; left: 8%; bottom: 14%; z-index: 5; rotate: -10deg; }
+  .ph-star { position: absolute; width: 13%; right: 2%; bottom: 10%; z-index: 5; }
+  .tops { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+  .top { display: grid; grid-template-columns: 1fr 44%; gap: 12px; align-items: center; padding: 22px; border-radius: var(--radius); background: var(--surface-2); text-decoration: none; transition: transform .4s var(--ease); }
+  .top:hover { transform: translateY(-3px); }
+  .top h2 { margin: 0; } .top p { margin: 0; font-size: .9rem; }
+  .top img { width: 100%; aspect-ratio: 1; object-fit: contain; mix-blend-mode: multiply; border-radius: 12px; }
+  .khead { display: flex; flex-direction: column; gap: 18px; margin-bottom: 24px; padding-top: 24px; border-top: 1px solid var(--line); }
+  .khead .h-1 { margin: 0; font-size: clamp(1.8rem, 3vw, 2.6rem); }
+  .chip[aria-pressed="true"] { background: var(--ink); color: var(--bg); }
+  .kgrid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+  .kit { display: flex; flex-direction: column; border: 1px solid var(--line); border-radius: var(--radius-lg); overflow: hidden; background: var(--surface); transition: box-shadow .4s var(--ease); }
+  .kit:hover { box-shadow: var(--shadow); }
+  .kimg { display: block; aspect-ratio: 1 / .85; background: #F6F6F6; overflow: hidden; }
+  .kimg img { width: 100%; height: 100%; object-fit: contain; mix-blend-mode: multiply; transition: transform .7s var(--ease), opacity .25s; }
+  .kit:hover .kimg img { transform: scale(1.04); }
+  .kbody { display: flex; flex-direction: column; gap: 10px; padding: 20px; flex: 1; }
+  .kbody h3, .kbody p { margin: 0; } .kbody p { font-size: .92rem; }
+  .sw { display: flex; gap: 10px; margin-top: 4px; }
+  .sw button { width: 28px; height: 28px; border-radius: 50%; border: 0; background: var(--c); cursor: pointer; box-shadow: 0 0 0 2px var(--surface), 0 0 0 3px transparent; transition: box-shadow .2s, transform .2s; }
+  .sw button:hover { transform: scale(1.1); }
+  .sw button[aria-checked="true"] { box-shadow: 0 0 0 2px var(--surface), 0 0 0 4px var(--ink); }
+  .sw button.oos { opacity: .4; }
+  .small { font-size: .84rem; }
+  .kfoot { display: flex; justify-content: space-between; align-items: center; margin-top: auto; padding-top: 10px; }
+  .price strong { font-size: 1.5rem; font-weight: 600; letter-spacing: -0.02em; }
+  .price s { margin-left: 8px; color: var(--muted); font-size: .9rem; }
+  .box-wrap { padding: clamp(22px, 3vw, 36px); border-radius: var(--radius-lg); background: var(--surface-2); }
+  .box-wrap .h-2 { margin: 0 0 22px; font-size: clamp(1.4rem, 2.2vw, 2rem); }
+  .boxes { display: grid; grid-template-columns: repeat(3, 1fr); }
+  .bx { display: grid; grid-template-columns: 90px 1fr; gap: 16px; padding: 0 20px; }
+  .bx + .bx { border-left: 1px solid var(--line); }
+  .bx img { width: 90px; aspect-ratio: 1; object-fit: contain; mix-blend-mode: multiply; }
+  .bx h3 { margin: 0 0 8px; font-size: .98rem; font-weight: 600; }
+  .bx ul { margin: 0; padding-left: 16px; font-size: .84rem; color: var(--ink-2); display: grid; gap: 3px; }
+  .doodle { display: grid; grid-template-columns: 1fr 1fr; align-items: center; border-radius: var(--radius-lg); overflow: hidden; background: #FFF6D6; text-decoration: none; }
+  .dtext { padding: clamp(24px, 4vw, 56px); }
+  .dtext .h-1 { margin: 0; font-size: clamp(1.8rem, 3vw, 2.8rem); }
+  .dtext p { margin: 0; }
+  .doodle img { width: 100%; height: 100%; max-height: 380px; object-fit: cover; }
+  @media (max-width: 960px) { .ph-in, .doodle { grid-template-columns: 1fr; } .tops, .kgrid { grid-template-columns: 1fr; } .boxes { grid-template-columns: 1fr; gap: 18px; } .bx + .bx { border-left: 0; border-top: 1px solid var(--line); padding-top: 18px; } .bx { padding: 0; } }
+</style>
+<script>
+  document.querySelectorAll<HTMLElement>('[data-kits]').forEach((root) => {
+    root.querySelectorAll<HTMLElement>('.kit').forEach((kit) => {
+      const img = kit.querySelector<HTMLImageElement>('[data-img]');
+      const name = kit.querySelector<HTMLElement>('[data-name]')!;
+      kit.querySelectorAll<HTMLButtonElement>('.sw button').forEach((b, _, all) => b.addEventListener('click', () => {
+        all.forEach((x) => x.setAttribute('aria-checked', String(x === b)));
+        name.textContent = b.dataset.colour! + (b.classList.contains('oos') ? ' · out of stock' : '');
+        kit.querySelectorAll<HTMLAnchorElement>('[data-link]').forEach((a) => { a.href = b.dataset.href!; });
+        if (img && b.dataset.src) { img.style.opacity = '0'; setTimeout(() => { img.src = b.dataset.src!; if (b.dataset.srcset) img.srcset = b.dataset.srcset; img.style.opacity = '1'; }, 200); }
+      }));
+    });
+    root.querySelectorAll<HTMLButtonElement>('[data-f]').forEach((b, _, all) => b.addEventListener('click', () => {
+      all.forEach((x) => x.setAttribute('aria-pressed', String(x === b)));
+      root.querySelectorAll<HTMLElement>('.kit').forEach((k) => { k.hidden = b.dataset.f !== 'all' && k.dataset.type !== b.dataset.f; });
+    }));
+  });
+</script>
