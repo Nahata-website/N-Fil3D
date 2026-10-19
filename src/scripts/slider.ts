@@ -8,6 +8,17 @@ const root = document.querySelector<HTMLElement>('[data-slider]');
 const ui = document.querySelector<HTMLElement>('[data-slider-ui]');
 
 if (root && ui) {
+  // Seasonal slides: hide once their end date has passed
+  const today = new Date().toISOString().slice(0, 10);
+  root.querySelectorAll<HTMLElement>('[data-slide][data-until]').forEach((el) => {
+    if ((el.dataset.until || '9999') < today) {
+      ui.querySelector(`[data-go="${el.dataset.slide}"]`)?.remove();
+      el.remove();
+    }
+  });
+  ui.querySelectorAll<HTMLElement>('[data-go]').forEach((d, k) => { d.dataset.go = String(k); });
+  const all = root.querySelectorAll<HTMLElement>('[data-slide]');
+  all.forEach((el, k) => el.setAttribute('aria-label', `${k + 1} of ${all.length}`));
   const slides = gsap.utils.toArray<HTMLElement>('[data-slide]', root);
   const dots = gsap.utils.toArray<HTMLButtonElement>('[data-go]', ui);
   const pauseBtn = ui.querySelector<HTMLButtonElement>('[data-pause]');
@@ -28,7 +39,7 @@ if (root && ui) {
   });
 
   // Doodles: prepare stroke drawing
-  root.querySelectorAll<SVGPathElement>('.doodle path').forEach((p) => {
+  root.querySelectorAll<SVGPathElement>('.doodle path, .draw path').forEach((p) => {
     const len = p.getTotalLength();
     p.style.strokeDasharray = `${len}`;
     p.style.strokeDashoffset = '0';
@@ -45,7 +56,7 @@ if (root && ui) {
     }
     const title = s.querySelector<HTMLElement>('.s-title');
     if (title) {
-      if (!splits.has(title)) splits.set(title, SplitText.create(title, { type: 'lines,words', mask: 'lines' }));
+      if (!splits.has(title)) splits.set(title, SplitText.create(title, { type: 'lines,words', mask: 'lines', wordsClass: 'sw' }));
       tl.fromTo(splits.get(title)!.words, { yPercent: 115 }, { yPercent: 0, duration: 1.1, stagger: 0.05 }, 0.05);
     }
     tl.fromTo(s.querySelectorAll('.s-eyebrow, .s-sub, .s-cta'), { autoAlpha: 0, y: 24 }, { autoAlpha: 1, y: 0, duration: 0.9, stagger: 0.08 }, 0.2);
@@ -58,10 +69,25 @@ if (root && ui) {
       else tl.fromTo(sh, { autoAlpha: 0, scale: 0.6 }, { autoAlpha: 1, scale: 1, duration: 0.9 }, 0.3);
     });
     tl.fromTo(s.querySelectorAll('.s-card'), { autoAlpha: 0, y: 80 }, { autoAlpha: 1, y: 0, duration: 1.2, stagger: 0.09 }, 0.25);
+    // Festive layers: products rise in, flags drop, coils pop, bubble bounces
+    s.querySelectorAll<HTMLElement>('.s-obj').forEach((o, k) => {
+      const side = o.getBoundingClientRect().left > window.innerWidth * 0.75 ? 1 : o.getBoundingClientRect().left < window.innerWidth * 0.55 ? -1 : 0;
+      tl.fromTo(o, { autoAlpha: 0, y: 70, x: side * 60, scale: 0.85 }, { autoAlpha: 1, y: 0, x: 0, scale: 1, duration: 1.2, ease: 'back.out(1.3)' }, 0.3 + k * 0.08);
+    });
+    const flags = s.querySelectorAll('.flag');
+    if (flags.length) tl.fromTo(flags, { y: -50, rotation: -25, autoAlpha: 0, transformOrigin: '50% 0%' }, { y: 0, rotation: 0, autoAlpha: 1, duration: 0.9, stagger: 0.06, ease: 'back.out(2)' }, 0.2);
+    const coils = s.querySelectorAll('.coil');
+    if (coils.length) tl.fromTo(coils, { scale: 0, transformOrigin: '50% 100%' }, { scale: 1, duration: 0.8, stagger: 0.07, ease: 'back.out(1.8)' }, 0.35);
+    const bubble = s.querySelector('.bubble');
+    if (bubble) tl.fromTo(bubble, { scale: 0, rotation: -30 }, { scale: 1, rotation: -6, duration: 0.8, ease: 'back.out(2.2)' }, 1.1);
+    const marigolds = s.querySelectorAll('.marigolds i');
+    if (marigolds.length) tl.fromTo(marigolds, { scale: 0 }, { scale: 1, duration: 0.6, stagger: 0.05, ease: 'back.out(2)' }, 0.8);
+    const blob = s.querySelector('.blob');
+    if (blob) tl.fromTo(blob, { scale: 0.3, rotation: -20, autoAlpha: 0 }, { scale: 1, rotation: 0, autoAlpha: 1, duration: 1.3 }, 0);
     const pen = s.querySelector<HTMLElement>('.s-pen');
     if (pen) tl.fromTo(pen, { autoAlpha: 0, x: 160, y: -60 }, { autoAlpha: 1, x: 0, y: 0, duration: 1.3 }, 0.45);
     // doodles draw themselves, as if traced by the pen
-    s.querySelectorAll<SVGPathElement>('.doodle path').forEach((p, k) => {
+    s.querySelectorAll<SVGPathElement>('.doodle path, .draw path').forEach((p, k) => {
       const len = Number(p.dataset.len || 0);
       tl.fromTo(p, { strokeDashoffset: len }, { strokeDashoffset: 0, duration: 0.8, ease: 'power2.inOut' }, 0.8 + k * 0.06);
     });
@@ -74,11 +100,13 @@ if (root && ui) {
       gsap.to(pen, { y: k ? -14 : -8, rotation: k ? '+=4' : '-=3', duration: 2.4 + k * 0.4, ease: 'sine.inOut', yoyo: true, repeat: -1 });
     });
     root.querySelectorAll<HTMLElement>('.gem').forEach((g) => gsap.to(g, { y: -10, rotation: 6, duration: 3, ease: 'sine.inOut', yoyo: true, repeat: -1 }));
+    root.querySelectorAll<HTMLElement>('.s-obj.float').forEach((f, k) => gsap.to(f, { y: -10 - (k % 3) * 4, rotation: k % 2 ? 3 : -3, duration: 2.2 + (k % 4) * 0.35, ease: 'sine.inOut', yoyo: true, repeat: -1 }));
+    root.querySelectorAll<SVGElement>('.blob').forEach((b) => gsap.to(b, { rotation: 6, scale: 1.04, duration: 5, ease: 'sine.inOut', yoyo: true, repeat: -1 }));
     root.querySelectorAll<SVGElement>('.butterfly').forEach((b) => gsap.to(b, { y: -8, duration: 2.2, ease: 'sine.inOut', yoyo: true, repeat: -1 }));
   }
 
   // Hover: filament spools give a subtle wobble; pens lean in
-  root.querySelectorAll<HTMLElement>('.s-spool, .spool').forEach((el) => {
+  root.querySelectorAll<HTMLElement>('.s-spool, .spool, .s-obj').forEach((el) => {
     el.addEventListener('pointerenter', () => {
       if (reduce || el.dataset.wob) return;
       el.dataset.wob = '1';
@@ -87,7 +115,7 @@ if (root && ui) {
   });
   if (fine && !reduce) {
     root.querySelectorAll<HTMLElement>('.s-stage').forEach((stage) => {
-      const cards = gsap.utils.toArray<HTMLElement>('.s-card, .s-pen, .gem', stage);
+      const cards = gsap.utils.toArray<HTMLElement>('.s-card, .s-pen, .gem, .s-obj:not(.float)', stage);
       const movers = cards.map((c, k) => ({ x: gsap.quickTo(c, 'x', { duration: 0.9, ease: 'power3.out' }), d: c.classList.contains('s-pen') ? 28 : 8 + (k % 3) * 6 }));
       stage.addEventListener('pointermove', (e) => {
         const r = stage.getBoundingClientRect();
