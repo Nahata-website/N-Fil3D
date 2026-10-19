@@ -1,5 +1,4 @@
-# Cloudflare Pages redirects (Hostinger uses .htaccess instead)
-
+# Cloudflare redirects (Hostinger uses .htaccess). Relative URLs only; www→bare is set in Cloudflare Redirect Rules.
 /support-2 /support/ 301
 /support-2/ /support/ 301
 /blog-page /blog/ 301

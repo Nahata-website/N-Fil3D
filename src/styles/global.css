@@ -80,8 +80,8 @@ p { margin: 0; text-wrap: pretty; }
 
 /* ---------- Layout ---------- */
 .wrap { max-width: var(--max); margin: 0 auto; padding: 0 24px; }
-.section { padding: clamp(56px, 8vw, 112px) 0; }
-.section-sm { padding: clamp(40px, 5vw, 64px) 0; }
+.section { padding-block: clamp(56px, 8vw, 112px); }
+.section-sm { padding-block: clamp(40px, 5vw, 64px); }
 .grid { display: grid; gap: 20px; }
 .cols-2 { grid-template-columns: repeat(auto-fit, minmax(min(100%, 420px), 1fr)); }
 .cols-3 { grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr)); }
@@ -214,8 +214,8 @@ details.faq .a { padding: 0 52px 24px 0; color: var(--ink-2); max-width: 70ch; }
 /* ---------- Phone tuning ---------- */
 @media (max-width: 760px) {
   body { font-size: 16px; }
-  .section { padding: 56px 0; }
-  .section-sm { padding: 36px 0; }
+  .section { padding-block: 56px; }
+  .section-sm { padding-block: 36px; }
   .section-head { margin-bottom: 24px; }
   .h-display { font-size: clamp(2.4rem, 11vw, 3.2rem); }
   .h-1 { font-size: clamp(1.9rem, 8vw, 2.4rem); }

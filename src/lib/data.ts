@@ -99,3 +99,16 @@ export function material(p: Product): Material {
 
 export const isFilament = (p: Product) => ['pla', 'petg', 'abs', 'special'].includes(material(p));
 export const plainText = (html: string) => html.replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim();
+
+/** Short, readable product name for headings, cards and breadcrumbs (full name stays in schema). */
+export function displayName(p: Product): string {
+  const full = p.name.replace(/\s+/g, ' ').trim();
+  if (full.length <= 60) return p.shortName || full;
+  const colour = full.match(/\(([A-Za-z ]{3,15})\)\s*$/)?.[1];
+  const pcs = full.match(/Includes (\d+)\s?Pcs/i)?.[1];
+  let base = full.split('|')[0].split(/\s[–-]\s?Includes/i)[0].replace(/\s*5\s?Meter Each/i, '').trim();
+  if (pcs) base += `\u00A0· ${pcs} Filaments`;
+  if (colour && !base.includes(colour)) base += ` (${colour})`;
+  if (base.length > 70) base = base.slice(0, 67).replace(/\s+\S*$/, '') + '…';
+  return base;
+}

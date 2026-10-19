@@ -3,7 +3,7 @@ import Base from '../../layouts/Base.astro';
 import Breadcrumbs from '../../components/Breadcrumbs.astro';
 import ProductCard from '../../components/ProductCard.astro';
 import Faq from '../../components/Faq.astro';
-import { products, primaryCat, ancestors, family, swatch, colourName, inr, discount, isFilament, material, plainText, productsIn } from '../../lib/data';
+import { products, primaryCat, ancestors, family, swatch, colourName, inr, discount, isFilament, material, plainText, productsIn, displayName } from '../../lib/data';
 import { SITE, cartUrl, storePath } from '../../config/site';
 
 export function getStaticPaths() {
@@ -11,14 +11,14 @@ export function getStaticPaths() {
 }
 const { p } = Astro.props as { p: (typeof products)[number] };
 const cat = primaryCat(p);
-const crumbs = [...(cat ? [...ancestors(cat), cat].map((c) => ({ name: c.name, href: c.path })) : []), { name: isFilament(p) ? colourName(p) : p.shortName }];
+const crumbs = [...(cat ? [...ancestors(cat), cat].map((c) => ({ name: c.name, href: c.path })) : []), { name: isFilament(p) ? colourName(p) : displayName(p) }];
 const fam = isFilament(p) ? family(p) : [p];
 const off = discount(p);
 const fil = isFilament(p);
 const mat = material(p);
-const title = p.seoTitle || `${p.shortName} | NFIL3D`;
+const title = p.seoTitle || `${displayName(p)} | NFIL3D`;
 const desc = p.seoDescription || plainText(p.short).slice(0, 155);
-const heading = fil ? `${cat?.name.replace(/^Premium /, '') || ''} ${colourName(p)}`.trim() : p.shortName;
+const heading = fil ? `${cat?.name.replace(/^Premium /, '') || ''} ${colourName(p)}`.trim() : displayName(p);
 const brand = /halot|creality|ender|uw-02/i.test(p.name) ? 'Creality' : /elegoo/i.test(p.name) ? 'Elegoo' : /taulman|nylon 645|nylon 230|alloy 910|pctpe|bridge nylon|sac 1060/i.test(p.name) ? 'taulman3d' : /scanner/i.test(p.name) ? undefined : 'NFIL3D';
 const related = (fam.length > 1 ? fam.filter((q) => q.id !== p.id) : (cat ? productsIn(cat.id).filter((q) => q.id !== p.id) : [])).filter((q) => q.inStock).slice(0, 4);
 
@@ -73,7 +73,7 @@ const ld = {
         {off > 0 && <span class="pill pill-sale">Save {off}%</span>}
       </div>
       <span class="eyebrow">{fil ? `${cat?.name} · 1.75 mm` : cat?.name}</span>
-      <h1 class="h-1">{heading}</h1>
+      <h1 class="pdp-title">{heading}</h1>
       {fil && <p class="muted mono" style="text-transform:none">1.75 mm · {SITE.facts.tolerance} · packed dry</p>}
       <div class="price big-price"><strong>{inr(p.price)}</strong>{off > 0 && <s>{inr(p.regularPrice)}</s>}</div>
       <p class="muted small">Inclusive of GST · Free shipping across India</p>
@@ -149,7 +149,7 @@ const ld = {
 
   {p.inStock && p.purchasable && (
     <div class="sticky-buy show-sm">
-      <div class="stack"><strong>{inr(p.price)}</strong><span class="muted small">{fil ? colourName(p) : p.shortName.slice(0, 26)}</span></div>
+      <div class="stack"><strong>{inr(p.price)}</strong><span class="muted small">{fil ? colourName(p) : displayName(p)}</span></div>
       <a class="btn btn-accent grow" href={cartUrl(p.id)} rel="nofollow">Add to cart</a>
     </div>
   )}
@@ -167,7 +167,9 @@ const ld = {
   .main img { width: 100%; aspect-ratio: 1; object-fit: contain; transition: transform .5s var(--ease), opacity .3s; }
   .main.zooming img { transform: scale(1.8); transition: transform .2s ease-out; }
   .tag { position: absolute; left: 16px; bottom: 16px; background: rgba(17,17,16,.85); color: #F2F0EB; padding: 7px 12px; border-radius: 999px; font-size: .68rem; }
-  .info { display: flex; flex-direction: column; gap: 16px; }
+  .info { display: flex; flex-direction: column; gap: 16px; min-width: 0; }
+  .pdp-title { font-size: clamp(1.8rem, 3vw, 2.75rem); line-height: 1.08; letter-spacing: -0.03em; text-wrap: balance; overflow-wrap: anywhere; }
+  @media (max-width: 760px) { .pdp-title { font-size: clamp(1.6rem, 7vw, 2rem); } }
   .small { font-size: .9rem; }
   .big-price strong { font-size: 2.1rem; letter-spacing: -0.03em; font-weight: 550; }
   .big-price s { font-size: 1.1rem; }
