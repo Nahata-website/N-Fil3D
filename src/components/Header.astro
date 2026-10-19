@@ -42,12 +42,6 @@ const nav = [
 ];
 const path = Astro.url.pathname;
 ---
-<div class="topbar">
-  <div class="wrap tb-in">
-    <p class="tb-msg"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M1 6h13v10H1zM14 10h4l3 3v3h-7"/><circle cx="5" cy="18" r="2"/><circle cx="17" cy="18" r="2"/></svg><span>Free shipping across India</span><i aria-hidden="true">|</i><span>Genuine products</span><i aria-hidden="true">|</i><span>1-year printer warranty</span></p>
-    <nav class="tb-links" aria-label="Utility"><a href="/bulk/">Bulk &amp; B2B</a><i aria-hidden="true">|</i><a href="/support/">Support</a></nav>
-  </div>
-</div>
 <header class="hdr" data-hdr>
   <div class="wrap hdr-in">
     <a href="/" class="logo" aria-label="NFIL3D home">
@@ -101,14 +95,6 @@ const path = Astro.url.pathname;
 </header>
 
 <style>
-  .topbar { background: var(--sun); color: #111110; font-size: .84rem; font-weight: 550; }
-  .tb-in { display: flex; align-items: center; justify-content: space-between; gap: 16px; min-height: 38px; }
-  .tb-msg { margin: 0 auto; display: flex; align-items: center; gap: 10px; flex-wrap: wrap; justify-content: center; }
-  .tb-msg i, .tb-links i { font-style: normal; opacity: .5; }
-  .tb-links { display: flex; gap: 10px; }
-  .tb-links a { color: #111110; text-decoration: none; }
-  .tb-links a:hover { text-decoration: underline; }
-  @media (max-width: 900px) { .tb-links { display: none; } .tb-msg span:not(:first-of-type), .tb-msg i { display: none; } }
   .hsearch { display: flex; align-items: center; gap: 10px; padding: 0 18px; height: 46px; width: 196px; border-radius: 999px; background: var(--surface-2); border: 1px solid transparent; transition: border-color .2s, background-color .2s; color: var(--muted); margin-right: 6px; }
   .hsearch:focus-within { border-color: var(--ink); background: var(--surface); }
   .hsearch input { flex: 1; min-width: 0; border: 0; background: transparent; outline: none; font-size: .9rem; color: var(--ink); }
