@@ -66,7 +66,7 @@ const ld = { '@context': 'https://schema.org', '@type': 'AboutPage', name: 'Abou
   </section>
 
   <section class="fac">
-    <div class="fac-img reveal"><img src="/images/hero-desktop.webp" width="1448" height="1086" alt="Measuring NFIL3D filament diameter with a digital caliper" loading="lazy"></div>
+    <div class="fac-img reveal"><img src="/images/facility.webp" width="1600" height="900" alt="NFIL3D team checking machines and raw material pellets at the facility" loading="lazy"></div>
     <div class="fac-t">
       <span class="eyebrow gold">Our facility</span>
       <h2 class="h-1">Quality, tested <br>at every stage.</h2>
@@ -124,7 +124,7 @@ const ld = { '@context': 'https://schema.org', '@type': 'AboutPage', name: 'Abou
   .arr { color: #C99A00; transition: transform .3s var(--ease); }
   .ocard:hover .arr { transform: translateX(4px); }
   .fac { display: grid; grid-template-columns: 1.1fr 1fr; align-items: center; gap: clamp(28px, 5vw, 72px); padding-block: clamp(28px, 4vw, 48px); }
-  .fac-img { height: 100%; min-height: 380px; overflow: hidden; border-radius: 0 var(--radius-lg) var(--radius-lg) 0; }
+  .fac-img { align-self: center; aspect-ratio: 16 / 9; overflow: hidden; border-radius: 0 var(--radius-lg) var(--radius-lg) 0; }
   .fac-img img { width: 100%; height: 100%; object-fit: cover; }
   .fac-t { display: flex; flex-direction: column; gap: 14px; padding-right: max(24px, calc((100vw - var(--max)) / 2 + 24px)); }
   .fac-t p { margin: 0; }
@@ -156,7 +156,7 @@ const ld = { '@context': 'https://schema.org', '@type': 'AboutPage', name: 'Abou
   .note { font-size: .78rem; margin: 6px 0 0; }
   @media (max-width: 900px) {
     .story, .fac { grid-template-columns: 1fr; }
-    .fac-img { border-radius: 0; min-height: 260px; }
+    .fac-img { border-radius: 0; aspect-ratio: 16 / 9; }
     .fac-t { padding: 0 18px; }
     .ogrid { grid-template-columns: repeat(2, 1fr); }
     .vband { grid-template-columns: 1fr; } .vplay { display: none; }
