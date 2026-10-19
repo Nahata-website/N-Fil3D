@@ -421,7 +421,7 @@ const printerNotes: Record<string, string> = { 'Mini-N': 'Compact. For desks, ho
 </Base>
 
 <style>
-  .hero { padding: clamp(28px, 5vw, 64px) 0 0; }
+  .hero { padding: clamp(12px, 2vw, 28px) 0 0; }
   .hero-in { display: grid; grid-template-columns: 1fr 1.05fr; gap: clamp(28px, 4vw, 64px); align-items: center; }
   @media (max-width: 900px) { .hero-in { grid-template-columns: 1fr; } }
   .hero-copy strong { color: var(--ink); font-weight: 600; }
@@ -519,7 +519,7 @@ const printerNotes: Record<string, string> = { 'Mini-N': 'Compact. For desks, ho
   .s4 .s-cta .btn-accent::after { background: #F0B400; }
   .s2 .s-cta .btn-accent:hover, .s3 .s-cta .btn-accent:hover, .s4 .s-cta .btn-accent:hover { color: #111110; border-color: transparent; }
   .slides { display: grid; overflow-x: clip; position: relative; }
-  .slide { grid-area: 1 / 1; display: flex; align-items: center; min-width: 0; }
+  .slide { grid-area: 1 / 1; display: flex; align-items: flex-start; min-width: 0; }
   .slide > .wrap { width: 100%; }
   .js .slide:not(.is-active) { visibility: hidden; opacity: 0; }
   .s-title { font-size: clamp(2.6rem, 5.4vw, 5rem); line-height: .98; letter-spacing: -0.045em; margin: 0; }
