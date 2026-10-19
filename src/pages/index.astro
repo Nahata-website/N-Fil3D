@@ -121,30 +121,16 @@ const printerNotes: Record<string, string> = { 'Mini-N': 'Compact. For desks, ho
     <div class="slide s3" data-slide="2" aria-roledescription="slide" aria-label="3 of 4" aria-hidden="true" inert>
       <div class="wrap s-split">
         <div class="stack gap-24">
-          <span class="eyebrow s-eyebrow">3D printing filaments</span>
-          <p class="h-display s-title">Every colour.<br> <span class="serif">A new possibility.</span></p>
-          <p class="lead s-sub">PLA+, PETG, ABS and speciality grades in {wall.length}+ colours. Find the right filament for your next idea.</p>
-          <div class="row gap-12 s-cta"><a class="btn btn-accent btn-lg" href="/product-category/3d-printer-filaments/">Explore filaments <span class="arrow" aria-hidden="true">→</span></a></div>
-        </div>
-        <div class="s3-stage s-stage">
-          <div class="panel s-shape" aria-hidden="true"></div>
-          {s3Spools.map((p, i) => (
-            <a class={`s-card s-spool s3-${i}`} href={p.path} aria-label={colourName(p)}>
-              <img src={p.images[0].src} srcset={p.images[0].srcset} sizes="(max-width: 760px) 45vw, 300px" alt="" loading="lazy" width="600" height="600">
-              {i === 1 && <span class="spool-tag"><span>{colourName(p)}</span></span>}
-            </a>
-          ))}
-          <svg class="gem s-shape" viewBox="0 0 120 140" aria-hidden="true">
-            <polygon points="60,4 108,34 96,98 60,136 22,104 12,38" fill="#1E5BFF" />
-            <polygon points="60,4 108,34 64,52" fill="#3D7BFF" />
-            <polygon points="60,4 12,38 64,52" fill="#2B67FF" />
-            <polygon points="12,38 22,104 64,52" fill="#174BD6" />
-            <polygon points="108,34 96,98 64,52" fill="#1A55F0" />
-            <polygon points="22,104 60,136 64,52" fill="#123FB8" />
-            <polygon points="96,98 60,136 64,52" fill="#1647CC" />
-          </svg>
+          <span class="eyebrow s-eyebrow s3-eyebrow">3D printing filaments</span>
+          <p class="s-title s3-title">Every colour.<br> A new possibility.</p>
+          <p class="lead s-sub">Find the right filament for your next idea.</p>
+          <div class="row gap-12 s-cta"><a class="btn btn-lg s3-cta" href="/product-category/3d-printer-filaments/">Explore filaments <span class="arrow" aria-hidden="true">→</span></a></div>
         </div>
       </div>
+      <picture class="slide-bg s3-bg">
+        <source media="(max-width: 900px)" srcset="/images/fest/colour-bg-m.webp" width="1139" height="678">
+        <img src="/images/fest/colour-bg.webp" width="1899" height="828" alt="NFIL3D filament spools in green, yellow, blue and orange with RAL K7 colour cards and printed figures" loading="lazy" decoding="async">
+      </picture>
     </div>
 
     <div class="slide s4" data-slide="3" aria-roledescription="slide" aria-label="4 of 4" aria-hidden="true" inert>
@@ -514,12 +500,22 @@ const printerNotes: Record<string, string> = { 'Mini-N': 'Compact. For desks, ho
   .k-star { width: 11%; right: -1%; top: 24%; z-index: 5; }
   @media (max-width: 900px) { .s6-stage, .s7-stage { aspect-ratio: 1 / 1; max-width: 520px; width: 100%; justify-self: center; } }
   @media (max-width: 760px) { .s5 .diwali-title { font-size: clamp(3rem, 15vw, 4.2rem); } .s6 .kid-title, .s7 .kid-title { font-size: clamp(2.2rem, 10vw, 3rem); } .bubble { display: none; } .lotus { width: 150px; } }
+  .s3 { position: relative; }
+  .s3 > .wrap { position: relative; z-index: 1; }
+  .s3-bg { position: absolute; top: 0; bottom: 0; right: 0; width: 64%; z-index: 0; overflow: hidden; -webkit-mask-image: linear-gradient(90deg, transparent 0%, #000 16%); mask-image: linear-gradient(90deg, transparent 0%, #000 16%); }
+  .s3-bg img { width: 100%; height: 100%; object-fit: cover; object-position: 72% center; }
+  @media (min-width: 901px) { .s3 .s-split { min-height: clamp(460px, 40vw, 720px); grid-template-columns: 1.15fr 1fr; } }
+  .s3-eyebrow { color: var(--ink); letter-spacing: .3em; }
+  .s3-title { font-size: clamp(2.6rem, 4.4vw, 4.6rem); font-weight: 500; line-height: 1.02; letter-spacing: -0.045em; margin: 0; color: #111110; }
+  .s3 .s-sub { color: #4A4A48; }
+  .s3-cta { --b: #111110; color: #fff; }
+  @media (max-width: 900px) { .s3 { flex-direction: column; } .s3-bg { position: relative; inset: auto; width: 100%; aspect-ratio: 1139 / 678; margin-top: 16px; -webkit-mask-image: none; mask-image: none; } .s3-bg img { object-position: center; } }
   /* Banner slider */
   .slides { --fil-grad: linear-gradient(125deg, #4C86FF 0%, #3CCB7F 32%, #FFD23F 62%, #FF8A3D 100%); }
   /* CTA takes the colour of the slide's shape: gradient where many filaments show, yellow for the pen */
   .s2 .s-cta .btn-accent { --b: var(--sun); color: #111110; }
   .s2 .s-cta .btn-accent::after { background: #F0B400; }
-  .s3 .s-cta .btn-accent { --b: transparent; background: var(--fil-grad); border-color: transparent; color: #111110; }
+  .s3x .s-cta .btn-accent { --b: transparent; background: var(--fil-grad); border-color: transparent; color: #111110; }
   .s3 .s-cta .btn-accent::after { background: rgba(17,17,16,.12); }
   .s4 .s-cta .btn-accent { --b: var(--sun); color: #111110; }
   .s4 .s-cta .btn-accent::after { background: #F0B400; }

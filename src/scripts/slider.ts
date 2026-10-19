@@ -82,7 +82,7 @@ if (root && ui) {
     if (bubble) tl.fromTo(bubble, { scale: 0, rotation: -30 }, { scale: 1, rotation: -6, duration: 0.8, ease: 'back.out(2.2)' }, 1.1);
     const marigolds = s.querySelectorAll('.marigolds i');
     if (marigolds.length) tl.fromTo(marigolds, { scale: 0 }, { scale: 1, duration: 0.6, stagger: 0.05, ease: 'back.out(2)' }, 0.8);
-    const bgImg = s.querySelector('.s5-bg img');
+    const bgImg = s.querySelector('.s5-bg img, .s3-bg img');
     if (bgImg) tl.fromTo(bgImg, { scale: 1.12, autoAlpha: 0.4 }, { scale: 1, autoAlpha: 1, duration: 2.4, ease: 'power2.out' }, 0);
     const blob = s.querySelector('.blob');
     if (blob) tl.fromTo(blob, { scale: 0.3, rotation: -20, autoAlpha: 0 }, { scale: 1, rotation: 0, autoAlpha: 1, duration: 1.3 }, 0);
@@ -116,6 +116,12 @@ if (root && ui) {
     });
   });
   if (fine && !reduce) {
+    root.querySelectorAll<HTMLElement>('.s3').forEach((sl) => {
+      const img = sl.querySelector<HTMLElement>('.s3-bg img'); if (!img) return;
+      const xTo = gsap.quickTo(img, 'x', { duration: 1, ease: 'power3.out' }); const yTo = gsap.quickTo(img, 'y', { duration: 1, ease: 'power3.out' });
+      sl.addEventListener('pointermove', (e) => { const r = sl.getBoundingClientRect(); xTo(((e.clientX - r.left) / r.width - 0.5) * -18); yTo(((e.clientY - r.top) / r.height - 0.5) * -10); });
+      sl.addEventListener('pointerleave', () => { xTo(0); yTo(0); });
+    });
     root.querySelectorAll<HTMLElement>('.s-stage').forEach((stage) => {
       const cards = gsap.utils.toArray<HTMLElement>('.s-card, .s-pen, .gem, .s-obj:not(.float)', stage);
       const movers = cards.map((c, k) => ({ x: gsap.quickTo(c, 'x', { duration: 0.9, ease: 'power3.out' }), d: c.classList.contains('s-pen') ? 28 : 8 + (k % 3) * 6 }));

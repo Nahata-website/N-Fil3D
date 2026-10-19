@@ -16,7 +16,7 @@ const tests = [
   ['Rheological testing', 'Smooth flow and consistent extrusion.'],
   ['Printer testing', 'Real-world performance on our own printers.'],
 ];
-const brands = ['Bajaj', 'Surya', 'Godrej', 'Symphony', 'IFB', 'Crompton'];
+const brands = [['Bajaj', 'bajaj'], ['Surya', 'surya'], ['Godrej', 'godrej'], ['Symphony', 'symphony'], ['IFB', 'ifb'], ['Crompton', 'crompton']];
 const YT = 'https://youtu.be/UjGvlBgBbrY';
 const ld = { '@context': 'https://schema.org', '@type': 'AboutPage', name: 'About NFIL3D', url: 'https://nfil3d.com/about-us/',
   description: 'NFIL3D is a 3D printing solutions brand backed by 37+ years of experience in engineering plastic compounds and biopolymers.' };
@@ -86,7 +86,11 @@ const ld = { '@context': 'https://schema.org', '@type': 'AboutPage', name: 'Abou
   <section class="wrap section-sm brands">
     <span class="eyebrow gold">Trusted experience</span>
     <h2 class="h-2">Experience serving leading brands</h2>
-    <ul class="blist">{brands.map((b) => <li>{b}</li>)}</ul>
+    <div class="marquee">
+      <ul class="track">
+        {[...brands, ...brands, ...brands].map(([n, f], i) => <li aria-hidden={i >= brands.length ? 'true' : undefined}><img src={`/images/brands/${f}.webp`} alt={i < brands.length ? n : ''} height="56" loading="lazy"></li>)}
+      </ul>
+    </div>
     <p class="note muted">Brand names belong to their owners and refer to our founders' prior experience.</p>
   </section>
 
@@ -137,7 +141,15 @@ const ld = { '@context': 'https://schema.org', '@type': 'AboutPage', name: 'Abou
   .vtext span { color: #BDB9B0; font-size: .95rem; }
   .vplay { width: 72px; height: 72px; margin-right: clamp(8px, 2vw, 24px); border-radius: 50%; display: grid; place-items: center; background: var(--sun); color: #111110; padding-left: 4px; transition: transform .4s var(--ease); }
   .vband:hover .vplay { transform: scale(1.1); }
-  .brands { text-align: center; display: flex; flex-direction: column; align-items: center; gap: 10px; }
+  .brands { overflow-x: clip; text-align: center; display: flex; flex-direction: column; align-items: center; gap: 10px; }
+  .marquee { width: 100%; margin-top: 18px; overflow: hidden; -webkit-mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent); mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent); }
+  .track { list-style: none; margin: 0; padding: 10px 0 18px; display: flex; gap: 18px; width: max-content; animation: slide 34s linear infinite; }
+  .marquee:hover .track { animation-play-state: paused; }
+  .track li { width: 220px; height: 104px; display: grid; place-items: center; padding: 18px 26px; border-radius: 22px; background: #fff; border: 1px solid var(--line); box-shadow: 0 12px 30px -24px rgba(17,17,16,.4); }
+  .track img { max-width: 100%; max-height: 60px; width: auto; height: auto; object-fit: contain; }
+  @keyframes slide { to { transform: translateX(calc(-100% / 3)); } }
+  @media (prefers-reduced-motion: reduce) { .track { animation: none; flex-wrap: wrap; width: auto; justify-content: center; } }
+  @media (max-width: 600px) { .track li { width: 160px; height: 84px; padding: 14px 18px; } }
   .blist { list-style: none; margin: 14px 0 0; padding: 0; display: flex; flex-wrap: wrap; justify-content: center; }
   .blist li { padding: 6px clamp(16px, 3vw, 36px); font-size: clamp(1.05rem, 1.6vw, 1.35rem); font-weight: 600; color: var(--ink-2); }
   .blist li + li { border-left: 1px solid var(--line); }

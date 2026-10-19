@@ -1,54 +1,119 @@
 ---
 import { MATERIALS, GOALS } from '../data/content';
+import { catBySlug, productsIn } from '../lib/data';
+
+const blurbs: Record<string, [string, string]> = {
+  beginner: ['A great place to start.', 'Recommended for first prints.'],
+  strong: ['Built to take a load.', 'Recommended for brackets, enclosures and tools.'],
+  outdoor: ['Made for sun and heat.', 'Recommended for outdoor and hot environments.'],
+  looks: ['Made to be seen.', 'Recommended for display pieces and decor.'],
+  eng: ['Engineering-grade performance.', 'Recommended for gears, hinges and technical parts.'],
+};
+const chips: Record<string, string[]> = {
+  pla: ['Easy to print', 'Everyday projects'], matte: ['Matte finish', 'Display models'], tf: ['Fast printing', 'Clean finish'],
+  petg: ['Strong', 'Heat-resistant'], abs: ['Tough', 'Impact-resistant'], asa: ['UV-resistant', 'Outdoor'],
+  fr: ['Flame-retardant', 'Electrical'], cf: ['Stiff', 'Matte black'], nylon: ['Wear-resistant', 'Gears & hinges'],
+  metal: ['Metallic sheen', 'Decor'], glow: ['Glows in the dark', 'Toys & lights'],
+};
+const mats = MATERIALS.map((m) => {
+  const slug = m.href.replace(/\/$/, '').split('/').pop()!;
+  const c = catBySlug.get(slug);
+  const list = c ? productsIn(c.id) : [];
+  const p = list.find((x) => x.inStock && x.images.length > 1) || list.find((x) => x.images.length) ;
+  return { ...m, img: p?.images[0] };
+});
 ---
-<section class="finder card reveal" aria-labelledby="finder-h" id="finder">
-  <div class="section-head" style="margin-bottom:24px">
-    <div class="stack">
-      <span class="eyebrow">Filament finder</span>
-      <h2 id="finder-h" class="h-2">What are you printing?</h2>
+<section class="finder" aria-labelledby="finder-h" id="finder" data-finder>
+  <div class="fhead">
+    <div class="stack gap-8">
+      <span class="eyebrow fgold">Filament finder</span>
+      <h2 id="finder-h" class="h-display fh">What are you printing?</h2>
+      <p class="lead fsub">Choose your project. Find your material.</p>
     </div>
-    <a class="link" href="/materials/">Compare all materials <span aria-hidden="true">→</span></a>
+    <a class="fcmp" href="/materials/">Compare all materials <span aria-hidden="true">→</span></a>
   </div>
-  <div class="row gap-8" role="tablist" aria-label="Printing goal">
-    {GOALS.map((g, i) => <button type="button" class="chip" role="tab" aria-selected={i === 0 ? 'true' : 'false'} data-goal={g.key}>{g.label}</button>)}
-  </div>
-  <div class="mats" aria-live="polite">
-    {MATERIALS.map((m) => (
-      <a href={m.href} class="mat" data-tags={m.tags.join(' ')} hidden={!m.tags.includes('beginner')}>
-        <div class="row between gap-8"><strong class="h-3">{m.name}</strong><span class="muted">{m.from}</span></div>
-        <p class="muted">{m.use}</p>
-        <dl class="bars">
-          <dt>Ease</dt><dd><span style={`--v:${m.ease / 5}`}></span></dd>
-          <dt>Strength</dt><dd><span style={`--v:${m.strength / 5}`}></span></dd>
-          <dt>Heat</dt><dd><span class="hot" style={`--v:${m.heat / 5}`}></span></dd>
-        </dl>
-        <span class="go link">Shop {m.name} <span aria-hidden="true">→</span></span>
-      </a>
+
+  <div class="goals" role="tablist" aria-label="What are you printing?">
+    {GOALS.map((g, i) => (
+      <button type="button" class="goal" role="tab" aria-selected={i === 0 ? 'true' : 'false'} data-goal={g.key}>
+        <span class="tick" aria-hidden="true"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5 9-10"/></svg></span>
+        <img src={`/images/finder/${g.key}.webp`} alt="" width="180" height="180" loading="lazy">
+        <span class="gl">{g.label}</span>
+      </button>
     ))}
   </div>
+
+  {GOALS.map((g, i) => (
+    <div class="rec-head" data-head={g.key} hidden={i !== 0}><h3 class="h-2">{blurbs[g.key][0]}</h3><p class="muted">{blurbs[g.key][1]}</p></div>
+  ))}
+
+  <div class="mats" aria-live="polite">
+    {mats.map((m) => (
+      <article class="mat" data-tags={m.tags.join(' ')} hidden={!m.tags.includes('beginner')}>
+        <a class="mimg" href={m.href} tabindex="-1">{m.img && <img src={m.img.src} srcset={m.img.srcset} sizes="(max-width: 760px) 90vw, 420px" alt={`NFIL3D ${m.name} filament`} width="600" height="600" loading="lazy">}</a>
+        <div class="mbody">
+          <div class="mtop"><h4>{m.name}</h4><span class="mprice">{m.from}</span></div>
+          <p class="muted">{m.use}</p>
+          <div class="mchips">{(chips[m.key] || []).map((c) => <span>{c}</span>)}</div>
+          <a class="btn dark mbtn" href={m.href}>Explore {m.name} <span class="arrow" aria-hidden="true">→</span></a>
+        </div>
+      </article>
+    ))}
+  </div>
+  <a class="unsure" href="/contact/">Not sure yet? Talk to our team <span aria-hidden="true">→</span></a>
 </section>
 <style>
-  .finder { padding: clamp(24px, 4vw, 48px); border-radius: var(--radius-lg); }
-  .mats { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr)); gap: 16px; margin-top: 24px; }
-  .mat { display: flex; flex-direction: column; gap: 12px; padding: 22px; border-radius: var(--radius); background: var(--bg); border: 1px solid var(--line); text-decoration: none; animation: rise .6s var(--ease) both; transition: border-color .3s, transform .4s var(--ease); }
-  .mat:hover { border-color: var(--ink); transform: translateY(-2px); color: inherit; }
+  .finder { padding-block: clamp(8px, 2vw, 24px); }
+  .fhead { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; gap: 16px; margin-bottom: 28px; }
+  .fgold { color: #C99A00; }
+  .fh { font-size: clamp(2.4rem, 5vw, 4.4rem); margin: 0; }
+  .fsub { margin: 0; }
+  .fcmp { font-weight: 600; text-decoration: none; }
+  .fcmp span { transition: transform .3s var(--ease); display: inline-block; }
+  .fcmp:hover span { transform: translateX(4px); }
+  .goals { display: grid; grid-template-columns: repeat(5, 1fr); gap: 14px; }
+  .goal { position: relative; display: flex; flex-direction: column; align-items: center; gap: 10px; padding: 16px 12px 18px; border-radius: var(--radius); border: 2px solid transparent; background: var(--surface-2); cursor: pointer; font: inherit; color: var(--ink); transition: background-color .3s, border-color .3s, transform .4s var(--ease); }
+  .goal:hover { transform: translateY(-3px); }
+  .goal img { width: 70%; max-width: 150px; aspect-ratio: 1; object-fit: contain; transition: transform .5s var(--ease); }
+  .goal:hover img { transform: scale(1.06) rotate(-3deg); }
+  .gl { font-weight: 650; }
+  .goal[aria-selected="true"] { background: #FFF4C7; border-color: var(--sun); }
+  .tick { position: absolute; right: 12px; top: 12px; width: 26px; height: 26px; border-radius: 50%; background: #111110; display: grid; place-items: center; transform: scale(0); transition: transform .35s var(--ease); }
+  .goal[aria-selected="true"] .tick { transform: scale(1); }
+  .rec-head { margin: 36px 0 18px; }
+  .rec-head .h-2 { margin: 0; font-size: clamp(1.6rem, 2.6vw, 2.4rem); }
+  .rec-head p { margin: 4px 0 0; }
+  .mats { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr)); gap: 18px; }
+  .mat { display: flex; flex-direction: column; border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden; background: var(--surface); animation: rise .6s var(--ease) both; transition: box-shadow .4s var(--ease); }
+  .mat:hover { box-shadow: var(--shadow); }
   .mat[hidden] { display: none; }
-  .bars { display: grid; grid-template-columns: 70px 1fr; gap: 8px 12px; align-items: center; margin: 4px 0 0; font-family: var(--mono); font-size: .72rem; text-transform: uppercase; color: var(--muted); }
-  .bars dd { margin: 0; height: 4px; border-radius: 4px; background: var(--line); overflow: hidden; }
-  .bars span { display: block; height: 100%; width: calc(var(--v) * 100%); background: var(--ink); border-radius: 4px; transform-origin: left; animation: grow .9s var(--ease) both; }
-  .bars .hot { background: var(--accent); }
-  .go { margin-top: auto; font-size: .92rem; }
-  @keyframes rise { from { opacity: 0; transform: translateY(10px); } }
-  @keyframes grow { from { transform: scaleX(0); } }
+  .mimg { display: block; aspect-ratio: 2.3 / 1; background: #F3F3F3; overflow: hidden; }
+  .mimg img { width: 100%; height: 100%; object-fit: cover; object-position: center 65%; transition: transform .8s var(--ease); }
+  .mat:hover .mimg img { transform: scale(1.06); }
+  .mbody { display: flex; flex-direction: column; gap: 10px; padding: 20px 22px 22px; flex: 1; }
+  .mtop { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; }
+  .mtop h4 { margin: 0; font-size: 1.35rem; font-weight: 650; letter-spacing: -0.02em; }
+  .mprice { font-weight: 550; }
+  .mbody p { margin: 0; }
+  .mchips { display: flex; flex-wrap: wrap; gap: 8px; }
+  .mchips span { padding: 5px 12px; border-radius: 999px; background: var(--surface-2); font-size: .82rem; color: var(--ink-2); }
+  .dark { --b: #111110; color: #fff; }
+  .mbtn { align-self: flex-start; margin-top: auto; }
+  .unsure { display: inline-block; margin-top: 22px; padding-bottom: 4px; font-weight: 550; text-decoration: none; border-bottom: 2px solid var(--sun); }
+  @keyframes rise { from { opacity: 0; transform: translateY(14px); } }
+  @media (max-width: 900px) { .goals { grid-template-columns: repeat(5, 46%); overflow-x: auto; scroll-snap-type: x mandatory; padding-bottom: 6px; } .goal { scroll-snap-align: start; } }
 </style>
 <script>
-  document.querySelectorAll('.finder').forEach((root) => {
+  document.querySelectorAll<HTMLElement>('[data-finder]').forEach((root) => {
     const tabs = root.querySelectorAll<HTMLButtonElement>('[data-goal]');
     const cards = root.querySelectorAll<HTMLElement>('.mat');
+    const heads = root.querySelectorAll<HTMLElement>('[data-head]');
     tabs.forEach((t) => t.addEventListener('click', () => {
       tabs.forEach((x) => x.setAttribute('aria-selected', String(x === t)));
       const g = t.dataset.goal!;
-      cards.forEach((c) => { c.hidden = !c.dataset.tags!.split(' ').includes(g); });
+      heads.forEach((h) => { h.hidden = h.dataset.head !== g; });
+      let k = 0;
+      cards.forEach((c) => { const on = c.dataset.tags!.split(' ').includes(g); c.hidden = !on; if (on) { c.style.animation = 'none'; void c.offsetWidth; c.style.animation = ''; c.style.animationDelay = `${k++ * 0.07}s`; } });
     }));
   });
 </script>
