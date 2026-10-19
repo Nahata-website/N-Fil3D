@@ -29,7 +29,7 @@ const ld = { '@context': 'https://schema.org', '@type': 'Blog', name: 'The NFIL3
     <p class="lead">Practical knowledge for your next creation.</p>
   </section>
 
-  <section class="wrap" data-journal>
+  <section class="wrap journal" data-journal>
     <div class="jtools">
       <div class="row gap-8 chips" role="group" aria-label="Filter articles">
         {topics.map((t, i) => <button type="button" class="chip" aria-pressed={i === 0 ? 'true' : 'false'} data-topic={i === 0 ? 'all' : t}>{t}</button>)}
@@ -56,7 +56,7 @@ const ld = { '@context': 'https://schema.org', '@type': 'Blog', name: 'The NFIL3
     <h2 class="h-2 latest">Latest articles</h2>
     <div class="grid cols-3 posts">
       {rest.map((p, i) => (
-        <a href={p.path} class="post reveal" style={`--d:${i * 0.05}s`} data-post data-topic={p.topic} data-text={p.title.toLowerCase()}>
+        <a href={p.path} class="post" data-post data-topic={p.topic} data-text={p.title.toLowerCase()}>
           <div class="post-img">{p.image && <img src={p.image} alt="" width="640" height="440" loading="lazy">}</div>
           <span class="topic">{p.topic}</span>
           <h3 class="h-3">{p.title}</h3>
@@ -89,8 +89,9 @@ const ld = { '@context': 'https://schema.org', '@type': 'Blog', name: 'The NFIL3
   .read { font-weight: 600; display: inline-flex; gap: 8px; }
   .feat:hover .read span { transform: translateX(4px); }
   .read span { transition: transform .3s var(--ease); }
-  .latest { margin: clamp(48px, 6vw, 80px) 0 24px; }
-  .posts { row-gap: 40px; }
+  .journal { padding-bottom: clamp(56px, 7vw, 96px); }
+  .latest { margin: clamp(36px, 4vw, 56px) 0 20px; }
+  .posts { row-gap: 40px; align-items: start; }
   .post { display: flex; flex-direction: column; gap: 10px; text-decoration: none; }
   .post-img { aspect-ratio: 3 / 2; border-radius: var(--radius); overflow: hidden; background: var(--surface-2); margin-bottom: 6px; }
   .post h3 { margin: 0; }
