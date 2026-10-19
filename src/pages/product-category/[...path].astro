@@ -1,0 +1,47 @@
+---
+import Base from '../../layouts/Base.astro';
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
+import Catalogue from '../../components/Catalogue.astro';
+import { categories, productsIn, childrenOf, ancestors, DUPLICATE_CATS, type Category } from '../../lib/data';
+import { SITE } from '../../config/site';
+
+export function getStaticPaths() {
+  return categories.filter((c) => c.count > 0).map((c) => ({
+    params: { path: c.path.replace(/^\/product-category\//, '').replace(/\/$/, '') },
+    props: { c },
+  }));
+}
+const { c } = Astro.props as { c: Category };
+const items = productsIn(c.id);
+const subs = childrenOf(c.id).filter((s) => !DUPLICATE_CATS.has(s.slug));
+const crumbs = [...ancestors(c).map((a) => ({ name: a.name, href: a.path })), { name: c.name }];
+const title = c.seoTitle || `Buy ${c.name} Online in India | NFIL3D`;
+const description = c.seoDescription || `Shop ${c.name} from NFIL3D, with free shipping across India and support Monday to Saturday.`;
+const ld = { '@context': 'https://schema.org', '@type': 'CollectionPage', name: c.name, url: new URL(c.path, SITE.url).href, description,
+  mainEntity: { '@type': 'ItemList', numberOfItems: items.length, itemListElement: items.slice(0, 30).map((p, i) => ({ '@type': 'ListItem', position: i + 1, url: new URL(p.path, SITE.url).href, name: p.name })) } };
+---
+<Base title={title} description={description} jsonld={ld} noindex={DUPLICATE_CATS.has(c.slug)}>
+  <section class="wrap" style="padding-top:20px">
+    <Breadcrumbs items={crumbs} />
+    <div class="head">
+      <div class="stack gap-16">
+        <span class="eyebrow">{items.length} products</span>
+        <h1 class="h-1">{c.name}</h1>
+        {c.intro && <p class="lead">{c.intro}</p>}
+      </div>
+    </div>
+    {subs.length > 0 && (
+      <nav aria-label={`${c.name} ranges`} class="row gap-8 subs">
+        {subs.map((s) => <a class="chip sub" href={s.path}>{s.name} <span class="muted">{s.count}</span></a>)}
+      </nav>
+    )}
+  </section>
+  <section class="wrap section-sm" style="padding-top:24px">
+    <Catalogue items={items} />
+  </section>
+</Base>
+<style>
+  .head { padding: 32px 0 24px; max-width: 760px; }
+  .subs { margin-bottom: 8px; }
+  .sub { display: inline-flex; align-items: center; gap: 8px; text-decoration: none; }
+</style>

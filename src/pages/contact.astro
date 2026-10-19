@@ -1,0 +1,39 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHead from '../components/PageHead.astro';
+import { SITE } from '../config/site';
+---
+<Base title="Contact NFIL3D: Sales & 3D Printing Support" description="Contact NFIL3D for orders, bulk filament pricing and 3D printer support. Call +91-80 80 80 1204 or email sales@nfil3d.com, Monday to Saturday.">
+  <PageHead crumb="Contact" eyebrow="Contact" title='Talk to <span class="serif">a person.</span>' lead={`Orders, bulk pricing or printer help: we reply ${SITE.hours}.`} />
+  <section class="wrap section-sm two">
+    <div class="stack gap-12">
+      <a class="card line" href={SITE.phoneHref}><span class="mono muted">Phone</span><strong>{SITE.phone}</strong></a>
+      <a class="card line" href={`mailto:${SITE.email}`}><span class="mono muted">Email</span><strong>{SITE.email}</strong></a>
+      <a class="card line" href={SITE.whatsapp}><span class="mono muted">WhatsApp</span><strong>Chat with us</strong></a>
+      <p class="muted" style="font-size:.9rem">{SITE.hours}</p>
+    </div>
+    <form class="card form" action="/contact.php" method="post">
+      <input type="hidden" name="type" value="contact">
+      <p class="thanks" data-thanks hidden>Thanks, your message has been sent. We will get back to you soon.</p>
+      <label class="field">Name<input class="input" name="name" required autocomplete="name"></label>
+      <label class="field">Email<input class="input" name="email" type="email" required autocomplete="email"></label>
+      <label class="field">Phone<input class="input" name="phone" type="tel" autocomplete="tel"></label>
+      <label class="field">Message<textarea class="input" name="message" rows="5" required></textarea></label>
+      <label class="hp" aria-hidden="true">Leave empty<input name="website" tabindex="-1" autocomplete="off"></label>
+      <button class="btn btn-accent btn-lg" type="submit">Send message</button>
+    </form>
+  </section>
+</Base>
+<style>
+  .two { display: grid; grid-template-columns: 1fr 1.3fr; gap: 40px; align-items: start; }
+  @media (max-width: 860px) { .two { grid-template-columns: 1fr; } }
+  .line { display: flex; flex-direction: column; gap: 4px; padding: 20px 22px; text-decoration: none; transition: border-color .3s, transform .4s var(--ease); }
+  .line:hover { border-color: var(--ink); transform: translateX(4px); color: inherit; }
+  .line strong { font-size: 1.2rem; font-weight: 550; }
+  .form { padding: clamp(22px, 3vw, 36px); display: flex; flex-direction: column; gap: 16px; border-radius: var(--radius-lg); }
+  .hp { position: absolute; left: -9999px; }
+  .thanks { padding: 14px 16px; border-radius: 12px; background: var(--success-soft); color: var(--success); }
+</style>
+<script>
+  if (new URLSearchParams(location.search).get('sent') === '1') document.querySelector<HTMLElement>('[data-thanks]')!.hidden = false;
+</script>

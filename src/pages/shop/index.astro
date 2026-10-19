@@ -1,0 +1,19 @@
+---
+import Base from '../../layouts/Base.astro';
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
+import Catalogue from '../../components/Catalogue.astro';
+import { products, material } from '../../lib/data';
+const order = ['pla', 'petg', 'abs', 'special', 'pen', 'printer', 'other'];
+const items = [...products].filter((p) => !/models/i.test(p.name) || true).sort((a, b) => (Number(b.inStock) - Number(a.inStock)) || order.indexOf(material(a)) - order.indexOf(material(b)));
+---
+<Base title="Shop 3D Printers, Filament & 3D Pens | NFIL3D" description="Browse every NFIL3D product in one place: FDM and resin 3D printers, 1.75 mm PLA, PETG and ABS filament, 3D pens, scanners and spares.">
+  <section class="wrap" style="padding-top:20px">
+    <Breadcrumbs items={[{ name: 'Shop' }]} />
+    <div class="stack gap-16" style="padding:32px 0 24px;max-width:760px">
+      <span class="eyebrow">{products.length} products</span>
+      <h1 class="h-1">Shop everything</h1>
+      <p class="lead">Filament, printers, pens and spares. Search by colour or material, or filter below.</p>
+    </div>
+  </section>
+  <section class="wrap section-sm" style="padding-top:8px"><Catalogue items={items} search /></section>
+</Base>

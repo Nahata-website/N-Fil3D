@@ -1,0 +1,54 @@
+---
+import { MATERIALS, GOALS } from '../data/content';
+---
+<section class="finder card reveal" aria-labelledby="finder-h" id="finder">
+  <div class="section-head" style="margin-bottom:24px">
+    <div class="stack">
+      <span class="eyebrow">Filament finder</span>
+      <h2 id="finder-h" class="h-2">What are you printing?</h2>
+    </div>
+    <a class="link" href="/materials/">Compare all materials <span aria-hidden="true">→</span></a>
+  </div>
+  <div class="row gap-8" role="tablist" aria-label="Printing goal">
+    {GOALS.map((g, i) => <button type="button" class="chip" role="tab" aria-selected={i === 0 ? 'true' : 'false'} data-goal={g.key}>{g.label}</button>)}
+  </div>
+  <div class="mats" aria-live="polite">
+    {MATERIALS.map((m) => (
+      <a href={m.href} class="mat" data-tags={m.tags.join(' ')} hidden={!m.tags.includes('beginner')}>
+        <div class="row between gap-8"><strong class="h-3">{m.name}</strong><span class="muted">{m.from}</span></div>
+        <p class="muted">{m.use}</p>
+        <dl class="bars">
+          <dt>Ease</dt><dd><span style={`--v:${m.ease / 5}`}></span></dd>
+          <dt>Strength</dt><dd><span style={`--v:${m.strength / 5}`}></span></dd>
+          <dt>Heat</dt><dd><span class="hot" style={`--v:${m.heat / 5}`}></span></dd>
+        </dl>
+        <span class="go link">Shop {m.name} <span aria-hidden="true">→</span></span>
+      </a>
+    ))}
+  </div>
+</section>
+<style>
+  .finder { padding: clamp(24px, 4vw, 48px); border-radius: var(--radius-lg); }
+  .mats { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr)); gap: 16px; margin-top: 24px; }
+  .mat { display: flex; flex-direction: column; gap: 12px; padding: 22px; border-radius: var(--radius); background: var(--bg); border: 1px solid var(--line); text-decoration: none; animation: rise .6s var(--ease) both; transition: border-color .3s, transform .4s var(--ease); }
+  .mat:hover { border-color: var(--ink); transform: translateY(-2px); color: inherit; }
+  .mat[hidden] { display: none; }
+  .bars { display: grid; grid-template-columns: 70px 1fr; gap: 8px 12px; align-items: center; margin: 4px 0 0; font-family: var(--mono); font-size: .72rem; text-transform: uppercase; color: var(--muted); }
+  .bars dd { margin: 0; height: 4px; border-radius: 4px; background: var(--line); overflow: hidden; }
+  .bars span { display: block; height: 100%; width: calc(var(--v) * 100%); background: var(--ink); border-radius: 4px; transform-origin: left; animation: grow .9s var(--ease) both; }
+  .bars .hot { background: var(--accent); }
+  .go { margin-top: auto; font-size: .92rem; }
+  @keyframes rise { from { opacity: 0; transform: translateY(10px); } }
+  @keyframes grow { from { transform: scaleX(0); } }
+</style>
+<script>
+  document.querySelectorAll('.finder').forEach((root) => {
+    const tabs = root.querySelectorAll<HTMLButtonElement>('[data-goal]');
+    const cards = root.querySelectorAll<HTMLElement>('.mat');
+    tabs.forEach((t) => t.addEventListener('click', () => {
+      tabs.forEach((x) => x.setAttribute('aria-selected', String(x === t)));
+      const g = t.dataset.goal!;
+      cards.forEach((c) => { c.hidden = !c.dataset.tags!.split(' ').includes(g); });
+    }));
+  });
+</script>

@@ -1,0 +1,35 @@
+---
+import Base from '../../layouts/Base.astro';
+import PageHead from '../../components/PageHead.astro';
+import { posts } from '../../lib/data';
+const fmt = (d: string) => new Date(d).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' });
+const [first, ...rest] = posts;
+---
+<Base title="NFIL3D Blog: 3D Printing Guides & Buying Tips" description="Guides to choosing a 3D printer and filament in India: printers for beginners and students, budget picks under Rs 25,000, and PLA vs ABS vs PETG.">
+  <PageHead crumb="Blog" eyebrow="Blog" title='NFIL3D Blog: guides <span class="serif">and tips.</span>' lead="Practical advice for choosing, setting up and getting the most from your 3D printer and filament." />
+  <section class="wrap section-sm">
+    {first && (
+      <a href={first.path} class="feat reveal">
+        {first.image && <img src={first.image} alt="" width="1200" height="700" loading="eager">}
+        <div class="stack gap-12"><span class="mono muted">{fmt(first.date)}</span><h2 class="h-2">{first.title}</h2><p class="muted">{first.excerpt.slice(0, 180)}…</p><span class="link">Read guide <span aria-hidden="true">→</span></span></div>
+      </a>
+    )}
+    <div class="grid cols-3" style="margin-top:32px">
+      {rest.map((p, i) => (
+        <a href={p.path} class="item reveal" style={`--d:${i * 0.05}s`}>
+          {p.image && <img src={p.image} alt="" width="640" height="400" loading="lazy">}
+          <span class="mono muted">{fmt(p.date)}</span>
+          <h2 class="h-3">{p.title}</h2>
+        </a>
+      ))}
+    </div>
+  </section>
+</Base>
+<style>
+  .feat { display: grid; grid-template-columns: 1.3fr 1fr; gap: 40px; align-items: center; text-decoration: none; }
+  @media (max-width: 860px) { .feat { grid-template-columns: 1fr; gap: 20px; } }
+  .feat img, .item img { width: 100%; object-fit: cover; border-radius: var(--radius-lg); aspect-ratio: 16/10; transition: transform .6s var(--ease); }
+  .feat:hover img, .item:hover img { transform: scale(1.015); }
+  .item { display: flex; flex-direction: column; gap: 12px; text-decoration: none; }
+  .item:hover h2, .feat:hover h2 { color: var(--accent); }
+</style>

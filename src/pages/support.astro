@@ -1,0 +1,35 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHead from '../components/PageHead.astro';
+import Faq from '../components/Faq.astro';
+import { SITE, storePath } from '../config/site';
+---
+<Base title="NFIL3D Support: 3D Printer & Filament Help" description="Setup guides, troubleshooting and warranty help for NFIL3D 3D printers and filament. Call, email or WhatsApp us, Monday to Saturday, 9 am to 5:30 pm.">
+  <PageHead crumb="Support" eyebrow="Support" title='NFIL3D Support: help with your <span class="serif">printer and filament.</span>' lead={`Talk to a person, ${SITE.hours}.`} />
+  <section class="wrap section-sm grid cols-3">
+    <a class="card tile reveal" href={SITE.whatsapp}><span class="eyebrow">Fastest</span><h2 class="h-3">WhatsApp</h2><p class="muted">Send photos of the issue and get help in chat.</p></a>
+    <a class="card tile reveal" style="--d:.05s" href={SITE.phoneHref}><span class="eyebrow">Call</span><h2 class="h-3">{SITE.phone}</h2><p class="muted">{SITE.hours}</p></a>
+    <a class="card tile reveal" style="--d:.1s" href={`mailto:${SITE.email}`}><span class="eyebrow">Email</span><h2 class="h-3">{SITE.email}</h2><p class="muted">Include your order number.</p></a>
+  </section>
+  <section class="wrap section-sm grid cols-4">
+    <a class="card mini" href="/get-started/"><strong>Get Started</strong><span class="muted">Temperatures and setup</span></a>
+    <a class="card mini" href="/register-your-warranty/"><strong>Warranty</strong><span class="muted">Register or claim</span></a>
+    <a class="card mini" href={storePath('/my-account/')}><strong>Track order</strong><span class="muted">Your account</span></a>
+    <a class="card mini" href="/3d-printing-faq/"><strong>FAQ</strong><span class="muted">Quick answers</span></a>
+  </section>
+  <section class="wrap section-sm" style="max-width:920px">
+    <h2 class="h-2" style="margin-bottom:16px">Troubleshooting</h2>
+    <Faq items={[
+      ['My printer will not power on', 'Check that the power cable is seated firmly at both ends, the wall socket works and the power switch on the printer is on. If it still will not start, contact support with your order number.'],
+      ['Prints are not sticking to the bed', 'Re-level the bed, make sure the nozzle is close enough on the first layer, clean the bed with isopropyl alcohol and slow down the first layer.'],
+      ['Prints are warping or cracking', 'Use a heated bed at the right temperature, avoid drafts, and print ABS or ASA in an enclosure. Switch to PLA+ or PETG if you have no enclosure.'],
+      ['Filament is tangled or not feeding', 'Make sure the loose end was kept in the spool slots, the spool turns freely and the filament filter is not blocked. Check the extruder tension.'],
+      ['Stringing, bubbles or popping sounds', 'These usually mean the filament has absorbed moisture. Dry it, then store it sealed with the desiccant.'],
+    ]} />
+  </section>
+</Base>
+<style>
+  .tile { padding: 28px; display: flex; flex-direction: column; gap: 8px; text-decoration: none; transition: transform .4s var(--ease), border-color .3s; }
+  .tile:hover, .mini:hover { transform: translateY(-3px); border-color: var(--ink); color: inherit; }
+  .mini { padding: 20px; display: flex; flex-direction: column; gap: 4px; text-decoration: none; transition: transform .4s var(--ease), border-color .3s; }
+</style>

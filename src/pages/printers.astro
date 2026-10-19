@@ -1,0 +1,57 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHead from '../components/PageHead.astro';
+import ProductCard from '../components/ProductCard.astro';
+import Faq from '../components/Faq.astro';
+import { products, productsIn, catBySlug, inr } from '../lib/data';
+import { SITE } from '../config/site';
+const nf = ['mini-n-3d-printer', 'n1-3d-printer', 'n2-3d-printer'].map((s) => products.find((p) => p.slug.startsWith(s))).filter(Boolean) as typeof products;
+const resin = productsIn(catBySlug.get('resin-3d-printers')!.id);
+const others = productsIn(catBySlug.get('3d-printers')!.id).filter((p) => !nf.includes(p) && !resin.includes(p));
+const rows: [string, string[]][] = [
+  ['Best for', ['Home, desks, classrooms', 'Prototypes and everyday parts', 'Bigger, longer prints']],
+  ['Technology', ['FDM (filament)', 'FDM (filament)', 'FDM (filament)']],
+  ['Filament size', ['1.75 mm', '1.75 mm', '1.75 mm']],
+  ['Warranty', ['1 year on parts', '1 year on parts', '1 year on parts']],
+];
+---
+<Base title="Compare 3D Printers: Mini-N, N1 & N2 | NFIL3D" description="Compare NFIL3D FDM printers (Mini-N, N1, N2) and Halot resin printers. 1-year printer warranty, free shipping in India and support Mon–Sat.">
+  <PageHead crumb="3D Printers" eyebrow="3D printers" title='Pick the right printer, <span class="serif">first time.</span>' lead="NFIL3D's own FDM printers for homes, schools and workshops, plus resin printers for fine detail. 1-year warranty on parts, support from India." />
+
+  <section class="wrap section-sm">
+    <div class="cmp card reveal">
+      <table>
+        <caption class="sr-only">Compare NFIL3D printers</caption>
+        <thead><tr><th scope="col"><span class="sr-only">Feature</span></th>{nf.map((p) => (
+          <th scope="col"><a href={p.path} class="pcol">{p.images[0] && <img src={p.images[0].src} srcset={p.images[0].srcset} sizes="220px" alt={p.images[0].alt} loading="lazy" width="400" height="400">}<span class="h-3">{p.shortName.replace(' 3D Printer', '')}</span><span class="price"><strong>{inr(p.price)}</strong></span></a></th>
+        ))}</tr></thead>
+        <tbody>{rows.map(([k, v]) => <tr><th scope="row">{k}</th>{v.map((x) => <td>{x}</td>)}</tr>)}</tbody>
+        <tfoot><tr><td></td>{nf.map((p) => <td><a class="btn btn-sm" href={p.path}>View details</a></td>)}</tr></tfoot>
+      </table>
+    </div>
+    <p class="muted small" style="margin-top:12px">Build volume, speed and full specifications are on each printer's page.</p>
+  </section>
+
+  {resin.length > 0 && <section class="wrap section-sm"><div class="section-head"><div class="stack"><span class="eyebrow">Fine detail</span><h2 class="h-2">Resin printers &amp; curing</h2></div></div><div class="grid cols-4">{resin.map((p) => <ProductCard p={p} />)}</div></section>}
+  {others.length > 0 && <section class="wrap section-sm"><div class="section-head"><h2 class="h-2">More printers</h2></div><div class="grid cols-4">{others.map((p) => <ProductCard p={p} />)}</div></section>}
+
+  <section class="wrap section-sm" style="max-width:900px">
+    <h2 class="h-2" style="margin-bottom:16px">Printer questions</h2>
+    <Faq items={[
+      ['FDM or resin: which should I buy?', 'Choose FDM for prototypes, functional parts and larger prints; it uses 1.75 mm filament and is easier to live with. Choose resin for very fine detail such as miniatures, jewellery and dental models; prints need washing and curing.'],
+      ['What warranty do NFIL3D printers have?', 'A 1-year warranty on parts and components against manufacturing defects. Defective parts are repaired or replaced at no cost; shipping charges may apply.'],
+      ['Which filament should I start with?', 'NFIL3D PLA+ is the easiest. Move to PETG or HI ABS+ for stronger, more heat-resistant parts.'],
+      ['Do you help with setup?', `Yes. Call ${SITE.phone}, email ${SITE.email} or message us on WhatsApp, ${SITE.hours}.`],
+    ]} />
+  </section>
+</Base>
+<style>
+  .cmp { overflow-x: auto; padding: 8px; }
+  table { width: 100%; border-collapse: collapse; min-width: 720px; }
+  th, td { padding: 16px; text-align: left; border-bottom: 1px solid var(--line); vertical-align: top; }
+  tbody th { color: var(--muted); font-weight: 500; width: 180px; }
+  tfoot td { border-bottom: 0; }
+  .pcol { display: flex; flex-direction: column; gap: 8px; text-decoration: none; }
+  .pcol img { aspect-ratio: 1; object-fit: contain; background: #fff; border-radius: 16px; max-width: 220px; }
+  .small { font-size: .88rem; }
+</style>

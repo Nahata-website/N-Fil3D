@@ -1,0 +1,27 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHead from '../components/PageHead.astro';
+import { SITE } from '../config/site';
+const form = 'https://docs.google.com/forms/d/e/1FAIpQLSeNFpTXdF8k56MPWQVnqbrYZCXTol9dU-Jinzj8wPCB1HoNAw/viewform';
+---
+<Base title="NFIL3D Warranty: Lifetime on Filament, 1 Year on Printers" description="Register your NFIL3D warranty. Filament has a lifetime warranty against manufacturing defects and NFIL3D printers have a 1-year parts warranty.">
+  <PageHead crumb="Warranty" eyebrow="Warranty" title='NFIL3D Warranty: lifetime on filament, <span class="serif">1 year on printers.</span>' lead="Register your purchase once and we have everything we need if something ever goes wrong.">
+    <div class="row gap-12"><a class="btn btn-accent btn-lg" href={form} rel="noopener">Register your warranty <span class="arrow" aria-hidden="true">↗</span></a></div>
+  </PageHead>
+  <section class="wrap section-sm grid cols-2">
+    <div class="card box reveal"><span class="eyebrow">Filament</span><h2 class="h-2">Lifetime warranty</h2><p class="muted">Covers manufacturing defects. If a defect is confirmed, we replace the filament free of charge.</p></div>
+    <div class="card box reveal" style="--d:.05s"><span class="eyebrow">NFIL3D printers</span><h2 class="h-2">1-year warranty</h2><p class="muted">Covers parts and components against manufacturing defects. Defective parts are repaired or replaced at no cost; shipping charges may apply.</p></div>
+  </section>
+  <section class="wrap section-sm two">
+    <div class="stack gap-12"><h2 class="h-3">How to register</h2><ol class="muted list"><li>Keep your order number and invoice handy.</li><li>Fill in the warranty registration form.</li><li>For a claim, contact support with your order number and photos of the issue.</li></ol></div>
+    <div class="stack gap-12"><h2 class="h-3">Not covered</h2><ul class="muted list"><li>Normal wear and tear</li><li>Damage from misuse or accidents</li><li>Unauthorised modifications or repairs</li><li>Consumables such as the print bed and nozzle</li></ul><p class="muted small">The warranty is not transferable. NFIL3D may update this policy; the version on this page applies.</p></div>
+  </section>
+  <section class="wrap section-sm"><p class="muted">Questions? <a href={SITE.phoneHref}>{SITE.phone}</a> · <a href={`mailto:${SITE.email}`}>{SITE.email}</a> · <a href={SITE.whatsapp}>WhatsApp</a></p></section>
+</Base>
+<style>
+  .box { padding: clamp(24px, 3vw, 40px); display: flex; flex-direction: column; gap: 12px; border-radius: var(--radius-lg); }
+  .two { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; }
+  @media (max-width: 800px) { .two { grid-template-columns: 1fr; } }
+  .list { padding-left: 1.2em; display: flex; flex-direction: column; gap: 6px; margin: 0; }
+  .small { font-size: .88rem; }
+</style>

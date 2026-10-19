@@ -1,0 +1,33 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHead from '../components/PageHead.astro';
+import { SITE } from '../config/site';
+// CONFIRM with NFIL3D before launch: founding year, facility location, Nahata Group wording, Made in India.
+---
+<Base title="The NFIL3D Story: 37+ Years in Engineering Plastics" description="NFIL3D is backed by 37+ years in engineering plastic compounds and biopolymers, with a 4 lakh sq. ft. facility and an in-house filament testing lab.">
+  <PageHead crumb="Our story" eyebrow="Our story" title='The NFIL3D <span class="serif">story.</span>' lead="NFIL3D was founded by people with more than 37 years of experience in manufacturing engineering plastic compounds and biopolymers. That background shapes everything we make: filament is a plastics product first, and getting the material right is what makes a print succeed." />
+  <section class="wrap section-sm">
+    <ul class="facts">
+      <li class="reveal"><span class="num">{SITE.facts.years}</span><span>years in engineering plastics and biopolymers</span></li>
+      <li class="reveal" style="--d:.05s"><span class="num">4 lakh</span><span>sq. ft. manufacturing facility</span></li>
+      <li class="reveal" style="--d:.1s"><span class="num">In-house</span><span>lab for filament testing</span></li>
+      <li class="reveal" style="--d:.15s"><span class="num">{SITE.facts.tolerance}</span><span>diameter tolerance</span></li>
+    </ul>
+  </section>
+  <section class="wrap section-sm two">
+    <div class="stack gap-16"><h2 class="h-2">What we make</h2><p class="lead">1.75 mm filament in PLA+, PETG, HI ABS+, ASA, ABS FR, HIPS, nylon and carbon fibre, along with our own Mini-N, N1 and N2 3D printers, 3D pens and accessories. We also bring Halot resin printers and 3D scanners to makers in India.</p></div>
+    <div class="stack gap-16"><h2 class="h-2">Our promise</h2>
+      <ul class="promise"><li>Lifetime warranty on filament against manufacturing defects</li><li>1-year warranty on NFIL3D 3D printers</li><li>Free shipping across India</li><li>Real people on phone, email and WhatsApp, {SITE.hours}</li></ul>
+    </div>
+  </section>
+  <section class="wrap section-sm"><a class="btn btn-accent btn-lg" href="/product-category/3d-printer-filaments/">Shop filament <span class="arrow" aria-hidden="true">→</span></a></section>
+</Base>
+<style>
+  .facts { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); border-top: 1px solid var(--line); }
+  .facts li { display: flex; flex-direction: column; gap: 6px; padding: 28px 24px 28px 0; border-bottom: 1px solid var(--line); }
+  .num { font-size: clamp(2rem, 4vw, 3rem); letter-spacing: -0.04em; font-weight: 500; }
+  .facts li span:last-child { color: var(--muted); }
+  .two { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; }
+  @media (max-width: 800px) { .two { grid-template-columns: 1fr; } }
+  .promise { margin: 0; padding-left: 1.1em; display: flex; flex-direction: column; gap: 8px; color: var(--ink-2); }
+</style>

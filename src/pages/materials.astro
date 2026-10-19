@@ -1,0 +1,54 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHead from '../components/PageHead.astro';
+import Finder from '../components/Finder.astro';
+import Faq from '../components/Faq.astro';
+import { MATERIALS } from '../data/content';
+const dots = (n: number) => Array.from({ length: 5 }, (_, i) => i < n);
+---
+<Base title="PLA vs PETG vs ABS: Compare 3D Printer Filaments | NFIL3D" description="Compare PLA+, PETG, HI ABS+, ASA, nylon and carbon fibre filament on ease of printing, strength and heat resistance, and pick the right one for your project.">
+  <PageHead crumb="Compare materials" eyebrow="Materials" title='PLA, PETG or ABS? <span class="serif">Compare.</span>' lead="Every NFIL3D filament on the three things that decide most prints: how easy it is, how strong it is, and how much heat it takes." />
+  <section class="wrap section-sm">
+    <div class="card reveal tbl">
+      <table>
+        <caption class="sr-only">Filament comparison, scored 1 to 5</caption>
+        <thead><tr><th scope="col">Material</th><th scope="col">Best for</th><th scope="col">Ease</th><th scope="col">Strength</th><th scope="col">Heat</th><th scope="col">From</th></tr></thead>
+        <tbody>
+          {MATERIALS.map((m) => (
+            <tr>
+              <th scope="row"><a href={m.href}>{m.name}</a></th>
+              <td class="muted">{m.use}</td>
+              {[m.ease, m.strength, m.heat].map((v, k) => <td><span class="dots" aria-label={`${v} out of 5`}>{dots(v).map((on) => <i class={on ? (k === 2 ? 'on hot' : 'on') : ''}></i>)}</span></td>)}
+              <td>{m.from}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+    <p class="muted" style="margin-top:12px;font-size:.88rem">Scores are general guidance for each material type, from 1 (low) to 5 (high).</p>
+  </section>
+  <section class="wrap section-sm"><Finder /></section>
+  <section class="wrap section-sm" style="max-width:900px">
+    <h2 class="h-2" style="margin-bottom:16px">Material questions</h2>
+    <Faq items={[
+      ['What is the difference between PLA, PETG and ABS?', 'PLA is the easiest to print and best for models, prototypes and school projects. PETG is stronger and more heat-resistant, so it suits functional parts and containers. ABS is the toughest and most heat-resistant of the three, but it warps more and is best printed in an enclosed printer.'],
+      ['Which filament is best for outdoor parts?', 'ASA resists sunlight and weather best. PETG is a good, easier-to-print alternative for parts that are not in direct sun all day.'],
+      ['Is PETG food safe?', 'PETG as a material is widely used for food packaging, but a 3D printed part has small gaps between layers that can trap bacteria. Do not rely on any 3D printed part for repeated food contact unless it is sealed with a food-safe coating.'],
+      ['Do I need a special nozzle for carbon fibre?', 'Yes. Carbon fibre wears brass nozzles quickly, so use a hardened steel nozzle.'],
+    ]} />
+  </section>
+</Base>
+<style>
+  .tbl { overflow-x: auto; }
+  table { width: 100%; border-collapse: collapse; min-width: 760px; }
+  th, td { padding: 16px 18px; text-align: left; border-bottom: 1px solid var(--line); }
+  thead th { font-family: var(--mono); font-size: .72rem; text-transform: uppercase; letter-spacing: .06em; color: var(--muted); font-weight: 500; }
+  tbody tr:last-child > * { border-bottom: 0; }
+  tbody th a { text-decoration: none; font-weight: 550; }
+  tbody tr { transition: background-color .2s; }
+  tbody tr:hover { background: var(--surface-2); }
+  .dots { display: inline-flex; gap: 4px; }
+  .dots i { width: 9px; height: 9px; border-radius: 50%; background: var(--line); }
+  .dots i.on { background: var(--ink); }
+  .dots i.hot { background: var(--accent); }
+</style>

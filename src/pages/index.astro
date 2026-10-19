@@ -1,0 +1,291 @@
+---
+import Base from '../layouts/Base.astro';
+import ProductCard from '../components/ProductCard.astro';
+import Finder from '../components/Finder.astro';
+import Faq from '../components/Faq.astro';
+import { products, catBySlug, productsIn, posts, inr, family, swatch, colourName, isFilament } from '../lib/data';
+import { FAQ } from '../data/content';
+import { SITE } from '../config/site';
+
+const bySlug = (s: string) => productsIn(catBySlug.get(s)!.id).filter((p) => p.inStock);
+const pick = (list: typeof products, n = 4) => {
+  const seen = new Set<string>(); const out = [];
+  for (const p of list) { const k = family(p)[0]?.id + ''; if (!seen.has(k)) { seen.add(k); out.push(p); } if (out.length >= n) break; }
+  return out.length >= n ? out : list.slice(0, n);
+};
+const tabs = [
+  { key: 'pla', label: 'PLA+', items: bySlug('pla').slice(0, 4) },
+  { key: 'petg', label: 'PETG', items: bySlug('petg').slice(0, 4) },
+  { key: 'abs', label: 'ABS & ASA', items: [...bySlug('abs-3d-printer-filaments').slice(0, 2), ...bySlug('asa-cat').slice(0, 1), ...bySlug('abs-fr').slice(0, 1)] },
+  { key: 'special', label: 'Speciality', items: pick([...bySlug('pla_tf'), ...bySlug('matte_pla'), ...bySlug('pla_cf'), ...bySlug('pla_lw'), ...bySlug('3d-pens-filaments')]) },
+];
+const cats = [
+  { name: 'Filament', href: '/product-category/3d-printer-filaments/', img: bySlug('pla')[0]?.images[0] },
+  { name: '3D Printers', href: '/printers/', img: productsIn(catBySlug.get('fdm-3d-printers')!.id)[0]?.images[0] },
+  { name: '3D Pens', href: '/product-category/3d-pen/', img: productsIn(catBySlug.get('3d-pen')!.id)[0]?.images[0] },
+  { name: 'Resin printers', href: '/product-category/3d-printers/resin-3d-printers/', img: productsIn(catBySlug.get('resin-3d-printers')!.id)[0]?.images[0] },
+  { name: 'Scanners', href: '/product-category/3d-scanner/', img: productsIn(catBySlug.get('3d-scanner')!.id)[0]?.images[0] },
+  { name: 'Spares', href: '/product-category/accessories-and-spares/', img: productsIn(catBySlug.get('accessories-and-spares')!.id)[0]?.images[0] },
+];
+// Colour wall: one swatch per distinct colour name across PLA+ and PETG
+const wall: { name: string; hex: string; href: string }[] = [];
+const seen = new Set<string>();
+for (const p of [...bySlug('pla'), ...bySlug('petg'), ...bySlug('pla_tf')]) {
+  const n = colourName(p); const k = n.toLowerCase();
+  if (!seen.has(k) && n.length < 24) { seen.add(k); wall.push({ name: n, hex: swatch(p.name), href: p.path }); }
+}
+const printers = ['mini-n-3d-printer', 'n1-3d-printer', 'n2-3d-printer'].map((s) => products.find((p) => p.slug.startsWith(s))).filter(Boolean) as typeof products;
+const printerNotes: Record<string, string> = { 'Mini-N': 'Compact. For desks, homes and classrooms.', N1: 'All-rounder for prototypes and parts.', N2: 'Sturdier frame for bigger, longer prints.' };
+---
+<Base
+  title="3D Printers & Filament Online in India | NFIL3D"
+  description="Shop 3D printers, PLA, PETG and ABS filament, 3D pens and scanners from NFIL3D. Lifetime warranty on filament and free shipping across India."
+>
+  <link slot="head" rel="preload" as="image" href="/images/hero-desktop.webp" media="(min-width: 761px)">
+
+  <section class="hero">
+    <div class="wrap hero-in">
+      <div class="stack gap-24 hero-copy">
+        <span class="eyebrow reveal">1.75 mm filament · {SITE.facts.years} years in plastics</span>
+        <h1 class="h-display reveal" style="--d:.05s">Precision you can <span class="serif">measure.</span></h1>
+        <p class="lead reveal" style="--d:.1s">PLA+, PETG, HI ABS+ and engineering grades held to <strong>{SITE.facts.tolerance}</strong>. Packed dry, backed by a lifetime warranty, from ₹699 a spool.</p>
+        <div class="row gap-12 reveal" style="--d:.15s">
+          <a class="btn btn-accent btn-lg" href="/product-category/3d-printer-filaments/">Shop filament <span class="arrow" aria-hidden="true">→</span></a>
+          <a class="btn btn-ghost btn-lg" href="#finder">Find your filament</a>
+        </div>
+      </div>
+      <div class="hero-visual reveal" style="--d:.1s">
+        <picture>
+          <source media="(max-width: 760px)" srcset="/images/hero-mobile.webp" width="1122" height="1402">
+          <img src="/images/hero-desktop.webp" width="1448" height="1086" alt="NFIL3D Emerald Green filament spool with a digital caliper measuring the filament" fetchpriority="high">
+        </picture>
+        <div class="readout" aria-label={`Diameter 1.750 millimetres, tolerance ${SITE.facts.tolerance}`}>
+          <span class="mono">Diameter · measured</span>
+          <span class="val" data-count="1.750">1.750<small> mm</small></span>
+          <span class="mono muted">Tolerance {SITE.facts.tolerance}</span>
+        </div>
+      </div>
+    </div>
+    <div class="wrap">
+      <ul class="trust reveal">
+        <li><strong>{SITE.facts.years} years</strong><span>in engineering plastics</span></li>
+        <li><strong>{SITE.facts.facility}</strong><span>manufacturing facility</span></li>
+        <li><strong>In-house lab</strong><span>for filament testing</span></li>
+        <li><strong>Lifetime</strong><span>filament warranty</span></li>
+        <li><strong>Free shipping</strong><span>across India</span></li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="section-sm">
+    <div class="wrap">
+      <ul class="rail">
+        {cats.map((c, i) => (
+          <li class="reveal" style={`--d:${i * 0.04}s`}>
+            <a href={c.href} class="rail-item">
+              {c.img && <img src={c.img.src} srcset={c.img.srcset} sizes="160px" alt="" loading="lazy" width="300" height="300">}
+              <span>{c.name}</span>
+            </a>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <section class="section-sm"><div class="wrap"><Finder /></div></section>
+
+  <section class="section">
+    <div class="wrap">
+      <div class="section-head">
+        <div class="stack"><span class="eyebrow">Bestsellers</span><h2 class="h-1">Loved by makers.</h2></div>
+        <div class="row gap-8" role="tablist" aria-label="Bestseller category" data-tabs>
+          {tabs.map((t, i) => <button type="button" class="chip" role="tab" aria-selected={i === 0 ? 'true' : 'false'} aria-controls={`tab-${t.key}`} data-tab={t.key}>{t.label}</button>)}
+        </div>
+      </div>
+      {tabs.map((t, i) => (
+        <div id={`tab-${t.key}`} role="tabpanel" class="grid cols-4" hidden={i !== 0} data-panel={t.key}>
+          {t.items.map((p) => <ProductCard p={p} />)}
+        </div>
+      ))}
+      <div class="row" style="justify-content:center;margin-top:40px"><a class="btn btn-ghost" href="/shop/">View all products <span class="arrow" aria-hidden="true">→</span></a></div>
+    </div>
+  </section>
+
+  <section class="section colour">
+    <div class="wrap colour-in">
+      <div class="stack gap-16 reveal">
+        <span class="eyebrow">{wall.length}+ colours · six finishes</span>
+        <h2 class="h-1">Every colour, matched <span class="serif">batch to batch.</span></h2>
+        <p class="lead">Solid, matte, clear, metallic, fluorescent and glow-in-the-dark. Every spool ships with a matching colour card.</p>
+        <a class="link" href="/shop/">Shop by colour <span aria-hidden="true">→</span></a>
+      </div>
+      <ul class="wall">
+        {wall.map((w, i) => <li class="reveal" style={`--d:${(i % 12) * 0.025}s`}><a href={w.href} style={`--c:${w.hex}`} aria-label={w.name}><span class="tip">{w.name}</span></a></li>)}
+      </ul>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap">
+      <div class="section-head">
+        <div class="stack"><span class="eyebrow">NFIL3D printers</span><h2 class="h-1">Built to print. Backed in India.</h2><p class="lead">{SITE.facts.printerWarranty}, with support by phone, email and WhatsApp.</p></div>
+        <a class="btn btn-ghost" href="/printers/">Compare printers <span class="arrow" aria-hidden="true">→</span></a>
+      </div>
+      <div class="grid cols-3">
+        {printers.map((p, i) => (
+          <a href={p.path} class="printer reveal" style={`--d:${i * 0.06}s`}>
+            <div class="stack gap-8"><span class="mono muted">{['Compact', 'All-rounder', 'Bigger builds'][i]}</span><h3 class="h-2">{p.shortName.replace(' 3D Printer', '')}</h3><p class="muted">{printerNotes[p.shortName.replace(' 3D Printer', '')] || ''}</p></div>
+            {p.images[0] && <img src={p.images[0].src} srcset={p.images[0].srcset} sizes="(max-width:760px) 90vw, 380px" alt={p.images[0].alt} loading="lazy" width="600" height="600">}
+            <div class="row between"><strong class="h-3">{inr(p.price)}</strong><span class="link">View <span aria-hidden="true">→</span></span></div>
+          </a>
+        ))}
+      </div>
+      {SITE.showQubeTeaser && (
+        <div class="qube reveal">
+          <div class="stack gap-8"><span class="eyebrow">Coming soon</span><h3 class="h-2">Big Qube &amp; Mega Qube</h3><p class="muted">Large-format 3D printers from NFIL3D. Be the first to know.</p></div>
+          <form class="row gap-8" action="/contact.php" method="post">
+            <input type="hidden" name="type" value="qube-waitlist">
+            <label class="sr-only" for="qube-email">Email</label>
+            <input class="input" id="qube-email" name="email" type="email" required placeholder="Your email" style="border-radius:999px;max-width:260px">
+            <button class="btn btn-accent" type="submit">Notify me</button>
+          </form>
+        </div>
+      )}
+    </div>
+  </section>
+
+  <section class="section-sm">
+    <div class="wrap">
+      <div class="bulk reveal">
+        <div class="stack gap-16">
+          <span class="mono">Print farms · schools · businesses</span>
+          <h2 class="h-1">Printing by the kilo?</h2>
+          <p class="lead" style="color:inherit;opacity:.85">Volume pricing, consistent colour across batches and a direct line to our team.</p>
+        </div>
+        <div class="stack gap-12"><a class="btn btn-lg" href="/bulk/">Request a bulk quote <span class="arrow" aria-hidden="true">→</span></a><a href={SITE.phoneHref} style="text-align:center">or call {SITE.phone}</a></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap">
+      <div class="section-head">
+        <div class="stack"><span class="eyebrow">Learn</span><h2 class="h-1">Print better, <span class="serif">faster.</span></h2></div>
+        <a class="link" href="/blog/">All guides <span aria-hidden="true">→</span></a>
+      </div>
+      <div class="grid cols-3">
+        {posts.slice(0, 3).map((p, i) => (
+          <a href={p.path} class="post reveal" style={`--d:${i * 0.06}s`}>
+            {p.image && <img src={p.image} alt="" loading="lazy" width="640" height="400">}
+            <div class="stack gap-8"><span class="mono muted">Guide</span><h3 class="h-3">{p.title}</h3></div>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section-sm">
+    <div class="wrap proof reveal">
+      <div class="stack gap-12">
+        <span class="big">150 kg<span class="serif">+</span></span>
+        <p class="lead">of NFIL3D filament printed by one customer, NOZAYA Enterprises, and counting.</p>
+      </div>
+      <figure class="card quote">
+        <blockquote>“We love using Nfil filament and till now we have used 150 kg+ … Nfil ke colors kafi ache hai … aaj order do, 3 din tak delivery ho jati hai.”</blockquote>
+        <figcaption><strong>Priya Nair</strong> · <span class="muted">NOZAYA Enterprises LLP</span></figcaption>
+      </figure>
+      <figure class="card quote">
+        <blockquote>“We regularly print prototypes and sample parts. N-FIL3D filament performs consistently and helps us deliver clean results to our clients.”</blockquote>
+        <figcaption><strong>Arjun Verma</strong> · <span class="muted">Rapid Prototype Zone</span></figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap faq-grid">
+      <div class="stack gap-16">
+        <span class="eyebrow">FAQ</span>
+        <h2 class="h-1">Questions makers ask.</h2>
+        <a class="link" href="/3d-printing-faq/">Read all answers <span aria-hidden="true">→</span></a>
+      </div>
+      <Faq items={FAQ.slice(0, 6)} />
+    </div>
+  </section>
+</Base>
+
+<style>
+  .hero { padding: clamp(28px, 5vw, 64px) 0 0; }
+  .hero-in { display: grid; grid-template-columns: 1fr 1.05fr; gap: clamp(28px, 4vw, 64px); align-items: center; }
+  @media (max-width: 900px) { .hero-in { grid-template-columns: 1fr; } }
+  .hero-copy strong { color: var(--ink); font-weight: 600; }
+  .hero-visual { position: relative; border-radius: var(--radius-lg); overflow: hidden; background: #0b0b0a; aspect-ratio: 4 / 3; }
+  @media (max-width: 760px) { .hero-visual { aspect-ratio: 4 / 5; } }
+  .hero-visual img { width: 100%; height: 100%; object-fit: cover; transform: scale(1.04); transition: transform 1.6s var(--ease); }
+  .hero-visual.in img { transform: scale(1); }
+  .readout { position: absolute; left: 20px; top: 20px; display: flex; flex-direction: column; gap: 2px; padding: 14px 18px; border-radius: 16px; background: rgba(10,10,9,.72); backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,.12); color: #F2F0EB; }
+  @media (max-width: 760px) { .readout { top: auto; left: auto; right: 14px; bottom: 14px; } }
+  .readout .mono { font-size: .66rem; color: #A19D95; }
+  .readout .val { font-family: var(--mono); font-size: 2rem; color: #FF8A5C; letter-spacing: .02em; line-height: 1.1; }
+  .readout small { font-size: .9rem; color: #F2F0EB; }
+  @media (max-width: 760px) { .hero-copy .row .btn { flex: 1 1 100%; } .trust { grid-template-columns: 1fr 1fr !important; } .readout .val { font-size: 1.5rem; } .bulk { padding: 28px 22px; } .qube { padding: 24px; } .proof .big { font-size: 3.4rem; } .quote { padding: 22px; } }
+  .trust { list-style: none; margin: clamp(32px, 4vw, 56px) 0 0; padding: 22px 0 0; border-top: 1px solid var(--line); display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 16px; }
+  .trust li { display: flex; flex-direction: column; }
+  .trust strong { font-weight: 550; font-size: 1.1rem; letter-spacing: -0.01em; }
+  .trust span { color: var(--muted); font-size: .9rem; }
+
+  .rail { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(6, 1fr); gap: 12px; }
+  @media (max-width: 900px) { .rail { grid-template-columns: repeat(6, 132px); overflow-x: auto; padding-bottom: 6px; scroll-snap-type: x mandatory; } .rail li { scroll-snap-align: start; } }
+  .rail-item { display: flex; flex-direction: column; align-items: center; gap: 10px; padding: 14px 12px 16px; border-radius: var(--radius); background: var(--surface); border: 1px solid var(--line); text-decoration: none; font-weight: 550; font-size: .92rem; transition: transform .4s var(--ease), border-color .3s; }
+  .rail-item:hover { transform: translateY(-3px); border-color: var(--ink); color: var(--ink); }
+  .rail-item img { width: 100%; aspect-ratio: 1; object-fit: contain; border-radius: 12px; background: #fff; }
+
+  .colour { background: var(--surface); border-block: 1px solid var(--line); overflow-x: clip; }
+  @media (hover: none) { .tip { display: none; } }
+  .colour-in { display: grid; grid-template-columns: 1fr 1.4fr; gap: 48px; align-items: center; }
+  @media (max-width: 900px) { .colour-in { grid-template-columns: 1fr; } }
+  .wall { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(44px, 1fr)); gap: 12px; }
+  .wall a { position: relative; display: block; aspect-ratio: 1; border-radius: 50%; background: var(--c); border: 1px solid var(--line); box-shadow: inset 0 0 0 4px rgba(255,255,255,.25); transition: transform .35s var(--ease); }
+  .wall a:hover, .wall a:focus-visible { transform: scale(1.18); z-index: 2; }
+  .tip { position: absolute; bottom: calc(100% + 8px); left: 50%; transform: translate(-50%, 4px); white-space: nowrap; font-size: .75rem; background: var(--ink); color: var(--bg); padding: 4px 8px; border-radius: 8px; opacity: 0; pointer-events: none; transition: opacity .2s, transform .3s var(--ease); }
+  .wall a:hover .tip, .wall a:focus-visible .tip { opacity: 1; transform: translate(-50%, 0); }
+
+  .printer { display: flex; flex-direction: column; gap: 16px; padding: 26px; border-radius: var(--radius-lg); background: linear-gradient(180deg, var(--surface), var(--surface-2)); border: 1px solid var(--line); text-decoration: none; transition: transform .45s var(--ease), box-shadow .45s var(--ease); }
+  .printer:hover { transform: translateY(-4px); box-shadow: var(--shadow); color: inherit; }
+  .printer img { aspect-ratio: 4/3; object-fit: contain; mix-blend-mode: multiply; }
+  :global([data-theme="dark"]) .printer img { mix-blend-mode: normal; background: #fff; border-radius: 16px; }
+  .qube { margin-top: 20px; display: flex; flex-wrap: wrap; gap: 20px; justify-content: space-between; align-items: center; padding: 32px; border-radius: var(--radius-lg); background: #0E0E0D; color: #F2F0EB; border: 1px solid #2B2A27; }
+  .qube .muted { color: #A19D95; }
+  .qube .input { background: #1F1F1D; border-color: #3A3936; color: #F2F0EB; }
+
+  .bulk { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 32px; padding: clamp(32px, 5vw, 64px); border-radius: var(--radius-lg); background: var(--cta); color: #FFFFFF; }
+  .bulk .btn { --b: #FFFFFF; color: #111; }
+  .bulk .btn:hover { color: #FFFFFF; border-color: #111; }
+  .bulk .btn::after { background: #111; }
+  .bulk a { color: #FFFFFF; }
+
+  .post { display: flex; flex-direction: column; gap: 16px; text-decoration: none; }
+  .post img { aspect-ratio: 16/10; object-fit: cover; border-radius: var(--radius); transition: transform .6s var(--ease); }
+  .post:hover img { transform: scale(1.02); }
+  .post:hover h3 { color: var(--accent); }
+
+  .proof { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px; align-items: stretch; }
+  @media (max-width: 900px) { .proof { grid-template-columns: 1fr; } }
+  .big { font-size: clamp(3.5rem, 7vw, 6rem); font-weight: 500; letter-spacing: -0.05em; line-height: 1; color: var(--accent); }
+  .quote { margin: 0; padding: 28px; display: flex; flex-direction: column; justify-content: space-between; gap: 20px; }
+  .quote blockquote { margin: 0; font-size: 1.08rem; line-height: 1.55; letter-spacing: -0.01em; }
+  .faq-grid { display: grid; grid-template-columns: 1fr 1.6fr; gap: 48px; }
+  @media (max-width: 900px) { .faq-grid { grid-template-columns: 1fr; } }
+</style>
+
+<script>
+  document.querySelectorAll('[data-tabs]').forEach((list) => {
+    const tabs = list.querySelectorAll<HTMLButtonElement>('[data-tab]');
+    tabs.forEach((t) => t.addEventListener('click', () => {
+      tabs.forEach((x) => x.setAttribute('aria-selected', String(x === t)));
+      document.querySelectorAll<HTMLElement>('[data-panel]').forEach((p) => {
+        p.hidden = p.dataset.panel !== t.dataset.tab;
+        if (!p.hidden) p.querySelectorAll('.reveal').forEach((el) => el.classList.add('in'));
+      });
+    }));
+  });
+</script>

@@ -1,0 +1,40 @@
+---
+import type { Product } from '../lib/data';
+import { inr, discount, family, swatch, colourName, material, isFilament, primaryCat } from '../lib/data';
+import { cartUrl } from '../config/site';
+interface Props { p: Product; eager?: boolean }
+const { p, eager = false } = Astro.props;
+const fam = isFilament(p) ? family(p) : [p];
+const off = discount(p);
+const img = p.images[0];
+const alt = p.images[1];
+const cat = primaryCat(p);
+const label = isFilament(p) ? cat?.name : (material(p) === 'pen' ? '3D Pen' : cat?.name);
+const title = isFilament(p) ? colourName(p) : p.shortName;
+---
+<article class="pcard reveal" data-product data-name={p.name.toLowerCase()} data-mat={material(p)} data-price={p.price} data-colour={isFilament(p) ? colourName(p).toLowerCase() : ''}>
+  <div class="media">
+    {img && <img src={img.src} srcset={img.srcset} sizes="(max-width: 760px) 50vw, 300px" alt={img.alt} loading={eager ? 'eager' : 'lazy'} decoding="async" width="600" height="600">}
+    {alt && <img class="alt" src={alt.src} srcset={alt.srcset} sizes="(max-width: 760px) 50vw, 300px" alt="" aria-hidden="true" loading="lazy" decoding="async" width="600" height="600">}
+    <div class="badges">
+      {off > 0 && <span class="pill pill-sale">−{off}%</span>}
+      {!p.inStock && <span class="pill">Out of stock</span>}
+    </div>
+  </div>
+  <div class="body">
+    <span class="mono muted" style="font-size:.7rem">{label}</span>
+    <a class="title" href={p.path}>{title}</a>
+    {fam.length > 1 && (
+      <div class="row gap-8" aria-label={`${fam.length} colours`}>
+        <div class="row" style="gap:4px">{fam.slice(0, 6).map((f) => <span class="dot" style={`background:${swatch(f.name)}`} title={colourName(f)}></span>)}</div>
+        <span class="muted" style="font-size:.8rem">{fam.length} colours</span>
+      </div>
+    )}
+    <div class="foot">
+      <div class="price"><strong>{inr(p.price)}</strong>{off > 0 && <s>{inr(p.regularPrice)}</s>}</div>
+      {p.inStock && p.purchasable && (
+        <a class="add" href={cartUrl(p.id)} aria-label={`Add ${p.name} to cart`} rel="nofollow"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></a>
+      )}
+    </div>
+  </div>
+</article>

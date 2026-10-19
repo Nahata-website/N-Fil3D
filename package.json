@@ -1,0 +1,19 @@
+{
+  "name": "nfil3d-site",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "sync": "node scripts/sync-woo.mjs"
+  },
+  "dependencies": {
+    "@astrojs/sitemap": "3.6.0",
+    "@fontsource-variable/instrument-sans": "5.2.6",
+    "@fontsource/ibm-plex-mono": "5.2.6",
+    "@fontsource/instrument-serif": "5.2.6",
+    "astro": "5.18.2"
+  }
+}

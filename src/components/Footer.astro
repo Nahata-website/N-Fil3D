@@ -1,0 +1,75 @@
+---
+import { SITE, storePath } from '../config/site';
+const year = new Date().getFullYear();
+---
+<footer class="ftr">
+  <div class="wrap">
+    <div class="ftr-top">
+      <div class="stack gap-16 brand">
+        <p class="h-2">Precision you can <span class="serif">measure.</span></p>
+        <p class="muted">1.75 mm filament, 3D printers and pens for makers across India. {SITE.facts.tolerance} diameter tolerance, lifetime filament warranty.</p>
+        <form class="news" action="/contact.php" method="post">
+          <input type="hidden" name="type" value="newsletter">
+          <label class="sr-only" for="nl-email">Email address</label>
+          <input class="input" id="nl-email" name="email" type="email" required placeholder="Email for new colours and offers" autocomplete="email">
+          <button class="btn btn-accent" type="submit">Join</button>
+        </form>
+      </div>
+      <nav aria-label="Shop" class="stack gap-8">
+        <p class="mono muted">Shop</p>
+        <a href="/product-category/3d-printer-filaments/">Filament</a>
+        <a href="/printers/">3D Printers</a>
+        <a href="/product-category/3d-pen/">3D Pens</a>
+        <a href="/product-category/3d-scanner/">3D Scanners</a>
+        <a href="/product-category/accessories-and-spares/">Spares</a>
+        <a href="/shop/">All products</a>
+      </nav>
+      <nav aria-label="Help" class="stack gap-8">
+        <p class="mono muted">Help</p>
+        <a href="/get-started/">Get Started</a>
+        <a href="/3d-printing-faq/">FAQ</a>
+        <a href="/register-your-warranty/">Warranty</a>
+        <a href="/support/">Support</a>
+        <a href={storePath('/my-account/')}>Track order</a>
+        <a href="/bulk/">Bulk &amp; B2B</a>
+      </nav>
+      <nav aria-label="Company" class="stack gap-8">
+        <p class="mono muted">Company</p>
+        <a href="/brand-story/">Our story</a>
+        <a href="/about-us/">About us</a>
+        <a href="/blog/">Blog</a>
+        <a href="/contact/">Contact</a>
+        <a href={storePath('/privacy-policy/')}>Privacy policy</a>
+      </nav>
+      <div class="stack gap-8">
+        <p class="mono muted">Talk to us</p>
+        <a href={SITE.phoneHref}>{SITE.phone}</a>
+        <a href={`mailto:${SITE.email}`}>{SITE.email}</a>
+        <a href={SITE.whatsapp} rel="noopener">WhatsApp</a>
+        <p class="muted small">{SITE.hours}</p>
+      </div>
+    </div>
+    <div class="ftr-bot">
+      <p class="muted">© {year} NFIL3D. All rights reserved.</p>
+      <ul class="row gap-16 social">
+        <li><a href={SITE.social.instagram} rel="noopener">Instagram</a></li>
+        <li><a href={SITE.social.youtube} rel="noopener">YouTube</a></li>
+        <li><a href={SITE.social.facebook} rel="noopener">Facebook</a></li>
+        <li><a href={SITE.social.amazon} rel="noopener">Amazon store</a></li>
+      </ul>
+    </div>
+  </div>
+</footer>
+<style>
+  .ftr { border-top: 1px solid var(--line); margin-top: 40px; padding: 72px 0 32px; font-size: .95rem; }
+  .ftr a { text-decoration: none; color: var(--ink-2); }
+  .ftr a:hover { color: var(--accent); }
+  .ftr-top { display: grid; grid-template-columns: 2fr repeat(4, 1fr); gap: 40px; }
+  @media (max-width: 960px) { .ftr-top { grid-template-columns: 1fr 1fr; } .brand { grid-column: 1 / -1; } }
+  .brand { max-width: 460px; }
+  .news { display: flex; gap: 8px; margin-top: 6px; }
+  .news .input { border-radius: 999px; }
+  .small { font-size: .85rem; }
+  .ftr-bot { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 16px; margin-top: 64px; padding-top: 24px; border-top: 1px solid var(--line); font-size: .88rem; }
+  .social { list-style: none; margin: 0; padding: 0; }
+</style>

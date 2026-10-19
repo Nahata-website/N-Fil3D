@@ -1,0 +1,229 @@
+---
+import Base from '../../layouts/Base.astro';
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
+import ProductCard from '../../components/ProductCard.astro';
+import Faq from '../../components/Faq.astro';
+import { products, primaryCat, ancestors, family, swatch, colourName, inr, discount, isFilament, material, plainText, productsIn } from '../../lib/data';
+import { SITE, cartUrl, storePath } from '../../config/site';
+
+export function getStaticPaths() {
+  return products.map((p) => ({ params: { slug: p.slug }, props: { p } }));
+}
+const { p } = Astro.props as { p: (typeof products)[number] };
+const cat = primaryCat(p);
+const crumbs = [...(cat ? [...ancestors(cat), cat].map((c) => ({ name: c.name, href: c.path })) : []), { name: isFilament(p) ? colourName(p) : p.shortName }];
+const fam = isFilament(p) ? family(p) : [p];
+const off = discount(p);
+const fil = isFilament(p);
+const mat = material(p);
+const title = p.seoTitle || `${p.shortName} | NFIL3D`;
+const desc = p.seoDescription || plainText(p.short).slice(0, 155);
+const heading = fil ? `${cat?.name.replace(/^Premium /, '') || ''} ${colourName(p)}`.trim() : p.shortName;
+const brand = /halot|creality|ender|uw-02/i.test(p.name) ? 'Creality' : /elegoo/i.test(p.name) ? 'Elegoo' : /taulman|nylon 645|nylon 230|alloy 910|pctpe|bridge nylon|sac 1060/i.test(p.name) ? 'taulman3d' : /scanner/i.test(p.name) ? undefined : 'NFIL3D';
+const related = (fam.length > 1 ? fam.filter((q) => q.id !== p.id) : (cat ? productsIn(cat.id).filter((q) => q.id !== p.id) : [])).filter((q) => q.inStock).slice(0, 4);
+
+const faqs: [string, string][] = fil ? [
+  ['Will this filament fit my printer?', 'Yes, if your printer takes 1.75 mm filament, as most FDM printers sold in India do.'],
+  ['What nozzle temperature should I use?', 'Recommended temperatures for every NFIL3D material and colour are on the Get Started page. Print a temperature tower to fine-tune for your printer.'],
+  ['What does the lifetime warranty cover?', 'Manufacturing defects. A confirmed defect is replaced free of charge.'],
+  ['How should I store it?', 'Keep the spool sealed with the included desiccant when not in use. The desiccant changes colour when it needs drying.'],
+] : mat === 'printer' ? [
+  ['What warranty do NFIL3D printers have?', 'NFIL3D 3D printers have a 1-year warranty on parts and components against manufacturing defects.'],
+  ['Which filament should I use?', 'NFIL3D 1.75 mm PLA+ is the easiest place to start. Move to PETG or HI ABS+ for stronger, more heat-resistant parts.'],
+  ['Do you help with setup?', `Yes. Call ${SITE.phone}, email ${SITE.email} or message us on WhatsApp, ${SITE.hours}.`],
+] : [
+  ['Is shipping free?', 'Yes, shipping is free on all orders within India.'],
+  ['How do I get help?', `Call ${SITE.phone}, email ${SITE.email} or message us on WhatsApp, ${SITE.hours}.`],
+];
+
+const ld = {
+  '@context': 'https://schema.org', '@type': 'Product', name: p.name, sku: p.sku || String(p.id), url: new URL(p.path, SITE.url).href,
+  image: p.images.map((i) => i.src), description: desc, category: cat?.name,
+  ...(brand ? { brand: { '@type': 'Brand', name: brand } } : {}),
+  ...(fil ? { additionalProperty: [{ '@type': 'PropertyValue', name: 'Diameter', value: '1.75 mm' }, { '@type': 'PropertyValue', name: 'Diameter tolerance', value: SITE.facts.tolerance }], color: colourName(p) } : {}),
+  ...(p.reviewCount > 0 ? { aggregateRating: { '@type': 'AggregateRating', ratingValue: p.rating, reviewCount: p.reviewCount } } : {}),
+  offers: {
+    '@type': 'Offer', url: new URL(p.path, SITE.url).href, priceCurrency: 'INR', price: p.price, itemCondition: 'https://schema.org/NewCondition',
+    availability: p.inStock ? 'https://schema.org/InStock' : 'https://schema.org/OutOfStock', seller: { '@id': `${SITE.url}/#org` },
+    shippingDetails: { '@type': 'OfferShippingDetails', shippingRate: { '@type': 'MonetaryAmount', value: 0, currency: 'INR' }, shippingDestination: { '@type': 'DefinedRegion', addressCountry: 'IN' } },
+  },
+};
+---
+<Base title={title} description={desc} image={p.images[0]?.src} type="product" jsonld={ld}>
+  <div class="wrap" style="padding-top:20px"><Breadcrumbs items={crumbs} /></div>
+
+  <section class="wrap pdp">
+    <div class="gallery">
+      <div class="thumbs" role="tablist" aria-label="Product images">
+        {p.images.slice(0, 6).map((im, i) => (
+          <button type="button" role="tab" aria-selected={i === 0 ? 'true' : 'false'} data-src={im.src} data-srcset={im.srcset} data-alt={im.alt} aria-label={`Image ${i + 1}`}>
+            <img src={im.src} srcset={im.srcset} sizes="88px" alt="" loading="lazy" width="200" height="200">
+          </button>
+        ))}
+      </div>
+      <div class="main" data-zoom>
+        {p.images[0] && <img id="main-img" src={p.images[0].src} srcset={p.images[0].srcset} sizes="(max-width: 900px) 100vw, 640px" alt={p.images[0].alt} width="1000" height="1000" fetchpriority="high">}
+        {fil && <span class="tag mono">{SITE.facts.tolerance} · lab tested</span>}
+      </div>
+    </div>
+
+    <div class="info">
+      <div class="row gap-8">
+        {p.inStock ? <span class="pill">In stock</span> : <span class="pill">Out of stock</span>}
+        {off > 0 && <span class="pill pill-sale">Save {off}%</span>}
+      </div>
+      <span class="eyebrow">{fil ? `${cat?.name} · 1.75 mm` : cat?.name}</span>
+      <h1 class="h-1">{heading}</h1>
+      {fil && <p class="muted mono" style="text-transform:none">1.75 mm · {SITE.facts.tolerance} · packed dry</p>}
+      <div class="price big-price"><strong>{inr(p.price)}</strong>{off > 0 && <s>{inr(p.regularPrice)}</s>}</div>
+      <p class="muted small">Inclusive of GST · Free shipping across India</p>
+
+      {fam.length > 1 && (
+        <div class="stack gap-12">
+          <p class="small"><strong>Colour</strong> <span class="muted">· {colourName(p)}</span></p>
+          <ul class="swatches">
+            {fam.map((f) => (
+              <li><a href={f.path} aria-label={colourName(f)} aria-current={f.id === p.id ? 'true' : undefined} title={colourName(f)} class={!f.inStock ? 'oos' : ''}><span style={`background:${swatch(f.name)}`}></span></a></li>
+            ))}
+          </ul>
+        </div>
+      )}
+
+      {p.inStock && p.purchasable ? (
+        <div class="buy" data-buy data-id={p.id} data-store={SITE.storeUrl}>
+          <div class="qty" role="group" aria-label="Quantity">
+            <button type="button" data-q="-1" aria-label="Decrease quantity">−</button>
+            <output aria-live="polite" data-qty>1</output>
+            <button type="button" data-q="1" aria-label="Increase quantity">+</button>
+          </div>
+          <a class="btn btn-accent btn-lg grow" href={cartUrl(p.id)} data-cart rel="nofollow">Add to cart</a>
+          <a class="btn btn-lg" href={storePath(`/checkout/?add-to-cart=${p.id}`)} data-checkout rel="nofollow">Buy now</a>
+        </div>
+      ) : (
+        <a class="btn btn-ghost btn-lg" href={`${SITE.whatsapp}?text=${encodeURIComponent('Please tell me when ' + p.name + ' is back in stock')}`}>Notify me on WhatsApp</a>
+      )}
+
+      <ul class="perks">
+        <li><strong>{fil ? 'Lifetime warranty' : mat === 'printer' ? '1-year warranty' : 'Genuine product'}</strong><span>{fil ? 'on manufacturing defects' : mat === 'printer' ? 'on parts and components' : 'sold and supported by NFIL3D'}</span></li>
+        <li><strong>Free shipping</strong><span>{SITE.dispatch ? `Dispatch in ${SITE.dispatch}` : 'across India'}</span></li>
+        <li><strong>{fil ? 'Packed dry' : 'Support in India'}</strong><span>{fil ? 'filter + 2 desiccants' : 'phone, email, WhatsApp'}</span></li>
+      </ul>
+      <a class="bulkline" href="/bulk/"><span><strong>Buying in bulk?</strong> Volume pricing and GST invoices</span><span aria-hidden="true">→</span></a>
+      <a class="link small" href={`${SITE.whatsapp}?text=${encodeURIComponent('Question about ' + p.name)}`}>Questions? Chat on WhatsApp <span aria-hidden="true">→</span></a>
+    </div>
+  </section>
+
+  <section class="wrap section-sm details">
+    <div class="stack gap-24">
+      <h2 class="h-2">About this {fil ? 'filament' : 'product'}</h2>
+      <div class="prose" set:html={p.description || p.short} />
+    </div>
+    <aside class="stack gap-16">
+      {fil && (
+        <div class="card specs">
+          <h2 class="h-3">Specifications</h2>
+          <dl>
+            <dt>Diameter</dt><dd>1.75 mm</dd>
+            <dt>Tolerance</dt><dd>{SITE.facts.tolerance}</dd>
+            <dt>Colour</dt><dd>{colourName(p)}</dd>
+            <dt>Material</dt><dd>{cat?.name}</dd>
+            <dt>Print settings</dt><dd><a href="/get-started/">See Get Started</a></dd>
+            <dt>In the box</dt><dd>Spool, filament filter, 2 desiccants, lockable bag</dd>
+            {p.sku && <><dt>SKU</dt><dd>{p.sku}</dd></>}
+          </dl>
+        </div>
+      )}
+      <div class="card specs">
+        <h2 class="h-3">Questions</h2>
+        <Faq items={faqs} openFirst={false} />
+      </div>
+    </aside>
+  </section>
+
+  {related.length > 0 && (
+    <section class="wrap section-sm">
+      <div class="section-head"><h2 class="h-2">{fam.length > 1 ? 'Other colours' : 'You may also like'}</h2></div>
+      <div class="grid cols-4">{related.map((r) => <ProductCard p={r} />)}</div>
+    </section>
+  )}
+
+  {p.inStock && p.purchasable && (
+    <div class="sticky-buy show-sm">
+      <div class="stack"><strong>{inr(p.price)}</strong><span class="muted small">{fil ? colourName(p) : p.shortName.slice(0, 26)}</span></div>
+      <a class="btn btn-accent grow" href={cartUrl(p.id)} rel="nofollow">Add to cart</a>
+    </div>
+  )}
+</Base>
+
+<style>
+  .pdp { display: grid; grid-template-columns: 1.15fr 1fr; gap: clamp(28px, 4vw, 64px); padding-top: 24px; padding-bottom: 32px; align-items: start; }
+  @media (max-width: 900px) { .pdp { grid-template-columns: 1fr; } }
+  .gallery { display: grid; grid-template-columns: 88px 1fr; gap: 14px; position: sticky; top: 88px; }
+  @media (max-width: 900px) { .gallery { position: static; grid-template-columns: 1fr; } .thumbs { order: 2; flex-direction: row !important; overflow-x: auto; } .thumbs button { width: 72px; flex: none; } }
+  .thumbs { display: flex; flex-direction: column; gap: 10px; }
+  .thumbs button { padding: 0; border: 1px solid var(--line); border-radius: 14px; overflow: hidden; background: #fff; cursor: pointer; transition: border-color .2s; }
+  .thumbs button[aria-selected="true"] { border-color: var(--ink); box-shadow: 0 0 0 1px var(--ink); }
+  .main { position: relative; border-radius: var(--radius-lg); overflow: hidden; background: #fff; border: 1px solid var(--line); cursor: zoom-in; }
+  .main img { width: 100%; aspect-ratio: 1; object-fit: contain; transition: transform .5s var(--ease), opacity .3s; }
+  .main.zooming img { transform: scale(1.8); transition: transform .2s ease-out; }
+  .tag { position: absolute; left: 16px; bottom: 16px; background: rgba(17,17,16,.85); color: #F2F0EB; padding: 7px 12px; border-radius: 999px; font-size: .68rem; }
+  .info { display: flex; flex-direction: column; gap: 16px; }
+  .small { font-size: .9rem; }
+  .big-price strong { font-size: 2.1rem; letter-spacing: -0.03em; font-weight: 550; }
+  .big-price s { font-size: 1.1rem; }
+  .swatches { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 8px; }
+  .swatches a { display: block; width: 44px; height: 44px; border-radius: 50%; padding: 4px; border: 1px solid transparent; transition: border-color .2s, transform .3s var(--ease); }
+  .swatches a:hover { transform: scale(1.08); }
+  .swatches a[aria-current] { border-color: var(--ink); }
+  .swatches span { display: block; width: 100%; height: 100%; border-radius: 50%; border: 1px solid var(--line); }
+  .swatches a.oos span { opacity: .35; }
+  .buy { display: flex; flex-wrap: wrap; gap: 10px; }
+  .grow { flex: 1 1 160px; }
+  .qty { display: flex; align-items: center; border: 1px solid var(--line); border-radius: 999px; background: var(--surface); }
+  .qty button { width: 46px; height: 54px; border: 0; background: transparent; font-size: 1.2rem; cursor: pointer; border-radius: 999px; }
+  .qty output { min-width: 22px; text-align: center; font-weight: 600; }
+  @media (max-width: 760px) { .buy .btn:last-child { flex: 1 1 100%; } .big-price strong { font-size: 1.8rem; } .perks li { padding: 12px 10px; font-size: .8rem; } .gallery { gap: 10px; } }
+  .perks { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+  .perks li { display: flex; flex-direction: column; padding: 14px; border-radius: 16px; background: var(--surface); border: 1px solid var(--line); font-size: .85rem; }
+  .perks strong { font-size: .92rem; font-weight: 600; }
+  .perks span { color: var(--muted); }
+  .bulkline { display: flex; justify-content: space-between; gap: 12px; padding: 16px 18px; border-radius: 16px; background: var(--ink); color: var(--bg); text-decoration: none; font-size: .95rem; transition: background-color .3s; }
+  .bulkline:hover { background: var(--cta); color: #FFFFFF; }
+  .details { display: grid; grid-template-columns: 1.4fr 1fr; gap: 48px; align-items: start; }
+  @media (max-width: 900px) { .details { grid-template-columns: 1fr; } }
+  .specs { padding: 24px; }
+  .specs dl { display: grid; grid-template-columns: auto 1fr; gap: 10px 20px; margin: 14px 0 0; font-size: .94rem; }
+  .specs dt { color: var(--muted); }
+  .specs dd { margin: 0; }
+  .sticky-buy { position: sticky; bottom: 0; z-index: 40; display: flex; gap: 12px; align-items: center; padding: 12px 18px calc(12px + env(safe-area-inset-bottom)); background: color-mix(in srgb, var(--bg) 90%, transparent); backdrop-filter: blur(12px); border-top: 1px solid var(--line); }
+</style>
+
+<script>
+  // Gallery: thumbnails swap the main image
+  const main = document.getElementById('main-img') as HTMLImageElement | null;
+  document.querySelectorAll<HTMLButtonElement>('.thumbs button').forEach((b, _, all) => b.addEventListener('click', () => {
+    if (!main) return;
+    all.forEach((x) => x.setAttribute('aria-selected', String(x === b)));
+    main.style.opacity = '0';
+    setTimeout(() => { main.src = b.dataset.src!; main.srcset = b.dataset.srcset || ''; main.alt = b.dataset.alt || ''; main.style.opacity = '1'; }, 150);
+  }));
+  // Hover zoom (pointer devices only)
+  const z = document.querySelector<HTMLElement>('[data-zoom]');
+  if (z && matchMedia('(hover: hover)').matches) {
+    const img = z.querySelector('img')!;
+    z.addEventListener('mousemove', (e) => { const r = z.getBoundingClientRect(); img.style.transformOrigin = `${((e.clientX - r.left) / r.width) * 100}% ${((e.clientY - r.top) / r.height) * 100}%`; });
+    z.addEventListener('mouseenter', () => z.classList.add('zooming'));
+    z.addEventListener('mouseleave', () => z.classList.remove('zooming'));
+  }
+  // Quantity updates cart links
+  const buy = document.querySelector<HTMLElement>('[data-buy]');
+  if (buy) {
+    let q = 1; const out = buy.querySelector('[data-qty]')!; const id = buy.dataset.id; const store = buy.dataset.store;
+    const cart = buy.querySelector<HTMLAnchorElement>('[data-cart]')!; const co = buy.querySelector<HTMLAnchorElement>('[data-checkout]')!;
+    buy.querySelectorAll<HTMLButtonElement>('[data-q]').forEach((b) => b.addEventListener('click', () => {
+      q = Math.max(1, Math.min(99, q + Number(b.dataset.q))); out.textContent = String(q);
+      cart.href = `${store}/cart/?add-to-cart=${id}&quantity=${q}`; co.href = `${store}/checkout/?add-to-cart=${id}&quantity=${q}`;
+      cart.textContent = q > 1 ? `Add ${q} to cart` : 'Add to cart';
+    }));
+  }
+</script>

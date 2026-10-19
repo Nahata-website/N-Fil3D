@@ -1,0 +1,19 @@
+# Cloudflare Pages redirects (Hostinger uses .htaccess instead)
+https://www.nfil3d.com/* https://nfil3d.com/:splat 301
+/support-2 /support/ 301
+/support-2/ /support/ 301
+/blog-page /blog/ 301
+/blog-page/ /blog/ 301
+/models /product-category/3d-models/ 301
+/models/ /product-category/3d-models/ 301
+/home / 301
+/home/ / 301
+/sample-page / 301
+/sample-page/ / 301
+/product-category/best-seller/* /shop/ 301
+/product-category/best-seller /shop/ 301
+# Once WordPress has moved to shop.nfil3d.com, uncomment:
+# /cart/* https://shop.nfil3d.com/cart/:splat 302
+# /checkout/* https://shop.nfil3d.com/checkout/:splat 302
+# /my-account/* https://shop.nfil3d.com/my-account/:splat 302
+# /wp-admin/* https://shop.nfil3d.com/wp-admin/:splat 302

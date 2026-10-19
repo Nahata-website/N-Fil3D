@@ -1,0 +1,73 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHead from '../components/PageHead.astro';
+const temps = [
+  ['PLA', 'Polar White', '198 °C'], ['PLA', 'Metallic Series', '204 °C'], ['PLA', 'Clear Series', '195 °C'],
+  ['PLA', 'Other colours', '196 °C'], ['ABS', 'All colours', '230 °C'], ['HIPS', 'All colours', '220 °C'],
+];
+const sheets = [
+  ['Turbo-Finish PLA+', 'https://drive.google.com/file/d/1a40lF7uDqST02_Q-XKBgw3sAguUlKfeJ/view'],
+  ['Ultra Light PLA+', 'https://drive.google.com/file/d/1IkPozyz3SGDlE_ikT0PIlvopbwjyS3dT/view'],
+  ['Silk PLA+', 'https://drive.google.com/file/d/1Kxfrq5fHYZ711OZKfAA2vz-6-nh5iDCz/view'],
+  ['ABS', 'https://drive.google.com/file/d/1miwV592VzwHntSQs89eByISztxv8NeiV/view'],
+  ['HIPS', 'https://drive.google.com/file/d/1HNnG6VVe6Pun_Q5zyyDZdrsbRwvNh5tX/view'],
+  ['Carbon fibre', 'https://drive.google.com/file/d/1Ep1hF5AkW-acKSVu9eKFbRHfzyUjzh3B/view'],
+  ['PETG', 'https://drive.google.com/file/d/10M4Fq5OHHVBRLvwVwcuIXnWBJzV186d2/view'],
+  ['ABS FR', 'https://drive.google.com/file/d/1jIV6zvK7ykI0U1yeP24GbI44na4ehpLy/view'],
+  ['Nylon', 'https://drive.google.com/file/d/1hR9BDZl1tNFurBzn0_BCqyDv4Z09INcy/view'],
+];
+const ld = { '@context': 'https://schema.org', '@type': 'HowTo', name: 'Set up NFIL3D filament for your 3D printer',
+  step: [
+    { '@type': 'HowToStep', name: 'Start from the recommended nozzle temperature', text: 'Use the table for your material and colour, for example 196 °C for most PLA colours.' },
+    { '@type': 'HowToStep', name: 'Print a temperature tower', text: 'Print a temperature tower with the NFIL3D filament on your printer to find the best setting for that printer.' },
+    { '@type': 'HowToStep', name: 'Fit the filament filter', text: 'Place the included filament filter anywhere between the spool and the hot-end to stop dust reaching the nozzle.' },
+    { '@type': 'HowToStep', name: 'Store it dry', text: 'Keep the spool sealed with the desiccant. When the desiccant changes colour, dry it and reuse it.' },
+  ] };
+---
+<Base title="Get Started: NFIL3D Filament Settings & Setup Guide" description="Recommended nozzle temperatures, data sheets and storage tips for NFIL3D PLA+, PETG, ABS and HIPS filament, plus how to use the filter and desiccant." jsonld={ld}>
+  <PageHead crumb="Get Started" eyebrow="Get started" title='Your first perfect print, <span class="serif">step by step.</span>' lead="Recommended settings, data sheets and storage tips for NFIL3D filament. The best setting for your printer comes from a quick temperature tower." />
+
+  <section class="wrap section-sm two">
+    <div class="stack gap-16">
+      <h2 class="h-2">Nozzle temperatures</h2>
+      <p class="muted">Starting points. Print a temperature tower with NFIL3D filament on your printer to fine-tune.</p>
+      <div class="card tbl">
+        <table>
+          <thead><tr><th scope="col">Material</th><th scope="col">Colour</th><th scope="col">Nozzle</th></tr></thead>
+          <tbody>{temps.map(([m, c, t]) => <tr><td>{m}</td><td>{c}</td><td class="t">{t}</td></tr>)}</tbody>
+        </table>
+      </div>
+    </div>
+    <div class="stack gap-16">
+      <h2 class="h-2">Technical data sheets</h2>
+      <p class="muted">Full properties for each material.</p>
+      <ul class="sheets">{sheets.map(([n, u]) => <li><a href={u} rel="noopener"><span>{n}</span><span class="mono muted">PDF ↗</span></a></li>)}</ul>
+    </div>
+  </section>
+
+  <section class="wrap section-sm">
+    <ol class="steps">
+      <li class="card reveal"><span class="n mono">01</span><h3 class="h-3">Filament filter</h3><p class="muted">Every NFIL3D spool comes with a filter: a small case with a sponge inside. Place it anywhere between the spool and the hot-end. It wipes dust off the filament before it reaches the 0.3–0.4 mm nozzle, so clogs become far less likely.</p></li>
+      <li class="card reveal" style="--d:.05s"><span class="n mono">02</span><h3 class="h-3">Desiccant</h3><p class="muted">Two desiccants keep the spool dry. They change colour as they absorb moisture: dry, moist, wet. When yours turns, dry it and reuse it.</p></li>
+      <li class="card reveal" style="--d:.1s"><span class="n mono">03</span><h3 class="h-3">Storage kit</h3><p class="muted">Keep an open spool in the lockable bag with the desiccant. Damp filament causes stringing, bubbles and weak layers.</p></li>
+      <li class="card reveal" style="--d:.15s"><span class="n mono">04</span><h3 class="h-3">The spool</h3><p class="muted">Hexagon windows show how much filament is left at a glance, and the slots hold loose ends so the spool never unwinds.</p></li>
+    </ol>
+  </section>
+  <section class="wrap section-sm row gap-12"><a class="btn btn-accent" href="/materials/">Compare materials</a><a class="btn btn-ghost" href="/support/">Troubleshooting &amp; support</a></section>
+</Base>
+<style>
+  .two { display: grid; grid-template-columns: 1.1fr 1fr; gap: 48px; }
+  @media (max-width: 900px) { .two { grid-template-columns: 1fr; } }
+  .tbl { overflow-x: auto; }
+  table { width: 100%; border-collapse: collapse; }
+  th, td { padding: 14px 18px; text-align: left; border-bottom: 1px solid var(--line); }
+  thead th { font-family: var(--mono); font-size: .72rem; text-transform: uppercase; color: var(--muted); font-weight: 500; }
+  tbody tr:last-child td { border-bottom: 0; }
+  .t { font-family: var(--mono); color: var(--accent); }
+  .sheets { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--line); }
+  .sheets a { display: flex; justify-content: space-between; padding: 14px 4px; border-bottom: 1px solid var(--line); text-decoration: none; transition: padding .3s var(--ease); }
+  .sheets a:hover { padding-left: 12px; }
+  .steps { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr)); gap: 16px; }
+  .steps li { padding: 24px; display: flex; flex-direction: column; gap: 10px; }
+  .n { color: var(--accent); }
+</style>

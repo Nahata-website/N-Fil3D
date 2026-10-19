@@ -1,0 +1,46 @@
+---
+// Blog posts keep their original WordPress URLs (nfil3d.com/<slug>/) so rankings carry over.
+import Base from '../layouts/Base.astro';
+import Breadcrumbs from '../components/Breadcrumbs.astro';
+import { posts } from '../lib/data';
+import { SITE } from '../config/site';
+export function getStaticPaths() {
+  return posts.map((p) => ({ params: { post: p.slug }, props: { p } }));
+}
+const { p } = Astro.props as { p: (typeof posts)[number] };
+const fmt = (d: string) => new Date(d).toLocaleDateString('en-IN', { day: 'numeric', month: 'long', year: 'numeric' });
+const title = p.seoTitle || `${p.title} | NFIL3D`;
+const description = p.seoDescription || p.excerpt.slice(0, 155);
+const ld = { '@context': 'https://schema.org', '@type': 'BlogPosting', headline: p.title, datePublished: p.date, dateModified: p.modified,
+  image: p.image || undefined, author: { '@type': 'Organization', name: 'NFIL3D', url: SITE.url }, publisher: { '@id': `${SITE.url}/#org` },
+  mainEntityOfPage: new URL(p.path, SITE.url).href, ...(p.keyword ? { keywords: p.keyword } : {}) };
+const more = posts.filter((q) => q.id !== p.id).slice(0, 3);
+---
+<Base title={title} description={description} image={p.image || undefined} type="article" jsonld={ld}>
+  <article class="wrap art">
+    <div style="padding-top:20px"><Breadcrumbs items={[{ name: 'Blog', href: '/blog/' }, { name: p.title }]} /></div>
+    <header class="stack gap-16 head">
+      <span class="mono muted">{fmt(p.date)} · NFIL3D</span>
+      <h1 class="h-1">{p.title}</h1>
+    </header>
+    {p.image && <img class="cover" src={p.image} alt="" width="1200" height="700" fetchpriority="high">}
+    <div class="prose body" set:html={p.content} />
+    <aside class="card cta">
+      <div class="stack gap-8"><strong class="h-3">Ready to print?</strong><p class="muted">1.75 mm filament, {SITE.facts.tolerance}, lifetime warranty.</p></div>
+      <a class="btn btn-accent" href="/product-category/3d-printer-filaments/">Shop filament</a>
+    </aside>
+  </article>
+  <section class="wrap section-sm">
+    <h2 class="h-2" style="margin-bottom:24px">More guides</h2>
+    <div class="grid cols-3">{more.map((q) => <a href={q.path} class="more"><span class="mono muted">Guide</span><span class="h-3">{q.title}</span></a>)}</div>
+  </section>
+</Base>
+<style>
+  .art { max-width: 860px; }
+  .head { padding: 32px 0 28px; }
+  .cover { width: 100%; border-radius: var(--radius-lg); aspect-ratio: 16/9; object-fit: cover; margin-bottom: 40px; }
+  .body { margin: 0 auto; }
+  .cta { margin: 48px 0 0; padding: 24px 28px; display: flex; flex-wrap: wrap; gap: 16px; justify-content: space-between; align-items: center; }
+  .more { display: flex; flex-direction: column; gap: 10px; padding: 22px; border: 1px solid var(--line); border-radius: var(--radius); text-decoration: none; transition: border-color .3s; }
+  .more:hover { border-color: var(--ink); color: inherit; }
+</style>

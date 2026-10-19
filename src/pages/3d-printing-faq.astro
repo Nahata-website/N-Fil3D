@@ -1,0 +1,17 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHead from '../components/PageHead.astro';
+import Faq from '../components/Faq.astro';
+import { FAQ } from '../data/content';
+import { SITE } from '../config/site';
+---
+<Base title="3D Printing FAQ: Filament, Printers & Warranty | NFIL3D" description="Answers to common 3D printing questions: PLA vs PETG vs ABS, 1.75 mm filament, storage, nozzle temperatures, warranty and shipping in India.">
+  <PageHead crumb="3D Printing FAQ" eyebrow="FAQ" title='Questions, <span class="serif">answered.</span>' lead="Quick answers about NFIL3D filament, printers, warranty and shipping. For step-by-step help, see Get Started or Support." />
+  <section class="wrap section-sm" style="max-width:920px"><Faq items={FAQ} /></section>
+  <section class="wrap section-sm" style="max-width:920px">
+    <div class="card" style="padding:28px;display:flex;flex-wrap:wrap;gap:16px;justify-content:space-between;align-items:center">
+      <div class="stack gap-8"><h2 class="h-3">Still have a question?</h2><p class="muted">{SITE.hours}</p></div>
+      <div class="row gap-8"><a class="btn btn-accent" href={SITE.whatsapp}>WhatsApp us</a><a class="btn btn-ghost" href={SITE.phoneHref}>{SITE.phone}</a></div>
+    </div>
+  </section>
+</Base>

@@ -1,0 +1,15 @@
+---
+import Breadcrumbs from './Breadcrumbs.astro';
+interface Props { eyebrow?: string; title: string; lead?: string; crumb: string }
+const { eyebrow, title, lead, crumb } = Astro.props;
+---
+<section class="wrap" style="padding-top:20px">
+  <Breadcrumbs items={[{ name: crumb }]} />
+  <div class="stack gap-16 ph">
+    {eyebrow && <span class="eyebrow reveal">{eyebrow}</span>}
+    <h1 class="h-1 reveal" set:html={title} />
+    {lead && <p class="lead reveal">{lead}</p>}
+    <slot />
+  </div>
+</section>
+<style>.ph { padding: 36px 0 12px; max-width: 820px; }</style>

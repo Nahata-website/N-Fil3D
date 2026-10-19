@@ -1,0 +1,56 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHead from '../components/PageHead.astro';
+import Faq from '../components/Faq.astro';
+import { SITE } from '../config/site';
+---
+<Base title="Bulk 3D Printer Filament & Volume Pricing | NFIL3D" description="Bulk 1.75 mm filament for print farms, schools and businesses in India. Volume pricing, consistent colour across batches and a direct line to the NFIL3D team.">
+  <PageHead crumb="Bulk & B2B" eyebrow="Bulk & B2B" title='Printing by the kilo? <span class="serif">Let’s talk.</span>' lead="Volume pricing for print farms, schools, colleges, labs and businesses, with consistent colour across batches and one point of contact." />
+  <section class="wrap section-sm bulk">
+    <ul class="why">
+      <li class="reveal"><strong>Volume pricing</strong><span>Better rates as your order grows.</span></li>
+      <li class="reveal" style="--d:.05s"><strong>Batch consistency</strong><span>Matched colour and {SITE.facts.tolerance} tolerance, order after order.</span></li>
+      <li class="reveal" style="--d:.1s"><strong>Direct support</strong><span>Call, email or WhatsApp the team, {SITE.hours}.</span></li>
+      <li class="reveal" style="--d:.15s"><strong>Lifetime warranty</strong><span>On filament, against manufacturing defects.</span></li>
+    </ul>
+    <form class="card form reveal" action="/contact.php" method="post">
+      <input type="hidden" name="type" value="bulk-quote">
+      <h2 class="h-3">Request a quote</h2>
+      <div class="two">
+        <label class="field">Name<input class="input" name="name" required autocomplete="name"></label>
+        <label class="field">Company or institution<input class="input" name="company" autocomplete="organization"></label>
+      </div>
+      <div class="two">
+        <label class="field">Phone<input class="input" name="phone" type="tel" required autocomplete="tel"></label>
+        <label class="field">Email<input class="input" name="email" type="email" required autocomplete="email"></label>
+      </div>
+      <div class="two">
+        <label class="field">Materials<input class="input" name="materials" placeholder="e.g. PLA+ black, PETG clear"></label>
+        <label class="field">Approx. quantity per month<select class="input" name="quantity"><option>10–25 kg</option><option>25–100 kg</option><option>100–500 kg</option><option>500 kg+</option></select></label>
+      </div>
+      <label class="field">Anything else<textarea class="input" name="message" rows="4"></textarea></label>
+      <label class="hp" aria-hidden="true">Leave empty<input name="website" tabindex="-1" autocomplete="off"></label>
+      <button class="btn btn-accent btn-lg" type="submit">Send request <span class="arrow" aria-hidden="true">→</span></button>
+      <p class="muted" style="font-size:.85rem">Prefer to talk? <a href={SITE.phoneHref}>{SITE.phone}</a> · <a href={SITE.whatsapp}>WhatsApp</a></p>
+    </form>
+  </section>
+  <section class="wrap section-sm" style="max-width:900px">
+    <Faq items={[
+      ['Do you supply schools and colleges?', 'Yes. Tell us how many printers you run and which materials you use, and we will suggest quantities and pricing.'],
+      ['Can I get a GST invoice?', 'Please mention your GSTIN in the request and our team will confirm invoicing details with you.'],
+      ['Is colour consistent across batches?', 'Each spool ships with a colour card, and our in-house lab checks filament quality before dispatch.'],
+    ]} />
+  </section>
+</Base>
+<style>
+  .bulk { display: grid; grid-template-columns: 1fr 1.3fr; gap: 40px; align-items: start; }
+  @media (max-width: 900px) { .bulk { grid-template-columns: 1fr; } }
+  .why { list-style: none; margin: 0; padding: 0; display: grid; gap: 14px; }
+  .why li { display: flex; flex-direction: column; gap: 4px; padding: 20px 0; border-top: 1px solid var(--line); }
+  .why strong { font-weight: 600; }
+  .why span { color: var(--muted); }
+  .form { padding: clamp(22px, 3vw, 36px); display: flex; flex-direction: column; gap: 16px; border-radius: var(--radius-lg); }
+  .two { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  @media (max-width: 600px) { .two { grid-template-columns: 1fr; } }
+  .hp { position: absolute; left: -9999px; }
+</style>

@@ -1,0 +1,75 @@
+---
+import '../styles/global.css';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import { SITE } from '../config/site';
+
+interface Props {
+  title: string;
+  description: string;
+  image?: string;
+  type?: 'website' | 'article' | 'product';
+  jsonld?: object | object[];
+  noindex?: boolean;
+}
+const { title, description, image = '/images/hero-desktop.webp', type = 'website', jsonld = [], noindex = false } = Astro.props;
+const canonical = new URL(Astro.url.pathname, SITE.url).href;
+const ogImage = new URL(image, SITE.url).href;
+const org = {
+  '@context': 'https://schema.org', '@type': 'Organization', '@id': `${SITE.url}/#org`, name: 'NFIL3D', alternateName: 'N-Fil3D',
+  url: SITE.url, logo: `${SITE.url}/images/logo-dark.png`, email: SITE.email, telephone: SITE.phone,
+  sameAs: Object.values(SITE.social),
+  contactPoint: { '@type': 'ContactPoint', telephone: SITE.phone, contactType: 'customer service', areaServed: 'IN', availableLanguage: ['en', 'hi'] },
+};
+const website = { '@context': 'https://schema.org', '@type': 'WebSite', '@id': `${SITE.url}/#site`, name: 'NFIL3D', url: SITE.url, publisher: { '@id': `${SITE.url}/#org` },
+  potentialAction: { '@type': 'SearchAction', target: `${SITE.url}/shop/?q={search_term_string}`, 'query-input': 'required name=search_term_string' } };
+const graph = [org, website, ...(Array.isArray(jsonld) ? jsonld : [jsonld])];
+---
+<!doctype html>
+<html lang="en-IN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{title}</title>
+  <meta name="description" content={description}>
+  <link rel="canonical" href={canonical}>
+  {noindex && <meta name="robots" content="noindex, follow">}
+  <meta name="theme-color" content="#F7F6F3" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#0E0E0D" media="(prefers-color-scheme: dark)">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="sitemap" href="/sitemap-index.xml">
+  <meta property="og:site_name" content="NFIL3D">
+  <meta property="og:type" content={type === 'product' ? 'product' : type}>
+  <meta property="og:title" content={title}>
+  <meta property="og:description" content={description}>
+  <meta property="og:url" content={canonical}>
+  <meta property="og:image" content={ogImage}>
+  <meta property="og:locale" content="en_IN">
+  <meta name="twitter:card" content="summary_large_image">
+  <script is:inline>
+    (function () {
+      var t; try { t = localStorage.getItem('theme'); } catch (e) {}
+      if (t !== 'light' && t !== 'dark') t = matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+      document.documentElement.dataset.theme = t;
+      document.documentElement.classList.add('js');
+    })();
+  </script>
+  <slot name="head" />
+  <script type="application/ld+json" set:html={JSON.stringify(graph)} />
+</head>
+<body>
+  <a class="skip" href="#main">Skip to content</a>
+  <Header />
+  <main id="main"><slot /></main>
+  <Footer />
+  <script>
+    const els = document.querySelectorAll('.reveal');
+    if ('IntersectionObserver' in window) {
+      const io = new IntersectionObserver((entries) => {
+        entries.forEach((e) => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } });
+      }, { rootMargin: '0px 0px -5% 0px', threshold: 0 });
+      els.forEach((el) => io.observe(el));
+    } else els.forEach((el) => el.classList.add('in'));
+  </script>
+</body>
+</html>

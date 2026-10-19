@@ -1,0 +1,15 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHead from '../components/PageHead.astro';
+import { SITE } from '../config/site';
+---
+<Base title="About NFIL3D: 3D Printing Solutions Brand from India" description="NFIL3D makes and sells 3D printer filament, 3D printers, 3D pens and scanners, backed by 37+ years of plastics experience and an in-house testing lab.">
+  <PageHead crumb="About us" eyebrow="About us" title='Built on experience, quality <span class="serif">and innovation.</span>' lead="NFIL3D is a 3D printing solutions brand backed by decades of experience in engineering plastic compounds, biopolymers and advanced material manufacturing. We offer 3D printers, filament, 3D pens, resins, scanners and accessories: a one-stop destination for 3D printing in India." />
+  <section class="wrap section-sm grid cols-3">
+    <div class="card box reveal"><span class="eyebrow">Experience</span><h2 class="h-3">{SITE.facts.years} years</h2><p class="muted">in engineering plastics and biopolymers.</p></div>
+    <div class="card box reveal" style="--d:.05s"><span class="eyebrow">Scale</span><h2 class="h-3">{SITE.facts.facility}</h2><p class="muted">manufacturing facility.</p></div>
+    <div class="card box reveal" style="--d:.1s"><span class="eyebrow">Quality</span><h2 class="h-3">In-house lab</h2><p class="muted">for filament testing and R&amp;D.</p></div>
+  </section>
+  <section class="wrap section-sm row gap-12"><a class="btn btn-accent" href="/brand-story/">Read our story</a><a class="btn btn-ghost" href="/contact/">Contact us</a></section>
+</Base>
+<style>.box { padding: 28px; display: flex; flex-direction: column; gap: 8px; }</style>
