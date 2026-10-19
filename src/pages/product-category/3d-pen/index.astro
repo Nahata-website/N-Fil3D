@@ -92,13 +92,15 @@ const ld = { '@context': 'https://schema.org', '@type': 'CollectionPage', name: 
 
   <section class="wrap section-sm">
     <div class="box-wrap">
-      <h2 class="h-2">Find the right starting point.</h2>
+      <h2 class="h-1 bw-h">Find the right starting point.</h2>
       <div class="boxes">
-        {kits.map((k) => (
-          <div class="bx">
-            {k.first.p.images[0] && <img src={k.first.p.images[0].src} alt="" width="200" height="200" loading="lazy">}
-            <div><h3>{k.title}</h3><ul>{k.box.map((b) => <li>{b}</li>)}</ul></div>
-          </div>
+        {kits.map((k, i) => (
+          <a class={`bx reveal ${k.n === 9 ? 'feat' : ''}`} href={k.first.p.path} style={`--d:${i * 0.07}s`}>
+            {k.n === 9 && <span class="badge"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M3 18h18l-1.5-10-4.5 4-3-6-3 6-4.5-4z"/></svg>Recommended</span>}
+            <span class="bimg">{k.first.p.images[0] && <img src={k.first.p.images[0].src} srcset={k.first.p.images[0].srcset} sizes="(max-width: 960px) 90vw, 380px" alt={k.title} width="600" height="400" loading="lazy">}</span>
+            <h3>{k.title}</h3>
+            <ul>{k.box.map((b) => <li>{b}</li>)}</ul>
+          </a>
         ))}
       </div>
     </div>
@@ -163,14 +165,20 @@ const ld = { '@context': 'https://schema.org', '@type': 'CollectionPage', name: 
   .kfoot { display: flex; justify-content: space-between; align-items: center; margin-top: auto; padding-top: 10px; }
   .price strong { font-size: 1.5rem; font-weight: 600; letter-spacing: -0.02em; }
   .price s { margin-left: 8px; color: var(--muted); font-size: .9rem; }
-  .box-wrap { padding: clamp(22px, 3vw, 36px); border-radius: var(--radius-lg); background: var(--surface-2); }
-  .box-wrap .h-2 { margin: 0 0 22px; font-size: clamp(1.4rem, 2.2vw, 2rem); }
-  .boxes { display: grid; grid-template-columns: repeat(3, 1fr); }
-  .bx { display: grid; grid-template-columns: 90px 1fr; gap: 16px; padding: 0 20px; }
-  .bx + .bx { border-left: 1px solid var(--line); }
-  .bx img { width: 90px; aspect-ratio: 1; object-fit: contain; mix-blend-mode: multiply; }
-  .bx h3 { margin: 0 0 8px; font-size: .98rem; font-weight: 600; }
-  .bx ul { margin: 0; padding-left: 16px; font-size: .84rem; color: var(--ink-2); display: grid; gap: 3px; }
+  .box-wrap { padding: clamp(24px, 3.5vw, 48px); border-radius: var(--radius-lg); background: var(--surface-2); }
+  .bw-h { margin: 0 0 32px; font-size: clamp(1.9rem, 3.4vw, 3rem); font-weight: 650; }
+  .boxes { display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; align-items: start; }
+  .bx { position: relative; display: flex; flex-direction: column; gap: 14px; padding: 16px 16px 24px; border-radius: 22px; background: var(--surface); border: 1.5px solid transparent; text-decoration: none; color: var(--ink); box-shadow: 0 14px 40px -30px rgba(17,17,16,.35); transition: transform .45s var(--ease), box-shadow .45s var(--ease); }
+  .bx:hover { transform: translateY(-4px); box-shadow: 0 24px 50px -30px rgba(17,17,16,.45); }
+  .bx.feat { border-color: #B9A7FF; background: color-mix(in srgb, #F3EFFF 70%, var(--surface)); }
+  .badge { position: absolute; top: -16px; left: 50%; transform: translateX(-50%); display: inline-flex; align-items: center; gap: 6px; padding: 6px 16px; border-radius: 999px; background: #8B6CFF; color: #fff; font-size: .85rem; font-weight: 650; white-space: nowrap; box-shadow: 0 8px 20px -10px rgba(110,80,240,.7); }
+  .bimg { display: block; aspect-ratio: 5 / 2.4; border-radius: 16px; overflow: hidden; background: #F4F4F6; }
+  .bimg img { width: 100%; height: 100%; object-fit: contain; mix-blend-mode: multiply; transition: transform .7s var(--ease); }
+  .bx:hover .bimg img { transform: scale(1.05); }
+  .bx h3 { margin: 6px 8px 0; font-size: 1.35rem; font-weight: 650; letter-spacing: -0.02em; }
+  .bx ul { list-style: none; margin: 0 8px; padding: 0; display: grid; gap: 9px; font-size: .95rem; color: var(--ink-2); }
+  .bx li { display: flex; align-items: center; gap: 12px; }
+  .bx li::before { content: ''; flex: none; width: 22px; height: 22px; border-radius: 50%; background: #EDE8FF url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%236A4CF0' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 12l4 4 8-8'/%3E%3C/svg%3E") center / 13px no-repeat; }
   .doodle { display: grid; grid-template-columns: 1fr 1fr; align-items: center; border-radius: var(--radius-lg); overflow: hidden; background: #FFF6D6; color: #111110; text-decoration: none; }
   .doodle .muted { color: #5A5446; }
   .doodle .link { color: #111110; }
@@ -178,7 +186,7 @@ const ld = { '@context': 'https://schema.org', '@type': 'CollectionPage', name: 
   .dtext .h-1 { margin: 0; font-size: clamp(1.8rem, 3vw, 2.8rem); }
   .dtext p { margin: 0; }
   .doodle img { width: 100%; height: 100%; max-height: 380px; object-fit: cover; }
-  @media (max-width: 960px) { .doodle { grid-template-columns: 1fr; } .ph { display: flex; flex-direction: column; } .ph-bg { position: relative; width: 100%; height: 260px; order: 2; object-position: 75% center; -webkit-mask-image: none; mask-image: none; } .ph-in { min-height: 0; } .tops, .kgrid { grid-template-columns: 1fr; } .boxes { grid-template-columns: 1fr; gap: 18px; } .bx + .bx { border-left: 0; border-top: 1px solid var(--line); padding-top: 18px; } .bx { padding: 0; } }
+  @media (max-width: 960px) { .doodle { grid-template-columns: 1fr; } .ph { display: flex; flex-direction: column; } .ph-bg { position: relative; width: 100%; height: 260px; order: 2; object-position: 75% center; -webkit-mask-image: none; mask-image: none; } .ph-in { min-height: 0; } .tops, .kgrid { grid-template-columns: 1fr; } .boxes { grid-template-columns: 1fr; gap: 30px; } }
 </style>
 <script>
   document.querySelectorAll<HTMLElement>('[data-kits]').forEach((root) => {
