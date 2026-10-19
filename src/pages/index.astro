@@ -232,10 +232,10 @@ const printerNotes: Record<string, string> = { 'Mini-N': 'Compact. For desks, ho
         </div>
       </div>
     </div>
+      <button type="button" class="sarrow sprev" data-prev aria-label="Previous slide"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></button>
+      <button type="button" class="sarrow snext" data-next aria-label="Next slide"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></button>
     </div>
 
-    <button type="button" class="sarrow sprev" data-prev aria-label="Previous slide"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></button>
-    <button type="button" class="sarrow snext" data-next aria-label="Next slide"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></button>
     <div class="wrap slider-ui" data-slider-ui hidden>
       <div class="dots" role="tablist" aria-label="Choose slide">
         {['Filament precision', 'Your ideas, made real', '3D pens', 'Diwali sale', 'Happy Dussehra', 'Little creators'].map((label, i) => (
@@ -511,7 +511,7 @@ const printerNotes: Record<string, string> = { 'Mini-N': 'Compact. For desks, ho
   .s4 .s-cta .btn-accent { --b: var(--sun); color: #111110; }
   .s4 .s-cta .btn-accent::after { background: #F0B400; }
   .s2 .s-cta .btn-accent:hover, .s3 .s-cta .btn-accent:hover, .s4 .s-cta .btn-accent:hover { color: #111110; border-color: transparent; }
-  .slides { display: grid; overflow-x: clip; }
+  .slides { display: grid; overflow-x: clip; position: relative; }
   .slide { grid-area: 1 / 1; display: flex; align-items: center; min-width: 0; }
   .slide > .wrap { width: 100%; }
   .js .slide:not(.is-active) { visibility: hidden; opacity: 0; }
@@ -590,6 +590,7 @@ const printerNotes: Record<string, string> = { 'Mini-N': 'Compact. For desks, ho
   .sarrow:hover { background: var(--ink); color: var(--bg); transform: scale(1.06); }
   .sprev { left: 16px; }
   .snext { right: 16px; }
+  @media (min-width: 761px) and (max-width: 1700px) { .sarrow { width: 46px; height: 46px; margin-top: 0; top: auto; bottom: 28px; } .sprev { left: auto; right: 82px; } .snext { right: 26px; } }
   @media (max-width: 760px) { .sarrow { width: 40px; height: 40px; margin-top: -20px; top: auto; bottom: 8px; } .sprev { left: auto; right: 64px; } .snext { right: 14px; } }
   .slider-ui[hidden] { display: none !important; }
   .slider-ui { display: flex; align-items: center; gap: 14px; margin-top: 28px; }
