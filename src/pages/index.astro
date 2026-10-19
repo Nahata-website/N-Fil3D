@@ -180,7 +180,7 @@ const printerNotes: Record<string, string> = { 'Mini-N': 'Compact. For desks, ho
           </div>
         </div>
         <div class="s7-stage s-stage">
-          <svg class="blob s-shape" viewBox="0 0 400 360" aria-hidden="true"><path d="M60 70 C 120 -10, 290 0, 350 80 C 410 160, 380 300, 280 330 C 180 360, 70 330, 30 250 C -5 180, 10 120, 60 70 Z" fill="#CFE6FB" /></svg>
+          <div class="blob s-shape" aria-hidden="true"></div>
           <svg class="ribbon draw" viewBox="0 0 500 200" aria-hidden="true"><path d="M10 190 C 60 120, 160 150, 230 110 C 300 70, 330 30, 420 20" fill="none" stroke="#FFD84D" stroke-width="34" stroke-linecap="round" opacity=".85" /></svg>
           <img class="s-obj coil-img k-coils" src="/images/fest/k-coils.webp" width="1100" height="215" alt="Coils of NFIL3D 3D pen filament" loading="lazy" decoding="async">
           <a href="/product-category/3d-pens-filaments/" aria-label="3D pen filaments"><img class="s-obj k-pouch s-spool" src="/images/fest/k-pouch.webp" width="387" height="564" alt="NFIL3D 3D pen filaments pouch" loading="lazy" decoding="async"></a>
@@ -442,7 +442,7 @@ const printerNotes: Record<string, string> = { 'Mini-N': 'Compact. For desks, ho
   .mg-1 { width: 20%; left: -6%; bottom: -3%; z-index: 6; }
   .mg-2 { width: 16%; right: -4%; bottom: -2%; z-index: 6; rotate: 14deg; }
   .u-bow { width: 24%; right: 4%; bottom: 12%; z-index: 5; }
-  .blob { position: absolute; width: 82%; right: 0; top: 2%; }
+  .blob { position: absolute; width: 66%; aspect-ratio: 1; left: 22%; top: 4%; border-radius: 50%; background: #CFE6FB; }
   .ribbon { position: absolute; width: 70%; left: -6%; bottom: -6%; overflow: visible; }
   .k-coils { width: 92%; left: 4%; bottom: -2%; z-index: 3; }
   .k-pouch { width: 34%; left: 34%; bottom: 10%; z-index: 4; }
