@@ -6,6 +6,7 @@ const year = new Date().getFullYear();
   <div class="wrap">
     <div class="ftr-top">
       <div class="stack gap-12 brand">
+        <a href="/" class="flogo" aria-label="NFIL3D home"><img src="/images/logo-dark.png" alt="NFIL3D" width="132" height="60" class="fl-l"><img src="/images/logo-light.png" alt="" width="132" height="60" class="fl-d" aria-hidden="true"></a>
         <p class="h-2">Precision you can <span class="serif">measure.</span></p>
         <p class="muted">1.75 mm filament, 3D printers and pens for makers across India. {SITE.facts.tolerance} diameter tolerance, lifetime filament warranty.</p>
         <form class="news" action="/contact.php" method="post">
@@ -71,6 +72,12 @@ const year = new Date().getFullYear();
   .ftr-top { display: grid; grid-template-columns: 2fr repeat(4, 1fr); gap: 32px; }
   @media (max-width: 960px) { .ftr-top { grid-template-columns: 1fr 1fr; } .brand { grid-column: 1 / -1; } }
   .brand { max-width: 460px; }
+  .flogo { display: inline-flex; margin-bottom: 10px; }
+  .flogo img { height: 52px; width: auto; }
+  .fl-d { display: none; }
+  :global([data-theme="dark"]) .fl-l { display: none; }
+  :global([data-theme="dark"]) .fl-d { display: block; }
+  @media (prefers-color-scheme: dark) { :global(:root:not([data-theme="light"])) .fl-l { display: none; } :global(:root:not([data-theme="light"])) .fl-d { display: block; } }
   .news { display: flex; gap: 8px; margin-top: 6px; }
   .news .input { border-radius: 999px; }
   .small { font-size: .85rem; }
