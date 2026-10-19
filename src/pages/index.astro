@@ -118,22 +118,7 @@ const printerNotes: Record<string, string> = { 'Mini-N': 'Compact. For desks, ho
       </div>
     </div>
 
-    <div class="slide s3" data-slide="2" aria-roledescription="slide" aria-label="3 of 4" aria-hidden="true" inert>
-      <div class="wrap s-split">
-        <div class="stack gap-24">
-          <span class="eyebrow s-eyebrow s3-eyebrow">3D printing filaments</span>
-          <p class="s-title s3-title">Every colour.<br> A new possibility.</p>
-          <p class="lead s-sub">Find the right filament for your next idea.</p>
-          <div class="row gap-12 s-cta"><a class="btn btn-lg s3-cta" href="/product-category/3d-printer-filaments/">Explore filaments <span class="arrow" aria-hidden="true">→</span></a></div>
-        </div>
-      </div>
-      <picture class="slide-bg s3-bg">
-        <source media="(max-width: 900px)" srcset="/images/fest/colour-bg-m.webp" width="1139" height="678">
-        <img src="/images/fest/colour-bg.webp" width="1899" height="828" alt="NFIL3D filament spools in green, yellow, blue and orange with RAL K7 colour cards and printed figures" loading="lazy" decoding="async">
-      </picture>
-    </div>
-
-    <div class="slide s4" data-slide="3" aria-roledescription="slide" aria-label="4 of 4" aria-hidden="true" inert>
+    <div class="slide s4" data-slide="2" aria-roledescription="slide" aria-label="4 of 4" aria-hidden="true" inert>
       <div class="wrap s-split">
         <div class="stack gap-24">
           <span class="eyebrow s-eyebrow">3D pens</span>
@@ -177,7 +162,7 @@ const printerNotes: Record<string, string> = { 'Mini-N': 'Compact. For desks, ho
       </div>
     </div>
 
-    <div class="slide s5" data-slide="4" data-until="2026-11-12" aria-roledescription="slide" aria-hidden="true" inert>
+    <div class="slide s5" data-slide="3" data-until="2026-11-12" aria-roledescription="slide" aria-hidden="true" inert>
       <div class="wrap s-split">
         <div class="stack gap-24">
           <span class="eyebrow s-eyebrow fest-eyebrow">Festive special</span>
@@ -193,7 +178,7 @@ const printerNotes: Record<string, string> = { 'Mini-N': 'Compact. For desks, ho
       </picture>
     </div>
 
-    <div class="slide s6" data-slide="5" data-until="2026-10-23" aria-roledescription="slide" aria-hidden="true" inert>
+    <div class="slide s6" data-slide="4" data-until="2026-10-23" aria-roledescription="slide" aria-hidden="true" inert>
       <div class="wrap s-split">
         <div class="stack gap-24">
           <span class="eyebrow s-eyebrow kid-eyebrow"><svg class="sparks draw" viewBox="0 0 60 40" aria-hidden="true"><g fill="none" stroke-width="4" stroke-linecap="round"><path d="M10 30 L22 22" /><path d="M24 14 L28 2" /><path d="M36 22 L52 18" /></g></svg>Celebrate creativity</span>
@@ -220,7 +205,7 @@ const printerNotes: Record<string, string> = { 'Mini-N': 'Compact. For desks, ho
       </div>
     </div>
 
-    <div class="slide s7" data-slide="6" aria-roledescription="slide" aria-hidden="true" inert>
+    <div class="slide s7" data-slide="5" aria-roledescription="slide" aria-hidden="true" inert>
       <div class="wrap s-split">
         <div class="stack gap-24">
           <span class="eyebrow s-eyebrow kid-eyebrow"><svg class="sparks draw" viewBox="0 0 60 40" aria-hidden="true"><g fill="none" stroke-width="4" stroke-linecap="round"><path d="M10 30 L22 22" /><path d="M24 14 L28 2" /><path d="M36 22 L52 18" /></g></svg>Big fun for little creators</span>
@@ -248,7 +233,7 @@ const printerNotes: Record<string, string> = { 'Mini-N': 'Compact. For desks, ho
 
     <div class="wrap slider-ui" data-slider-ui>
       <div class="dots" role="tablist" aria-label="Choose slide">
-        {['Filament precision', 'Your ideas, made real', 'Every colour', '3D pens', 'Diwali sale', 'Happy Dussehra', 'Little creators'].map((label, i) => (
+        {['Filament precision', 'Your ideas, made real', '3D pens', 'Diwali sale', 'Happy Dussehra', 'Little creators'].map((label, i) => (
           <button type="button" class="dot" role="tab" aria-selected={i === 0 ? 'true' : 'false'} aria-label={label} data-go={i}><span class="dot-fill"></span></button>
         ))}
       </div>
