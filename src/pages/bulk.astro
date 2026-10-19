@@ -1,56 +1,134 @@
 ---
 import Base from '../layouts/Base.astro';
-import PageHead from '../components/PageHead.astro';
+import Breadcrumbs from '../components/Breadcrumbs.astro';
+import CtaBand from '../components/CtaBand.astro';
 import Faq from '../components/Faq.astro';
 import { SITE } from '../config/site';
+
+const who = [
+  ['Print farms', 'M3 21V10l5 3V10l5 3V6l8 4v11H3zM7 17h2M12 17h2M17 17h2'],
+  ['Schools & colleges', 'M2 9l10-5 10 5-10 5L2 9zM6 11v5c3 2.5 9 2.5 12 0v-5M22 9v6'],
+  ['Research labs', 'M9 3h6M10 3v6l-5 9a2 2 0 0 0 2 3h10a2 2 0 0 0 2-3l-5-9V3M7.5 15h9'],
+  ['Businesses', 'M4 21V5a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v16M16 9h3a1 1 0 0 1 1 1v11M8 7h4M8 11h4M8 15h4M2 21h20'],
+];
+const why = [
+  ['Volume pricing', 'Request pricing for your order size.'],
+  ['Batch consistency', `Matched colour and ${SITE.facts.tolerance} tolerance, order after order.`],
+  ['Direct support', 'One point of contact for your enquiry.'],
+  ['Filament warranty', 'Lifetime warranty against manufacturing defects.'],
+];
+const steps = [
+  ['Share your needs', 'Tell us about your materials, quantities and requirements.'],
+  ['Review your quote', 'Our team gets back to you with pricing and options.'],
+  ['Plan your supply', "Once you're happy, we help coordinate your order."],
+];
 ---
-<Base title="Bulk 3D Printer Filament & Volume Pricing | NFIL3D" description="Bulk 1.75 mm filament for print farms, schools and businesses in India. Volume pricing, consistent colour across batches and a direct line to the NFIL3D team.">
-  <PageHead crumb="Bulk & B2B" eyebrow="Bulk & B2B" title='Printing by the kilo? <span class="serif">Let’s talk.</span>' lead="Volume pricing for print farms, schools, colleges, labs and businesses, with consistent colour across batches and one point of contact." />
-  <section class="wrap section-sm bulk">
-    <ul class="why">
-      <li class="reveal"><strong>Volume pricing</strong><span>Better rates as your order grows.</span></li>
-      <li class="reveal" style="--d:.05s"><strong>Batch consistency</strong><span>Matched colour and {SITE.facts.tolerance} tolerance, order after order.</span></li>
-      <li class="reveal" style="--d:.1s"><strong>Direct support</strong><span>Call, email or WhatsApp the team, {SITE.hours}.</span></li>
-      <li class="reveal" style="--d:.15s"><strong>Lifetime warranty</strong><span>On filament, against manufacturing defects.</span></li>
+<Base title="Bulk 3D Printer Filament & Volume Pricing | NFIL3D" description="Bulk 1.75 mm filament for print farms, schools, labs and businesses in India. Volume pricing, consistent colour across batches and a direct line to the NFIL3D team.">
+  <section class="bh">
+    <div class="wrap bh-in">
+      <div class="stack gap-16 bh-copy">
+        <Breadcrumbs items={[{ name: 'Bulk & B2B' }]} />
+        <span class="eyebrow gold">Built for business</span>
+        <h1 class="h-display">More material. <br>More possibilities.</h1>
+        <p class="lead">Bulk filament supply for print farms, classrooms, labs and growing businesses.</p>
+        <div class="row gap-16 bh-cta"><a class="btn btn-lg dark" href="#quote">Request a quote <span class="arrow" aria-hidden="true">→</span></a><a class="ulink" href={SITE.whatsapp}>Talk to our team</a></div>
+      </div>
+    </div>
+    <div class="bh-art"><img src="/images/fest/colour-bg-m.webp" width="1139" height="678" alt="NFIL3D filament spools in green, yellow, blue and orange" fetchpriority="high"></div>
+  </section>
+
+  <section class="whobar">
+    <ul class="wrap who">
+      {who.map(([t, d]) => <li><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d={d} /></svg>{t}</li>)}
     </ul>
-    <form class="card form reveal" action="/contact.php" method="post">
+  </section>
+
+  <section class="wrap section partner" id="quote">
+    <div>
+      <span class="eyebrow gold">A partner for your next run</span>
+      <h2 class="h-1">Supply that keeps <br>your ideas moving.</h2>
+      <ol class="why">{why.map(([t, d], i) => <li class="reveal"><span class="n">0{i + 1}</span><div><strong>{t}</strong><span class="muted">{d}</span></div></li>)}</ol>
+    </div>
+    <form class="qform reveal" action="/contact.php" method="post">
       <input type="hidden" name="type" value="bulk-quote">
-      <h2 class="h-3">Request a quote</h2>
+      <h2 class="h-2">Let's build your quote.</h2>
+      <p class="muted">Tell us what you need. Our team will help with the rest.</p>
       <div class="two">
-        <label class="field">Name<input class="input" name="name" required autocomplete="name"></label>
+        <label class="field">Full name<input class="input" name="name" required autocomplete="name"></label>
         <label class="field">Company or institution<input class="input" name="company" autocomplete="organization"></label>
       </div>
       <div class="two">
         <label class="field">Phone<input class="input" name="phone" type="tel" required autocomplete="tel"></label>
-        <label class="field">Email<input class="input" name="email" type="email" required autocomplete="email"></label>
+        <label class="field">Work email<input class="input" name="email" type="email" required autocomplete="email"></label>
       </div>
       <div class="two">
-        <label class="field">Materials<input class="input" name="materials" placeholder="e.g. PLA+ black, PETG clear"></label>
-        <label class="field">Approx. quantity per month<select class="input" name="quantity"><option>10–25 kg</option><option>25–100 kg</option><option>100–500 kg</option><option>500 kg+</option></select></label>
+        <label class="field">Material required<input class="input" name="materials" placeholder="e.g. PLA+, PETG, ABS"></label>
+        <label class="field">Estimated monthly quantity<select class="input" name="quantity"><option value="">Select quantity</option><option>10–25 kg</option><option>25–100 kg</option><option>100–500 kg</option><option>500 kg+</option></select></label>
       </div>
-      <label class="field">Anything else<textarea class="input" name="message" rows="4"></textarea></label>
+      <label class="field">Additional requirements<textarea class="input" name="message" rows="3" placeholder="Colours, quantities, delivery needs…"></textarea></label>
       <label class="hp" aria-hidden="true">Leave empty<input name="website" tabindex="-1" autocomplete="off"></label>
-      <button class="btn btn-accent btn-lg" type="submit">Send request <span class="arrow" aria-hidden="true">→</span></button>
-      <p class="muted" style="font-size:.85rem">Prefer to talk? <a href={SITE.phoneHref}>{SITE.phone}</a> · <a href={SITE.whatsapp}>WhatsApp</a></p>
+      <button class="btn btn-lg dark full" type="submit">Request a quote <span class="arrow" aria-hidden="true">→</span></button>
+      <p class="muted small">Prefer a conversation? <a href={SITE.phoneHref}>Call</a> or <a href={SITE.whatsapp}>WhatsApp</a> our team.</p>
     </form>
   </section>
-  <section class="wrap section-sm" style="max-width:900px">
+
+  <section class="wrap section-sm flow">
+    <h2 class="h-1">From enquiry to <br>your next print.</h2>
+    {steps.map(([t, d], i) => <div class="st reveal" style={`--d:${i * 0.06}s`}><span class="sn">0{i + 1}<i></i></span><strong>{t}</strong><span class="muted">{d}</span></div>)}
+  </section>
+
+  <section class="wrap section-sm">
+    <h2 class="h-2" style="margin-bottom:12px">A few things you might want to know.</h2>
     <Faq items={[
       ['Do you supply schools and colleges?', 'Yes. Tell us how many printers you run and which materials you use, and we will suggest quantities and pricing.'],
       ['Can I get a GST invoice?', 'Please mention your GSTIN in the request and our team will confirm invoicing details with you.'],
-      ['Is colour consistent across batches?', 'Each spool ships with a colour card, and our in-house lab checks filament quality before dispatch.'],
+      ['Can I discuss colour consistency across batches?', 'Yes. Tell us the colours you use most and we will talk you through batch matching for repeat orders.'],
     ]} />
   </section>
+
+  <CtaBand title="Let's talk about your next batch." href="/contact/" label="Contact our team" />
 </Base>
 <style>
-  .bulk { display: grid; grid-template-columns: 1fr 1.3fr; gap: 40px; align-items: start; }
-  @media (max-width: 900px) { .bulk { grid-template-columns: 1fr; } }
-  .why { list-style: none; margin: 0; padding: 0; display: grid; gap: 14px; }
-  .why li { display: flex; flex-direction: column; gap: 4px; padding: 20px 0; border-top: 1px solid var(--line); }
-  .why strong { font-weight: 600; }
-  .why span { color: var(--muted); }
-  .form { padding: clamp(22px, 3vw, 36px); display: flex; flex-direction: column; gap: 16px; border-radius: var(--radius-lg); }
+  .gold { color: #C99A00; }
+  .dark { --b: #111110; color: #fff; }
+  .bh { position: relative; overflow: hidden; background: var(--surface-2); }
+  .bh-in { position: relative; z-index: 1; padding-block: clamp(20px, 3vw, 36px) clamp(40px, 6vw, 80px); }
+  .bh-copy { max-width: 520px; }
+  .bh h1 { font-size: clamp(2.6rem, 5vw, 4.8rem); line-height: .98; }
+  .bh .lead { margin: 0; }
+  .bh-cta { align-items: center; }
+  .ulink { font-weight: 600; text-decoration: none; padding-bottom: 4px; border-bottom: 2px solid var(--sun); }
+  .bh-art { position: absolute; top: 0; right: 0; bottom: 0; width: 52%; overflow: hidden; }
+  .bh-art img { width: 100%; height: 100%; object-fit: cover; object-position: 40% center; }
+  .whobar { background: var(--surface-2); border-top: 1px solid var(--line); }
+  .who { list-style: none; margin: 0 auto; display: grid; grid-template-columns: repeat(4, 1fr); padding-block: 22px; }
+  .who li { display: flex; align-items: center; justify-content: center; gap: 12px; font-weight: 550; }
+  .who li + li { border-left: 1px solid var(--line); }
+  .partner { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(28px, 5vw, 64px); align-items: start; }
+  .partner .h-1 { margin: 10px 0 24px; }
+  .why { list-style: none; margin: 0; padding: 0; }
+  .why li { display: grid; grid-template-columns: 52px 1fr; gap: 8px; padding: 22px 0; border-bottom: 1px solid var(--line); }
+  .why .n { font-size: 1.3rem; color: var(--ink-2); }
+  .why strong { display: block; font-size: 1.1rem; margin-bottom: 4px; }
+  .qform { display: flex; flex-direction: column; gap: 14px; padding: clamp(22px, 3vw, 36px); border-radius: var(--radius-lg); background: var(--surface-2); }
+  .qform .h-2 { margin: 0; font-size: clamp(1.5rem, 2.4vw, 2rem); }
+  .qform > p { margin: 0; }
   .two { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
-  @media (max-width: 600px) { .two { grid-template-columns: 1fr; } }
+  .field { display: flex; flex-direction: column; gap: 6px; font-size: .86rem; font-weight: 550; }
+  .full { width: 100%; }
+  .small { font-size: .84rem; margin: 0; }
   .hp { position: absolute; left: -9999px; }
+  .flow { display: grid; grid-template-columns: 1.2fr 1fr 1fr 1fr; gap: 24px; align-items: start; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+  .flow .h-1 { margin: 0; font-size: clamp(1.8rem, 3vw, 2.6rem); }
+  .st { display: flex; flex-direction: column; gap: 8px; padding-left: 24px; border-left: 1px solid var(--line); }
+  .sn { display: flex; align-items: center; gap: 14px; font-size: 1.3rem; }
+  .sn i { width: 44px; height: 2px; background: var(--sun); }
+  .st .muted { font-size: .9rem; }
+  @media (max-width: 960px) {
+    .bh-art { position: relative; width: 100%; height: 300px; }
+    .partner, .flow { grid-template-columns: 1fr; }
+    .who { grid-template-columns: 1fr 1fr; gap: 14px 0; }
+    .who li:nth-child(3) { border-left: 0; }
+  }
+  @media (max-width: 560px) { .two { grid-template-columns: 1fr; } }
 </style>
