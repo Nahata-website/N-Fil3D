@@ -230,3 +230,7 @@ details.faq .a { padding: 0 52px 24px 0; color: var(--ink-2); max-width: 70ch; }
   details.faq .a { padding-right: 0; }
 }
 @media (min-width: 1500px) { :root { --max: 1320px; } }
+
+/* Desktop scale: at 100% browser zoom the site looks like 125% on wide screens */
+@media (min-width: 1440px) { html { zoom: 1.25; } }
+@media (min-width: 1200px) and (max-width: 1439px) { html { zoom: 1.1; } }
