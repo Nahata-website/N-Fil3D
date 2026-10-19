@@ -118,8 +118,8 @@ const ld = { '@context': 'https://schema.org', '@type': 'HowTo', name: 'Make you
   .lh h1 { font-size: clamp(2.8rem, 6vw, 5.4rem); line-height: .96; }
   .lh .lead { margin: 0; }
   .dark { --b: #111110; color: #fff; }
-  .lh-img { position: absolute; top: 0; right: 0; bottom: 0; width: 40%; -webkit-mask-image: linear-gradient(90deg, transparent, #000 30%); mask-image: linear-gradient(90deg, transparent, #000 30%); }
-  .lh-img img { width: 100%; height: 100%; object-fit: cover; object-position: center 88%; }
+  .lh-img { position: absolute; top: 0; right: 0; bottom: 0; width: 40%; }
+  .lh-img img { width: 100%; height: 100%; object-fit: contain; object-position: right center; width: auto; max-width: 100%; margin-left: auto; display: block; -webkit-mask-image: linear-gradient(90deg, transparent, #000 28%); mask-image: linear-gradient(90deg, transparent, #000 28%); }
   .tabs { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; padding-block: 18px; border-bottom: 1px solid var(--line); }
   .tabs a { display: flex; gap: 14px; padding-bottom: 10px; text-decoration: none; font-weight: 550; border-bottom: 3px solid transparent; transition: border-color .3s; }
   .tabs a:hover, .tabs a:first-child { border-color: var(--sun); }

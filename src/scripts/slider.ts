@@ -108,7 +108,7 @@ if (root && ui) {
   }
 
   // Hover: filament spools give a subtle wobble; pens lean in
-  root.querySelectorAll<HTMLElement>('.s-spool, .spool, .s-obj').forEach((el) => {
+  root.querySelectorAll<HTMLElement>('.s-spool, .s-obj').forEach((el) => {
     el.addEventListener('pointerenter', () => {
       if (reduce || el.dataset.wob) return;
       el.dataset.wob = '1';
