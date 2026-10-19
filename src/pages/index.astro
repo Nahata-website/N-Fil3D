@@ -345,6 +345,13 @@ const printerNotes: Record<string, string> = { 'Mini-N': 'Compact. For desks, ho
   @media (max-width: 900px) { .hero-in { grid-template-columns: 1fr; } }
   .hero-copy strong { color: var(--ink); font-weight: 600; }
   /* Banner slider */
+  .slides { --fil-grad: linear-gradient(125deg, #4C86FF 0%, #3CCB7F 32%, #FFD23F 62%, #FF8A3D 100%); }
+  /* CTA takes the colour of the slide's shape: gradient where many filaments show, yellow for the pen */
+  .s2 .s-cta .btn-accent, .s3 .s-cta .btn-accent { --b: transparent; background: var(--fil-grad); border-color: transparent; color: #111110; }
+  .s2 .s-cta .btn-accent::after, .s3 .s-cta .btn-accent::after { background: rgba(17,17,16,.12); }
+  .s4 .s-cta .btn-accent { --b: var(--sun); color: #111110; }
+  .s4 .s-cta .btn-accent::after { background: #F0B400; }
+  .s2 .s-cta .btn-accent:hover, .s3 .s-cta .btn-accent:hover, .s4 .s-cta .btn-accent:hover { color: #111110; border-color: transparent; }
   .slides { display: grid; overflow-x: clip; }
   .slide { grid-area: 1 / 1; display: flex; align-items: center; min-width: 0; }
   .slide > .wrap { width: 100%; }
@@ -362,7 +369,7 @@ const printerNotes: Record<string, string> = { 'Mini-N': 'Compact. For desks, ho
   .s2-copy .s-sub { max-width: 560px; }
   .s2-copy .s-cta { justify-content: center; }
   .s2-stage { width: 100%; max-width: 1180px; aspect-ratio: 1320 / 340; }
-  .arc { position: absolute; left: 8%; right: 8%; bottom: 0; height: 100%; background: var(--sun); border-radius: 50% 50% 0 0 / 100% 100% 0 0; }
+  .arc { position: absolute; left: 8%; right: 8%; bottom: 0; height: 100%; background: var(--fil-grad); border-radius: 50% 50% 0 0 / 100% 100% 0 0; }
   .s-printer { width: 25%; left: 37.5%; bottom: 0; z-index: 3; }
   .sp-a { width: 13%; left: 12%; bottom: 0; z-index: 2; rotate: -6deg; }
   .sp-b { width: 12%; left: 23%; bottom: 22%; z-index: 1; rotate: 5deg; }
@@ -372,7 +379,7 @@ const printerNotes: Record<string, string> = { 'Mini-N': 'Compact. For desks, ho
   .s-split { display: grid; grid-template-columns: 1fr 1.1fr; gap: clamp(28px, 4vw, 64px); align-items: center; }
   @media (max-width: 900px) { .s-split { grid-template-columns: 1fr; } }
   .s3-stage, .s4-stage { aspect-ratio: 5 / 4; }
-  .panel { position: absolute; right: 0; top: 0; bottom: 14%; width: 62%; background: var(--sun); border-radius: 28px; }
+  .panel { position: absolute; right: 0; top: 0; bottom: 14%; width: 62%; background: var(--fil-grad); border-radius: 28px; }
   .s3-0 { width: 30%; left: 2%; top: 22%; z-index: 2; rotate: -6deg; }
   .s3-1 { width: 42%; left: 24%; top: 26%; z-index: 4; }
   .s3-2 { width: 30%; right: 12%; top: 4%; z-index: 3; rotate: 5deg; }
