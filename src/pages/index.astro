@@ -22,7 +22,9 @@ const tabs = [
 ];
 const railFrom = (list: typeof products) => {
   const first = list.find((p) => p.images.length) || list[0];
-  const second = first?.images[1] || list.find((p) => p !== first && p.images.length)?.images[0];
+  const file = (u?: string) => (u || '').split('/').pop()?.replace(/-\d+x\d+(?=\.)/, '');
+  const pool = [...(first?.images.slice(1) || []), ...list.filter((p) => p !== first).map((p) => p.images[0])];
+  const second = pool.find((im) => im && file(im.src) !== file(first?.images[0]?.src));
   return { img: first?.images[0], img2: second };
 };
 const cats = [
@@ -33,6 +35,9 @@ const cats = [
   { name: 'Scanners', href: '/product-category/3d-scanner/', ...railFrom(productsIn(catBySlug.get('3d-scanner')!.id)) },
   { name: 'Spares', href: '/product-category/accessories-and-spares/', ...railFrom(productsIn(catBySlug.get('accessories-and-spares')!.id)) },
 ];
+// Filament tile: hover swaps to a different colour spool
+const altSpool = products.find((p) => p.slug === 'premium-pla-emerald-green-1-75mm' && p.images.length);
+if (altSpool) cats[0].img2 = altSpool.images[0];
 // Hero: three spools — big in the centre, two smaller at the sides
 const heroSpools = ['premium-pla-tangy-orange-1-75mm', 'premium-pla-emerald-green-1-75mm', 'premium-pla-electric-blue-1-75mm']
   .map((s) => products.find((p) => p.slug === s)).filter((p): p is (typeof products)[number] => !!p && p.images.length > 0);
