@@ -378,7 +378,7 @@ const printerNotes: Record<string, string> = { 'Mini-N': 'Compact. For desks, ho
 <style>
   .hero { padding: clamp(12px, 2vw, 28px) 0 0; }
   .hero-in { display: grid; grid-template-columns: 1fr 1.05fr; gap: clamp(28px, 4vw, 64px); align-items: center; }
-  @media (max-width: 900px) { .hero-in { grid-template-columns: 1fr; } }
+  @media (max-width: 760px) { .hero-in { grid-template-columns: 1fr; } }
   .hero-copy strong { color: var(--ink); font-weight: 600; }
   .vid { position: relative; overflow: clip; }
   .vid-band { position: absolute; top: -10%; bottom: -10%; right: -6%; width: 34%; background: var(--sun); transform: skewX(-24deg); transform-origin: top; }
@@ -454,7 +454,7 @@ const printerNotes: Record<string, string> = { 'Mini-N': 'Compact. For desks, ho
   .k-dino { width: 24%; right: 4%; bottom: 20%; z-index: 5; }
   .k-fly { width: 20%; right: 10%; top: 0; z-index: 5; }
   .k-star { width: 11%; right: -1%; top: 24%; z-index: 5; }
-  @media (max-width: 900px) { .s6-stage, .s7-stage { aspect-ratio: 1 / 1; max-width: 520px; width: 100%; justify-self: center; } }
+  @media (max-width: 760px) { .s6-stage, .s7-stage { aspect-ratio: 1 / 1; max-width: 520px; width: 100%; justify-self: center; } }
   @media (max-width: 760px) { .s5 .diwali-title { font-size: clamp(2.6rem, 12vw, 3.4rem); } .s6 .kid-title, .s7 .kid-title { font-size: clamp(2.2rem, 10vw, 3rem); } .bubble { display: none; } .lotus { width: 150px; } }
   .s3 { position: relative; }
   .s3 > .wrap { position: relative; z-index: 1; }
@@ -527,7 +527,7 @@ const printerNotes: Record<string, string> = { 'Mini-N': 'Compact. For desks, ho
   :global([data-theme='dark']) .podium::before { background: radial-gradient(closest-side, #34322E, #262522); }
 
   .s-split { display: grid; grid-template-columns: 1fr 1.1fr; gap: clamp(28px, 4vw, 64px); align-items: center; }
-  @media (max-width: 900px) { .s-split { grid-template-columns: 1fr; } }
+  @media (max-width: 760px) { .s-split { grid-template-columns: 1fr; } }
   .s3-stage, .s4-stage { aspect-ratio: 5 / 4; }
   .panel { position: absolute; right: 0; top: 0; bottom: 14%; width: 62%; background: var(--fil-grad); border-radius: 28px; }
   .s3-0 { width: 30%; left: 2%; top: 22%; z-index: 2; rotate: -6deg; }
@@ -544,7 +544,22 @@ const printerNotes: Record<string, string> = { 'Mini-N': 'Compact. For desks, ho
   .s4-pen { width: 16%; top: 2%; z-index: 4; }
   .pen-0 { left: 27%; rotate: -14deg; top: 7%; } .pen-1 { left: 41%; rotate: -5deg; top: 1%; } .pen-2 { left: 55%; rotate: 5deg; top: 1%; } .pen-3 { left: 69%; rotate: 14deg; top: 7%; }
 
-  @media (max-width: 900px) {
+  @media (min-width: 761px) and (max-width: 1100px) {
+    .s-split, .hero-in { grid-template-columns: 1fr 1fr; gap: 20px; }
+    .s-title, .hero-copy h1 { font-size: clamp(2.2rem, 5vw, 3.1rem); }
+    .s6 .kid-title, .s7 .kid-title { font-size: clamp(2.2rem, 5vw, 3.1rem); }
+    .s-split .lead, .hero-copy .lead { font-size: 1rem; }
+    .s-cta, .hero-copy .row { flex-wrap: wrap; }
+    .s2-copy .s-title { font-size: clamp(2.2rem, 5.4vw, 3.2rem); }
+    .s2-copy .s2-trust { flex-wrap: nowrap; font-size: .76rem; }
+    .s2-trust li { padding: 0 12px; gap: 8px; }
+    .s2-trust svg { width: 22px; height: 22px; }
+    .s-pr .spool-tag { font-size: .62rem; padding: 4px 10px; top: calc(100% + 1.2cqw); }
+    .s2-stage { max-width: 100% !important; }
+    .slides { padding-bottom: 64px; }
+    .sarrow { bottom: 6px !important; }
+  }
+  @media (max-width: 760px) {
     .slide { align-items: flex-start; }
     .s-stage { margin-top: 20px; }
     .s3-stage, .s4-stage { aspect-ratio: 1 / 1; max-width: 520px; width: 100%; justify-self: center; }
@@ -618,6 +633,7 @@ const printerNotes: Record<string, string> = { 'Mini-N': 'Compact. For desks, ho
   .readout small { font-size: .85rem; color: var(--ink); }
   @media (max-width: 760px) { .hero-copy .row .btn { flex: 1 1 100%; } .trust { grid-template-columns: 1fr 1fr !important; } .readout .val { font-size: 1.5rem; } .bulk { padding: 28px 22px; } .qube { padding: 24px; } .proof .big { font-size: 3.4rem; } .quote { padding: 22px; } }
   .trust { list-style: none; margin: clamp(32px, 4vw, 56px) 0 0; padding: 22px 0 0; border-top: 1px solid var(--line); display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 16px; }
+  @media (min-width: 761px) and (max-width: 1100px) { .trust { grid-template-columns: repeat(5, 1fr); gap: 12px; } .trust li { font-size: .82rem; } }
   .trust li { display: flex; flex-direction: column; }
   .trust strong { font-weight: 550; font-size: 1.1rem; letter-spacing: -0.01em; }
   .trust span { color: var(--muted); font-size: .9rem; }
