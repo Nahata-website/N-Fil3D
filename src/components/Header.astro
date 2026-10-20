@@ -124,7 +124,8 @@ const path = Astro.url.pathname;
   .menu { position: absolute; top: calc(100% + 8px); left: -8px; min-width: 520px; padding: 10px; background: color-mix(in srgb, var(--surface) 90%, transparent); backdrop-filter: saturate(1.8) blur(28px); -webkit-backdrop-filter: saturate(1.8) blur(24px); border: 1px solid color-mix(in srgb, var(--ink) 9%, transparent); border-radius: 22px; box-shadow: 0 24px 60px -24px rgba(17,17,16,.35), inset 0 1px 0 rgba(255,255,255,.5); opacity: 0; visibility: hidden; transform: translateY(-6px) scale(.98); transform-origin: top left; transition: opacity .25s var(--ease), transform .35s var(--ease), visibility .25s; }
   .nav > li:nth-last-child(-n+3) .menu { left: auto; right: -8px; transform-origin: top right; }
   .menu::before { content: ''; position: absolute; inset: -12px 0 auto 0; height: 12px; }
-  .has-menu:hover .menu, .has-menu:focus-within .menu { opacity: 1; visibility: visible; transform: none; }
+  .has-menu:hover .menu, .has-menu:focus-within .menu, .has-menu.open .menu { opacity: 1; visibility: visible; transform: none; }
+  .has-menu.open .chev { transform: rotate(180deg); }
   .menu ul { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: 1fr 1fr; gap: 2px; }
   .menu a { display: flex; flex-direction: column; padding: 12px 14px; border-radius: 14px; text-decoration: none; transition: background-color .2s; }
   .menu a:hover { background: color-mix(in srgb, var(--surface-2) 70%, transparent); color: var(--ink); }
@@ -132,7 +133,8 @@ const path = Astro.url.pathname;
   .menu small { color: var(--muted); font-size: .82rem; }
   .hdr-actions { gap: 2px; margin-left: auto; flex-wrap: nowrap !important; flex: none; }
   .icon-btn.menu-btn { display: none; }
-  @media (max-width: 1240px) { .nav-wide, .acct { display: none !important; } .icon-btn.menu-btn { display: grid; } }
+  @media (max-width: 1240px) and (min-width: 901px) { .hdr-in { gap: 6px; } .logo img { height: 38px; } .nav { gap: 0; } .nav > li > a { font-size: clamp(.8rem, .45rem + .5vw, .9rem); padding: 8px clamp(6px, .9vw - 2px, 12px); } .acct { display: none !important; } }
+  @media (max-width: 900px) { .nav-wide, .acct { display: none !important; } .icon-btn.menu-btn { display: grid; } }
   .icon-btn { width: 44px; height: 44px; border-radius: 50%; display: grid; place-items: center; border: 0; background: transparent; color: var(--ink); cursor: pointer; transition: background-color .2s, transform .3s var(--ease); }
   .icon-btn:hover { background: color-mix(in srgb, var(--surface) 70%, transparent); box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--ink) 8%, transparent); color: var(--ink); }
   .i-moon { display: none; }
@@ -146,6 +148,18 @@ const path = Astro.url.pathname;
 </style>
 
 <script>
+  // Touch screens (iPad): first tap on a menu item opens its dropdown, a second tap follows the link
+  if (matchMedia('(hover: none)').matches) {
+    const items = Array.from(document.querySelectorAll<HTMLElement>('.nav > .has-menu'));
+    items.forEach((li) => li.querySelector('a')?.addEventListener('click', (e) => {
+      if (li.classList.contains('open')) return;
+      e.preventDefault();
+      items.forEach((o) => o.classList.remove('open'));
+      li.classList.add('open');
+    }));
+    document.addEventListener('click', (e) => { if (!(e.target as Element).closest('.nav > .has-menu')) items.forEach((o) => o.classList.remove('open')); });
+  }
+
   const hdr = document.querySelector('[data-hdr]');
   const onScroll = () => hdr?.classList.toggle('scrolled', window.scrollY > 8);
   onScroll(); window.addEventListener('scroll', onScroll, { passive: true });
